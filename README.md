@@ -1,6 +1,6 @@
 # ISBN Field
 
-![Plugin Preview](src/assets/isbn-field-plugin.jpg)
+![Plugin Preview](src/assets/isbn-field-preview.jpg)
 
 Adds an ISBN-10/ISBN-13 field type for Kirby including a rendered barcode preview of the code in the panel.
 
