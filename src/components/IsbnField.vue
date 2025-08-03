@@ -62,6 +62,10 @@ export default {
 			type: String,
 			default: 'center'
 		},
+		textposition: {
+			type: String,
+			default: 'bottom'
+		},
 		margins: {
 			type: Number,
 			default: 0
@@ -263,6 +267,7 @@ export default {
 				fontSize: this.fontsize,
 				fontOptions: this.fontoptions,
 				textAlign: this.textalign,
+				textPosition: this.textposition,
 				margins: this.margins,			
 				marginTop: this.margintop,
 				marginRight: this.marginright,

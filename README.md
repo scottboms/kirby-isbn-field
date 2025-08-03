@@ -27,27 +27,69 @@ git submodule add https://github.com/scottboms/kirby-isbn-field.git site/plugins
 
 ### Blueprints
 
-In a Page blueprint, add a new field with the type `applemusic`. Standard field attributes such as `label`, `required`, `help`, etc. can also be used to override the defaults. Use `emptyText` to change the default text displayed when the field is in an empty state.
+In a Page blueprint, add a new field with the type `isbn`. The field supports numerous properties that control the rendered barcode preview in the panel and that map to the JsBarcode library that handles the preview.
+
 
 ```yml
-  music:
-    label: Apple Music Embed
-    type: applemusic
-    emptyText: 'Click to paste Apple Music embed code'
-
-  blocks:
-    type: blocks
-    fieldsets:
-      - heading
-      - text
-      - image
-      - applemusic
+  isbn:
+    label: ISBN
+    type: isbn
+    height: 80
+    font: monospace
+    fontsize: 20
+    textalign: center
+    textposition: bottom
+    margins: 10
+    margintop: 0
+    marginleft: 0
+    marginbottom: 0
+    marginright: 0
+    displayvalue: true
+    background: '#fff'
+    linecolor: '#000'
+    flat: false
+    barwidth: 2
 ```
+
+#### Field Properties
+
+| Name         | Type       | Default     | Description                                                   |
+|--------------|------------|-------------|---------------------------------------------------------------|
+| height       | `integer`  | `80`        | Sets the height of the bars in the barcode                    |
+| font         | `string`   | `monospace` | Sets text styling e.g. monospace, sans-serif, serif, fantasy  |
+| fontsize     | `integer`  | `20`        | Sets the font size up to a maximum of 20                      |
+| textalign    | `string`   | `center`    | Sets text alignment for the text e.g. center, left, right     | 
+| textposition | `string`   | `bottom`    | Set the vertical position of the text e.g. bottom, top        |
+| margins      | `integrer` | `0`         | Sets global margins around the rendered ISBN code             |
+| margintop    | `integer`  | `null`      | Sets a top margin value only                                  | 
+| marginright  | `integer`  | `null`      | Sets a right margin value only                                |
+| marginbottom | `integer`  | `null`      | Sets a bottom margin value only                               |
+| marginleft   | `integer`  | `null`      | Sets a left margin value only                                 |
+| displayvalue | `boolean`  | `true`      | Turn the numeric value of the ISBN on or off e.g. true, false |
+| background   | `string`   | `#fff`      | Sets the background color of the ISBN preview                 |
+| linecolor    | `string`   | `#000`      | Sets the color of the lines and text of the ISBN preview      |
+| flat         | `boolean`  | `false`     | Removes error bars from the rendered ISBN                     | 
+
 
 ### Using in Templates
 
 ```php
 <?= $page->isbn() ?>
+```
+
+### Validators
+
+The field type also includes a new [Validator](https://getkirby.com/docs/reference/system/validators) for Kirby that supports ISBN-10 and -13 formats (essentially UPC, EAN-13). You can access it in your templates like so:
+
+```php
+<?php
+  $isbn = $page->isbn();
+  if(V::isbn($isbn)) {
+    echo "<p>Valid ISBN: </p>" . $isbn;
+  } else {
+    echo "<p>Invalid ISBN.</p>";
+  }
+?>
 ```
 
 ## Compatibility

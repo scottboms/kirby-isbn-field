@@ -66,6 +66,9 @@ Kirby::plugin(
 					'textalign' => function ($textalign = 'center') {
 						return $textalign;
 					},
+					'textposition' => function ($textposition = 'bottom') {
+						return $textposition;
+					},
 					'margins' => function ($margins = 0) {
 						return $margins;
 					},
