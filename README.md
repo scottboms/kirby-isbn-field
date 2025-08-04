@@ -73,8 +73,17 @@ In a Page blueprint, add a new field with the type `isbn`. The field supports nu
 
 ### Using in Templates
 
+To output the simple text value of the field:
+
 ```php
 <?= $page->isbn() ?>
+```
+
+Or utilize the toIsbn() field method and pass 'svg' or 'html' and output an SVG or HTML representation of the code. Pass 'text' to output the raw field value.
+
+```php
+<?php $page->isbn->toIsbn('svg') ?>
+
 ```
 
 ### Validators

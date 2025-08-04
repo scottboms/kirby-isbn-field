@@ -2,7 +2,7 @@
   "name": "isbn-field",
   "description": "ISBN field type with a barcode preview to Kirby",
   "author": "Scott Boms <plugins@scottboms.com>",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "kirby-plugin",
   "license": "MIT",
   "scripts": {
