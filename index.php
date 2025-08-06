@@ -38,10 +38,10 @@ if (
 Kirby::plugin(
 	name: 'scottboms/isbn-field',
 	info: [
-		'homepage' => 'https://github.com/scottboms/kirby-isbn-field'
+		'homepage' => 'https://github.com/scottboms/kirby-isbn-field',
+		'license'  => 'MIT'
 	],
-	version: '1.1.0',
-	license: 'MIT',
+	version: '1.1.1',
 	extends: [
 		'fields' => [
 			'isbn' => require __DIR__ . '/lib/fields.php'

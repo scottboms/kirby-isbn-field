@@ -120,8 +120,10 @@ export default {
 			const newValue = formData[this.name];
 			
 			if (!this.validateIsbn(newValue)) {
-				this.$panel.notification.error({
+				this.$panel.notification.info({
 					message: this.$t('isbn.error.invalid'),
+					icon: 'alert',
+					theme: 'negative',
 					timeout: 5000
 				});
 				return; // don't proceed
@@ -140,12 +142,15 @@ export default {
 
 					this.$panel.notification.success({
 						message: this.$t('isbn.success.saved'),
+						icon: 'check',
 						timeout: 4000
 					});
 				})
 				.catch(() => {
-					this.$panel.notification.error({
+					this.$panel.notification.info({
 						message: this.$t('isbn.error.unknown'),
+						icon: 'alert',
+						theme: 'negative',
 						timeout: 4000
 					});
 				});
