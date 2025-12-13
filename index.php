@@ -10,6 +10,10 @@
  * @license MIT
 **/
 
+use Scottboms\Isbn\Barcode;
+use Kirby\Cms\App;
+use Kirby\Toolkit\V;
+
 spl_autoload_register(function ($class) {
 	if (strpos($class, 'Picqer\\Barcode\\') === 0) {
 		$path = __DIR__ . '/lib/Barcode/' . str_replace('\\', '/', substr($class, strlen('Picqer\\Barcode\\'))) . '.php';
@@ -23,41 +27,34 @@ load([
   'Scottboms\Isbn\Barcode' => __DIR__ . '/classes/Isbn.php'
 ]);
 
-use Scottboms\Isbn\Barcode;
-use Kirby\Cms\App;
-use Kirby\Toolkit\V;
+// kirby version compatibility check
+$version = App::version() ?? '0.0.0';
 
-// shamelessly borrowed from distantnative/retour-for-kirby
-if (
-	version_compare(App::version() ?? '0.0.0', '5.0.0', '<') === true ||
-	version_compare(App::version() ?? '6.0.0', '7.0.0', '>=') === true
-) {
-	throw new Exception('ISBN Field requires Kirby v6 or v7');
+if (version_compare($version, '6.0.0-alpha.1', '<') || version_compare($version, '8.0.0', '>=')) {
+  throw new Exception('ISBN Field requires Kirby v6 or v7');
 }
 
-Kirby::plugin(
-	name: 'scottboms/isbn-field',
-	info: [
+Kirby::plugin('scottboms/isbn-field', [
+	'info' => [
 		'homepage' => 'https://github.com/scottboms/kirby-isbn-field',
-		'license'  => 'MIT'
+		'license'  => 'MIT',
+		'version' => '6.0.0'
 	],
-	version: '1.1.1',
-	extends: [
-		'fields' => [
-			'isbn' => require __DIR__ . '/lib/fields.php'
-		],
-		'fieldMethods' => [
-			'toIsbn' => require __DIR__ . '/lib/fieldmethods.php'
-		],
-		'validators' => [
-			'isbn' => require __DIR__ . '/lib/validators.php'
-		],
-		'translations' => [
-			'en' => require __DIR__ . '/languages/en.php',
-			'de' => require __DIR__ . '/languages/de.php'
-		],
-		'snippets' => [
-			'isbn' => __DIR__ . '/snippets/isbn.php'
-		]
+
+	'fields' => [
+		'isbn' => require __DIR__ . '/lib/fields.php'
+	],
+	'fieldMethods' => [
+		'toIsbn' => require __DIR__ . '/lib/fieldmethods.php'
+	],
+	'validators' => [
+		'isbn' => require __DIR__ . '/lib/validators.php'
+	],
+	'translations' => [
+		'en' => require __DIR__ . '/languages/en.php',
+		'de' => require __DIR__ . '/languages/de.php'
+	],
+	'snippets' => [
+		'isbn' => __DIR__ . '/snippets/isbn.php'
 	]
-);
+]);

@@ -1,12 +1,24 @@
 <template>
 	<k-field class="k-isbn-field" v-bind="$props">
-		<k-button icon="edit-line" size="xs" slot="options" variant="filled" @click="openDrawer">Edit...</k-button>
+		<template #options>
+			<k-button
+				icon="edit-line"
+				size="xs"
+				variant="filled"
+				@click="openDrawer"
+			>Edit...</k-button>
+		</template>
+
 		<div v-if="!hasContent" class="k-isbn-empty">
 			<k-grid style="--columns: 1; gap: 0.5rem">
 				<k-empty :text="emptyText" icon="isbn" @click="openDrawer" />
 			</k-grid>
 		</div>
-		<div v-html="previewHtml" class="k-isbn-preview" />
+		<div v-else class="k-isbn-preview">
+			<div class="k-isbn-container">
+				<svg ref="svgEl" class="k-isbn-preview-svg" />
+			</div>
+		</div>
 	</k-field>
 </template>
 
@@ -95,30 +107,37 @@ export default {
 			default: false
 		}
 	},
-	mounted() {
-		this.renderBarcode();
+
+	emits: ['input', 'change'],
+
+	data() {
+		return {
+			svgEl: null
+		};
 	},
+
 	computed: {
 		hasContent() {
-			return this.value && this.value.trim() !== '';
-		},
-		previewHtml() {
-			if (!this.value) return '';
-			
-			return `<div class='k-isbn-container'><svg class='k-isbn-preview-svg' id='isbn'>${this.value}</svg></div>`;
+			return !!(this.value && this.value.trim() !== '');
 		}
 	},
+
+	mounted() {
+		// refs are available after mount
+		this.svgEl = this.$refs.svgEl;
+		this.renderBarcode();
+	},
+
 	watch: {
 		value() {
-			this.$nextTick(() => {
-				this.renderBarcode();
-			});
+			this.$nextTick(() => this.renderBarcode());
 		}
 	},
+
 	methods: {
 		handleSubmit(formData) {
 			const newValue = formData[this.name];
-			
+
 			if (!this.validateIsbn(newValue)) {
 				this.$panel.notification.info({
 					message: this.$t('isbn.error.invalid'),
@@ -135,9 +154,7 @@ export default {
 					this.$emit('change', newValue);
 
 					// refresh barcode preview
-					this.$nextTick(() => {
-						this.renderBarcode();
-					});
+					this.$nextTick(() => this.renderBarcode());
 					this.closeDrawer();
 
 					this.$panel.notification.success({
@@ -155,7 +172,7 @@ export default {
 					});
 				});
 		},
-		
+
 		openDrawer() {
 			this.$panel.drawer.open({
 				component: 'k-form-drawer',
@@ -188,20 +205,19 @@ export default {
 				}
 			});
 		},
-		
+
 		closeDrawer() {
 			this.$panel.drawer.close();
 		},
 
 		convertIsbn10to13(isbn10) {
 			const clean = isbn10.replace(/-/g, '').toUpperCase();
-
 			if (!/^\d{9}[\dX]$/.test(clean)) return null;
 
-			// Step 1: Take first 9 digits, prefix with 978
+			// step 1: take first 9 digits, prefix with 978
 			const core = '978' + clean.slice(0, 9);
 
-			// Step 2: Calculate checksum for ISBN-13
+			// step 2: calculate checksum for isbn-13
 			let sum = 0;
 			for (let i = 0; i < 12; i++) {
 				const digit = parseInt(core[i], 10);
@@ -209,14 +225,14 @@ export default {
 			}
 			const checksum = (10 - (sum % 10)) % 10;
 
-			// Step 3: Append checksum
+			// step 3: append checksum
 			return core + checksum;
 		},
 
 		validateIsbn(value) {
 			const clean = value.replace(/-/g, '');
 
-			// ISBN-10
+			// isbn-10
 			if (/^\d{9}[\dX]$/.test(clean)) {
 				let sum = 0;
 				for (let i = 0; i < 9; i++) {
@@ -226,7 +242,7 @@ export default {
 				return (sum + 10 * checksum) % 11 === 0;
 			}
 
-			// ISBN 13
+			// isbn-13
 			if (/^\d{13}$/.test(clean)) {
 				let sum = 0;
 				for (let i = 0; i < 12; i++) {
@@ -239,30 +255,28 @@ export default {
 		},
 
 		renderBarcode() {
-			if (!this.value || typeof JsBarcode !== 'function') return;
+			if (!this.hasContent) return;
+			if (typeof JsBarcode !== 'function') return;
+			if (!this.svgEl) return;
 
 			let clean = this.value.replace(/-/g, '');
-			const svg = this.$el.querySelector('#isbn');
-			if (!svg) return;
 
-			// convert ISBN-10 to ISBN-13 if necessary
+			// convert isbn-10 to isbn-13 if necessary
 			if (/^\d{9}[\dX]$/.test(clean)) {
 				const converted = this.convertIsbn10to13(clean);
-				if (converted) {
-					clean = converted;
-				} else {
-					// console.warn('failed to convert ISBN-10 to ISBN-13, cannot render barcode');
-					return;
-				}
-			}
-			
-			// validate ISBN-13
-			if (!/^\d{13}$/.test(clean) || !this.validateIsbn(clean)) {
-				// console.warn('invalid ISBN-13, cannot render barcode');
-				return;
+				if (!converted) return;
+				clean = converted;
 			}
 
-			JsBarcode(svg, clean, {
+			// validate isbn-13
+			if (!/^\d{13}$/.test(clean) || !this.validateIsbn(clean)) return;
+
+			// clear the svg before re-rendering
+			while (this.svgEl.firstChild) {
+				this.svgEl.removeChild(this.svgEl.firstChild);
+			}
+
+			JsBarcode(this.svgEl, clean, {
 				format: this.format,
 				height: this.height,
 				width: this.barwidth,
@@ -273,7 +287,7 @@ export default {
 				fontOptions: this.fontoptions,
 				textAlign: this.textalign,
 				textPosition: this.textposition,
-				margins: this.margins,			
+				margins: this.margins,
 				marginTop: this.margintop,
 				marginRight: this.marginright,
 				marginBottom: this.marginbottom,
