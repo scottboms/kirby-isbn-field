@@ -82,7 +82,9 @@ To output the simple text value of the field:
 Or utilize the toIsbn() field method and pass 'svg' or 'html' and output an SVG or HTML representation of the code. Pass 'text' to output the raw field value.
 
 ```php
-<?php $page->isbn->toIsbn('svg') ?>
+<?php $page->isbn()->toIsbn('svg') ?>
+<?php $page->isbn()->toIsbn('html') ?>
+<?php $page->isbn()->toIsbn('text') ?>
 
 ```
 
