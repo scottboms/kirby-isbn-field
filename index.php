@@ -29,18 +29,11 @@ load([
 
 // kirby version compatibility check
 $version = App::version() ?? '0.0.0';
-
-if (version_compare($version, '6.0.0-alpha.1', '<') || version_compare($version, '8.0.0', '>=')) {
-  throw new Exception('ISBN Field requires Kirby v6 or v7');
+if (version_compare($version, '6.0.0', '<') || version_compare($version, '8.0.0', '>=')) {
+	return;
 }
 
 Kirby::plugin('scottboms/isbn-field', [
-	'info' => [
-		'homepage' => 'https://github.com/scottboms/kirby-isbn-field',
-		'license'  => 'MIT',
-		'version' => '6.0.0'
-	],
-
 	'fields' => [
 		'isbn' => require __DIR__ . '/lib/fields.php'
 	],
@@ -56,5 +49,10 @@ Kirby::plugin('scottboms/isbn-field', [
 	],
 	'snippets' => [
 		'isbn' => __DIR__ . '/snippets/isbn.php'
-	]
+	],
+	'info' => [
+		'homepage' => 'https://github.com/scottboms/kirby-isbn-field',
+		'license'  => 'MIT',
+		'version' => '6.0.0'
+	],
 ]);

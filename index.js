@@ -1,472 +1,671 @@
-import { resolveComponent as Y, createBlock as tr, openBlock as Q, mergeProps as rr, withCtx as W, createElementBlock as Le, createVNode as Ne, createElementVNode as nr, createTextVNode as ir } from "vue";
-function ar(_) {
-  return _ && _.__esModule && Object.prototype.hasOwnProperty.call(_, "default") ? _.default : _;
+import { resolveComponent, createBlock, openBlock, mergeProps, withCtx, createElementBlock, createVNode, createElementVNode, createTextVNode } from "vue";
+function getDefaultExportFromCjs(x) {
+  return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
 }
-var K = {}, L = {}, ee = {}, Ue;
-function T() {
-  if (Ue) return ee;
-  Ue = 1, Object.defineProperty(ee, "__esModule", {
-    value: !0
+var barcodes = {};
+var CODE39 = {};
+var Barcode = {};
+var hasRequiredBarcode;
+function requireBarcode() {
+  if (hasRequiredBarcode) return Barcode;
+  hasRequiredBarcode = 1;
+  Object.defineProperty(Barcode, "__esModule", {
+    value: true
   });
-  function _(v, l) {
-    if (!(v instanceof l))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
+    }
   }
-  var f = function v(l, h) {
-    _(this, v), this.data = l, this.text = h.text || l, this.options = h;
+  var Barcode$1 = function Barcode2(data, options) {
+    _classCallCheck(this, Barcode2);
+    this.data = data;
+    this.text = options.text || data;
+    this.options = options;
   };
-  return ee.default = f, ee;
+  Barcode.default = Barcode$1;
+  return Barcode;
 }
-var Ve;
-function or() {
-  if (Ve) return L;
-  Ve = 1, Object.defineProperty(L, "__esModule", {
-    value: !0
-  }), L.CODE39 = void 0;
-  var _ = /* @__PURE__ */ (function() {
-    function u(y, p) {
-      for (var g = 0; g < p.length; g++) {
-        var w = p[g];
-        w.enumerable = w.enumerable || !1, w.configurable = !0, "value" in w && (w.writable = !0), Object.defineProperty(y, w.key, w);
+var hasRequiredCODE39;
+function requireCODE39() {
+  if (hasRequiredCODE39) return CODE39;
+  hasRequiredCODE39 = 1;
+  Object.defineProperty(CODE39, "__esModule", {
+    value: true
+  });
+  CODE39.CODE39 = void 0;
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(y, p, g) {
-      return p && u(y.prototype, p), g && u(y, g), y;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = T(), v = l(f);
-  function l(u) {
-    return u && u.__esModule ? u : { default: u };
+  })();
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function h(u, y) {
-    if (!(u instanceof y))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function s(u, y) {
-    if (!u)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return y && (typeof y == "object" || typeof y == "function") ? y : u;
-  }
-  function d(u, y) {
-    if (typeof y != "function" && y !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof y);
-    u.prototype = Object.create(y && y.prototype, { constructor: { value: u, enumerable: !1, writable: !0, configurable: !0 } }), y && (Object.setPrototypeOf ? Object.setPrototypeOf(u, y) : u.__proto__ = y);
-  }
-  var c = (function(u) {
-    d(y, u);
-    function y(p, g) {
-      return h(this, y), p = p.toUpperCase(), g.mod43 && (p += r(o(p))), s(this, (y.__proto__ || Object.getPrototypeOf(y)).call(this, p, g));
     }
-    return _(y, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var CODE39$1 = (function(_Barcode) {
+    _inherits(CODE392, _Barcode);
+    function CODE392(data, options) {
+      _classCallCheck(this, CODE392);
+      data = data.toUpperCase();
+      if (options.mod43) {
+        data += getCharacter(mod43checksum(data));
+      }
+      return _possibleConstructorReturn(this, (CODE392.__proto__ || Object.getPrototypeOf(CODE392)).call(this, data, options));
+    }
+    _createClass(CODE392, [{
       key: "encode",
-      value: function() {
-        for (var g = t("*"), w = 0; w < this.data.length; w++)
-          g += t(this.data[w]) + "0";
-        return g += t("*"), {
-          data: g,
+      value: function encode() {
+        var result = getEncoding("*");
+        for (var i = 0; i < this.data.length; i++) {
+          result += getEncoding(this.data[i]) + "0";
+        }
+        result += getEncoding("*");
+        return {
+          data: result,
           text: this.text
         };
       }
     }, {
       key: "valid",
-      value: function() {
+      value: function valid() {
         return this.data.search(/^[0-9A-Z\-\.\ \$\/\+\%]+$/) !== -1;
       }
-    }]), y;
-  })(v.default), a = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "-", ".", " ", "$", "/", "+", "%", "*"], e = [20957, 29783, 23639, 30485, 20951, 29813, 23669, 20855, 29789, 23645, 29975, 23831, 30533, 22295, 30149, 24005, 21623, 29981, 23837, 22301, 30023, 23879, 30545, 22343, 30161, 24017, 21959, 30065, 23921, 22385, 29015, 18263, 29141, 17879, 29045, 18293, 17783, 29021, 18269, 17477, 17489, 17681, 20753, 35770];
-  function t(u) {
-    return n(i(u));
+    }]);
+    return CODE392;
+  })(_Barcode3.default);
+  var characters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "-", ".", " ", "$", "/", "+", "%", "*"];
+  var encodings = [20957, 29783, 23639, 30485, 20951, 29813, 23669, 20855, 29789, 23645, 29975, 23831, 30533, 22295, 30149, 24005, 21623, 29981, 23837, 22301, 30023, 23879, 30545, 22343, 30161, 24017, 21959, 30065, 23921, 22385, 29015, 18263, 29141, 17879, 29045, 18293, 17783, 29021, 18269, 17477, 17489, 17681, 20753, 35770];
+  function getEncoding(character) {
+    return getBinary(characterValue(character));
   }
-  function n(u) {
-    return e[u].toString(2);
+  function getBinary(characterValue2) {
+    return encodings[characterValue2].toString(2);
   }
-  function r(u) {
-    return a[u];
+  function getCharacter(characterValue2) {
+    return characters[characterValue2];
   }
-  function i(u) {
-    return a.indexOf(u);
+  function characterValue(character) {
+    return characters.indexOf(character);
   }
-  function o(u) {
-    for (var y = 0, p = 0; p < u.length; p++)
-      y += i(u[p]);
-    return y = y % 43, y;
+  function mod43checksum(data) {
+    var checksum = 0;
+    for (var i = 0; i < data.length; i++) {
+      checksum += characterValue(data[i]);
+    }
+    checksum = checksum % 43;
+    return checksum;
   }
-  return L.CODE39 = c, L;
+  CODE39.CODE39 = CODE39$1;
+  return CODE39;
 }
-var I = {}, te = {}, re = {}, x = {}, Xe;
-function V() {
-  if (Xe) return x;
-  Xe = 1, Object.defineProperty(x, "__esModule", {
-    value: !0
+var CODE128$1 = {};
+var CODE128_AUTO = {};
+var CODE128 = {};
+var constants$3 = {};
+var hasRequiredConstants$3;
+function requireConstants$3() {
+  if (hasRequiredConstants$3) return constants$3;
+  hasRequiredConstants$3 = 1;
+  Object.defineProperty(constants$3, "__esModule", {
+    value: true
   });
-  var _;
-  function f(a, e, t) {
-    return e in a ? Object.defineProperty(a, e, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : a[e] = t, a;
+  var _SET_BY_CODE;
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, { value, enumerable: true, configurable: true, writable: true });
+    } else {
+      obj[key] = value;
+    }
+    return obj;
   }
-  var v = x.SET_A = 0, l = x.SET_B = 1, h = x.SET_C = 2;
-  x.SHIFT = 98;
-  var s = x.START_A = 103, d = x.START_B = 104, c = x.START_C = 105;
-  return x.MODULO = 103, x.STOP = 106, x.FNC1 = 207, x.SET_BY_CODE = (_ = {}, f(_, s, v), f(_, d, l), f(_, c, h), _), x.SWAP = {
-    101: v,
-    100: l,
-    99: h
-  }, x.A_START_CHAR = "Ð", x.B_START_CHAR = "Ñ", x.C_START_CHAR = "Ò", x.A_CHARS = "[\0-_È-Ï]", x.B_CHARS = "[ -È-Ï]", x.C_CHARS = "(Ï*[0-9]{2}Ï*)", x.BARS = [11011001100, 11001101100, 11001100110, 10010011e3, 10010001100, 10001001100, 10011001e3, 10011000100, 10001100100, 11001001e3, 11001000100, 11000100100, 10110011100, 10011011100, 10011001110, 10111001100, 10011101100, 10011100110, 11001110010, 11001011100, 11001001110, 11011100100, 11001110100, 11101101110, 11101001100, 11100101100, 11100100110, 11101100100, 11100110100, 11100110010, 11011011e3, 11011000110, 11000110110, 10100011e3, 10001011e3, 10001000110, 10110001e3, 10001101e3, 10001100010, 11010001e3, 11000101e3, 11000100010, 10110111e3, 10110001110, 10001101110, 10111011e3, 10111000110, 10001110110, 11101110110, 11010001110, 11000101110, 11011101e3, 11011100010, 11011101110, 11101011e3, 11101000110, 11100010110, 11101101e3, 11101100010, 11100011010, 11101111010, 11001000010, 11110001010, 1010011e4, 10100001100, 1001011e4, 10010000110, 10000101100, 10000100110, 1011001e4, 10110000100, 1001101e4, 10011000010, 10000110100, 10000110010, 11000010010, 1100101e4, 11110111010, 11000010100, 10001111010, 10100111100, 10010111100, 10010011110, 10111100100, 10011110100, 10011110010, 11110100100, 11110010100, 11110010010, 11011011110, 11011110110, 11110110110, 10101111e3, 10100011110, 10001011110, 10111101e3, 10111100010, 11110101e3, 11110100010, 10111011110, 10111101110, 11101011110, 11110101110, 11010000100, 1101001e4, 11010011100, 1100011101011], x;
+  var SET_A = constants$3.SET_A = 0;
+  var SET_B = constants$3.SET_B = 1;
+  var SET_C = constants$3.SET_C = 2;
+  constants$3.SHIFT = 98;
+  var START_A = constants$3.START_A = 103;
+  var START_B = constants$3.START_B = 104;
+  var START_C = constants$3.START_C = 105;
+  constants$3.MODULO = 103;
+  constants$3.STOP = 106;
+  constants$3.FNC1 = 207;
+  constants$3.SET_BY_CODE = (_SET_BY_CODE = {}, _defineProperty(_SET_BY_CODE, START_A, SET_A), _defineProperty(_SET_BY_CODE, START_B, SET_B), _defineProperty(_SET_BY_CODE, START_C, SET_C), _SET_BY_CODE);
+  constants$3.SWAP = {
+    101: SET_A,
+    100: SET_B,
+    99: SET_C
+  };
+  constants$3.A_START_CHAR = String.fromCharCode(208);
+  constants$3.B_START_CHAR = String.fromCharCode(209);
+  constants$3.C_START_CHAR = String.fromCharCode(210);
+  constants$3.A_CHARS = "[\0-_È-Ï]";
+  constants$3.B_CHARS = "[ -È-Ï]";
+  constants$3.C_CHARS = "(Ï*[0-9]{2}Ï*)";
+  constants$3.BARS = [11011001100, 11001101100, 11001100110, 10010011e3, 10010001100, 10001001100, 10011001e3, 10011000100, 10001100100, 11001001e3, 11001000100, 11000100100, 10110011100, 10011011100, 10011001110, 10111001100, 10011101100, 10011100110, 11001110010, 11001011100, 11001001110, 11011100100, 11001110100, 11101101110, 11101001100, 11100101100, 11100100110, 11101100100, 11100110100, 11100110010, 11011011e3, 11011000110, 11000110110, 10100011e3, 10001011e3, 10001000110, 10110001e3, 10001101e3, 10001100010, 11010001e3, 11000101e3, 11000100010, 10110111e3, 10110001110, 10001101110, 10111011e3, 10111000110, 10001110110, 11101110110, 11010001110, 11000101110, 11011101e3, 11011100010, 11011101110, 11101011e3, 11101000110, 11100010110, 11101101e3, 11101100010, 11100011010, 11101111010, 11001000010, 11110001010, 1010011e4, 10100001100, 1001011e4, 10010000110, 10000101100, 10000100110, 1011001e4, 10110000100, 1001101e4, 10011000010, 10000110100, 10000110010, 11000010010, 1100101e4, 11110111010, 11000010100, 10001111010, 10100111100, 10010111100, 10010011110, 10111100100, 10011110100, 10011110010, 11110100100, 11110010100, 11110010010, 11011011110, 11011110110, 11110110110, 10101111e3, 10100011110, 10001011110, 10111101e3, 10111100010, 11110101e3, 11110100010, 10111011110, 10111101110, 11101011110, 11110101110, 11010000100, 1101001e4, 11010011100, 1100011101011];
+  return constants$3;
 }
-var ze;
-function Be() {
-  if (ze) return re;
-  ze = 1, Object.defineProperty(re, "__esModule", {
-    value: !0
+var hasRequiredCODE128$1;
+function requireCODE128$1() {
+  if (hasRequiredCODE128$1) return CODE128;
+  hasRequiredCODE128$1 = 1;
+  Object.defineProperty(CODE128, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function e(t, n) {
-      for (var r = 0; r < n.length; r++) {
-        var i = n[r];
-        i.enumerable = i.enumerable || !1, i.configurable = !0, "value" in i && (i.writable = !0), Object.defineProperty(t, i.key, i);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(t, n, r) {
-      return n && e(t.prototype, n), r && e(t, r), t;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = T(), v = h(f), l = V();
-  function h(e) {
-    return e && e.__esModule ? e : { default: e };
+  })();
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  var _constants = requireConstants$3();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function s(e, t) {
-    if (!(e instanceof t))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function d(e, t) {
-    if (!e)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return t && (typeof t == "object" || typeof t == "function") ? t : e;
-  }
-  function c(e, t) {
-    if (typeof t != "function" && t !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof t);
-    e.prototype = Object.create(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : e.__proto__ = t);
-  }
-  var a = (function(e) {
-    c(t, e);
-    function t(n, r) {
-      s(this, t);
-      var i = d(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, n.substring(1), r));
-      return i.bytes = n.split("").map(function(o) {
-        return o.charCodeAt(0);
-      }), i;
     }
-    return _(t, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var CODE128$12 = (function(_Barcode) {
+    _inherits(CODE1282, _Barcode);
+    function CODE1282(data, options) {
+      _classCallCheck(this, CODE1282);
+      var _this = _possibleConstructorReturn(this, (CODE1282.__proto__ || Object.getPrototypeOf(CODE1282)).call(this, data.substring(1), options));
+      _this.bytes = data.split("").map(function(char) {
+        return char.charCodeAt(0);
+      });
+      return _this;
+    }
+    _createClass(CODE1282, [{
       key: "valid",
-      value: function() {
+      value: function valid() {
         return /^[\x00-\x7F\xC8-\xD3]+$/.test(this.data);
       }
       // The public encoding function
     }, {
       key: "encode",
-      value: function() {
-        var r = this.bytes, i = r.shift() - 105, o = l.SET_BY_CODE[i];
-        if (o === void 0)
+      value: function encode() {
+        var bytes = this.bytes;
+        var startIndex = bytes.shift() - 105;
+        var startSet = _constants.SET_BY_CODE[startIndex];
+        if (startSet === void 0) {
           throw new RangeError("The encoding does not start with a start character.");
-        this.shouldEncodeAsEan128() === !0 && r.unshift(l.FNC1);
-        var u = t.next(r, 1, o);
+        }
+        if (this.shouldEncodeAsEan128() === true) {
+          bytes.unshift(_constants.FNC1);
+        }
+        var encodingResult = CODE1282.next(bytes, 1, startSet);
         return {
           text: this.text === this.data ? this.text.replace(/[^\x20-\x7E]/g, "") : this.text,
           data: (
             // Add the start bits
-            t.getBar(i) + // Add the encoded bits
-            u.result + // Add the checksum
-            t.getBar((u.checksum + i) % l.MODULO) + // Add the end bits
-            t.getBar(l.STOP)
+            CODE1282.getBar(startIndex) + // Add the encoded bits
+            encodingResult.result + // Add the checksum
+            CODE1282.getBar((encodingResult.checksum + startIndex) % _constants.MODULO) + // Add the end bits
+            CODE1282.getBar(_constants.STOP)
           )
         };
       }
       // GS1-128/EAN-128
     }, {
       key: "shouldEncodeAsEan128",
-      value: function() {
-        var r = this.options.ean128 || !1;
-        return typeof r == "string" && (r = r.toLowerCase() === "true"), r;
+      value: function shouldEncodeAsEan128() {
+        var isEAN128 = this.options.ean128 || false;
+        if (typeof isEAN128 === "string") {
+          isEAN128 = isEAN128.toLowerCase() === "true";
+        }
+        return isEAN128;
       }
       // Get a bar symbol by index
     }], [{
       key: "getBar",
-      value: function(r) {
-        return l.BARS[r] ? l.BARS[r].toString() : "";
+      value: function getBar(index) {
+        return _constants.BARS[index] ? _constants.BARS[index].toString() : "";
       }
       // Correct an index by a set and shift it from the bytes array
     }, {
       key: "correctIndex",
-      value: function(r, i) {
-        if (i === l.SET_A) {
-          var o = r.shift();
-          return o < 32 ? o + 64 : o - 32;
-        } else return i === l.SET_B ? r.shift() - 32 : (r.shift() - 48) * 10 + r.shift() - 48;
+      value: function correctIndex(bytes, set) {
+        if (set === _constants.SET_A) {
+          var charCode = bytes.shift();
+          return charCode < 32 ? charCode + 64 : charCode - 32;
+        } else if (set === _constants.SET_B) {
+          return bytes.shift() - 32;
+        } else {
+          return (bytes.shift() - 48) * 10 + bytes.shift() - 48;
+        }
       }
     }, {
       key: "next",
-      value: function(r, i, o) {
-        if (!r.length)
+      value: function next(bytes, pos, set) {
+        if (!bytes.length) {
           return { result: "", checksum: 0 };
-        var u = void 0, y = void 0;
-        if (r[0] >= 200) {
-          y = r.shift() - 105;
-          var p = l.SWAP[y];
-          p !== void 0 ? u = t.next(r, i + 1, p) : ((o === l.SET_A || o === l.SET_B) && y === l.SHIFT && (r[0] = o === l.SET_A ? r[0] > 95 ? r[0] - 96 : r[0] : r[0] < 32 ? r[0] + 96 : r[0]), u = t.next(r, i + 1, o));
-        } else
-          y = t.correctIndex(r, o), u = t.next(r, i + 1, o);
-        var g = t.getBar(y), w = y * i;
+        }
+        var nextCode = void 0, index = void 0;
+        if (bytes[0] >= 200) {
+          index = bytes.shift() - 105;
+          var nextSet = _constants.SWAP[index];
+          if (nextSet !== void 0) {
+            nextCode = CODE1282.next(bytes, pos + 1, nextSet);
+          } else {
+            if ((set === _constants.SET_A || set === _constants.SET_B) && index === _constants.SHIFT) {
+              bytes[0] = set === _constants.SET_A ? bytes[0] > 95 ? bytes[0] - 96 : bytes[0] : bytes[0] < 32 ? bytes[0] + 96 : bytes[0];
+            }
+            nextCode = CODE1282.next(bytes, pos + 1, set);
+          }
+        } else {
+          index = CODE1282.correctIndex(bytes, set);
+          nextCode = CODE1282.next(bytes, pos + 1, set);
+        }
+        var enc = CODE1282.getBar(index);
+        var weight = index * pos;
         return {
-          result: g + u.result,
-          checksum: w + u.checksum
+          result: enc + nextCode.result,
+          checksum: weight + nextCode.checksum
         };
       }
-    }]), t;
-  })(v.default);
-  return re.default = a, re;
+    }]);
+    return CODE1282;
+  })(_Barcode3.default);
+  CODE128.default = CODE128$12;
+  return CODE128;
 }
-var ne = {}, Je;
-function ur() {
-  if (Je) return ne;
-  Je = 1, Object.defineProperty(ne, "__esModule", {
-    value: !0
+var auto = {};
+var hasRequiredAuto;
+function requireAuto() {
+  if (hasRequiredAuto) return auto;
+  hasRequiredAuto = 1;
+  Object.defineProperty(auto, "__esModule", {
+    value: true
   });
-  var _ = V(), f = function(c) {
-    return c.match(new RegExp("^" + _.A_CHARS + "*"))[0].length;
-  }, v = function(c) {
-    return c.match(new RegExp("^" + _.B_CHARS + "*"))[0].length;
-  }, l = function(c) {
-    return c.match(new RegExp("^" + _.C_CHARS + "*"))[0];
+  var _constants = requireConstants$3();
+  var matchSetALength = function matchSetALength2(string) {
+    return string.match(new RegExp("^" + _constants.A_CHARS + "*"))[0].length;
   };
-  function h(d, c) {
-    var a = c ? _.A_CHARS : _.B_CHARS, e = d.match(new RegExp("^(" + a + "+?)(([0-9]{2}){2,})([^0-9]|$)"));
-    if (e)
-      return e[1] + "Ì" + s(d.substring(e[1].length));
-    var t = d.match(new RegExp("^" + a + "+"))[0];
-    return t.length === d.length ? d : t + String.fromCharCode(c ? 205 : 206) + h(d.substring(t.length), !c);
-  }
-  function s(d) {
-    var c = l(d), a = c.length;
-    if (a === d.length)
-      return d;
-    d = d.substring(a);
-    var e = f(d) >= v(d);
-    return c + String.fromCharCode(e ? 206 : 205) + h(d, e);
-  }
-  return ne.default = function(d) {
-    var c = void 0, a = l(d).length;
-    if (a >= 2)
-      c = _.C_START_CHAR + s(d);
-    else {
-      var e = f(d) > v(d);
-      c = (e ? _.A_START_CHAR : _.B_START_CHAR) + h(d, e);
+  var matchSetBLength = function matchSetBLength2(string) {
+    return string.match(new RegExp("^" + _constants.B_CHARS + "*"))[0].length;
+  };
+  var matchSetC = function matchSetC2(string) {
+    return string.match(new RegExp("^" + _constants.C_CHARS + "*"))[0];
+  };
+  function autoSelectFromAB(string, isA) {
+    var ranges = isA ? _constants.A_CHARS : _constants.B_CHARS;
+    var untilC = string.match(new RegExp("^(" + ranges + "+?)(([0-9]{2}){2,})([^0-9]|$)"));
+    if (untilC) {
+      return untilC[1] + String.fromCharCode(204) + autoSelectFromC(string.substring(untilC[1].length));
     }
-    return c.replace(
+    var chars = string.match(new RegExp("^" + ranges + "+"))[0];
+    if (chars.length === string.length) {
+      return string;
+    }
+    return chars + String.fromCharCode(isA ? 205 : 206) + autoSelectFromAB(string.substring(chars.length), !isA);
+  }
+  function autoSelectFromC(string) {
+    var cMatch = matchSetC(string);
+    var length = cMatch.length;
+    if (length === string.length) {
+      return string;
+    }
+    string = string.substring(length);
+    var isA = matchSetALength(string) >= matchSetBLength(string);
+    return cMatch + String.fromCharCode(isA ? 206 : 205) + autoSelectFromAB(string, isA);
+  }
+  auto.default = function(string) {
+    var newString = void 0;
+    var cLength = matchSetC(string).length;
+    if (cLength >= 2) {
+      newString = _constants.C_START_CHAR + autoSelectFromC(string);
+    } else {
+      var isA = matchSetALength(string) > matchSetBLength(string);
+      newString = (isA ? _constants.A_START_CHAR : _constants.B_START_CHAR) + autoSelectFromAB(string, isA);
+    }
+    return newString.replace(
       /[\xCD\xCE]([^])[\xCD\xCE]/,
       // Any sequence between 205 and 206 characters
-      function(t, n) {
-        return "Ë" + n;
+      function(match, char) {
+        return String.fromCharCode(203) + char;
       }
     );
-  }, ne;
+  };
+  return auto;
 }
-var Ze;
-function fr() {
-  if (Ze) return te;
-  Ze = 1, Object.defineProperty(te, "__esModule", {
-    value: !0
+var hasRequiredCODE128_AUTO;
+function requireCODE128_AUTO() {
+  if (hasRequiredCODE128_AUTO) return CODE128_AUTO;
+  hasRequiredCODE128_AUTO = 1;
+  Object.defineProperty(CODE128_AUTO, "__esModule", {
+    value: true
   });
-  var _ = Be(), f = h(_), v = ur(), l = h(v);
-  function h(e) {
-    return e && e.__esModule ? e : { default: e };
+  var _CODE2 = requireCODE128$1();
+  var _CODE3 = _interopRequireDefault(_CODE2);
+  var _auto = requireAuto();
+  var _auto2 = _interopRequireDefault(_auto);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function s(e, t) {
-    if (!(e instanceof t))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function d(e, t) {
-    if (!e)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return t && (typeof t == "object" || typeof t == "function") ? t : e;
-  }
-  function c(e, t) {
-    if (typeof t != "function" && t !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof t);
-    e.prototype = Object.create(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : e.__proto__ = t);
-  }
-  var a = (function(e) {
-    c(t, e);
-    function t(n, r) {
-      if (s(this, t), /^[\x00-\x7F\xC8-\xD3]+$/.test(n))
-        var i = d(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, (0, l.default)(n), r));
-      else
-        var i = d(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, n, r));
-      return d(i);
     }
-    return t;
-  })(f.default);
-  return te.default = a, te;
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var CODE128AUTO = (function(_CODE) {
+    _inherits(CODE128AUTO2, _CODE);
+    function CODE128AUTO2(data, options) {
+      _classCallCheck(this, CODE128AUTO2);
+      if (/^[\x00-\x7F\xC8-\xD3]+$/.test(data)) {
+        var _this = _possibleConstructorReturn(this, (CODE128AUTO2.__proto__ || Object.getPrototypeOf(CODE128AUTO2)).call(this, (0, _auto2.default)(data), options));
+      } else {
+        var _this = _possibleConstructorReturn(this, (CODE128AUTO2.__proto__ || Object.getPrototypeOf(CODE128AUTO2)).call(this, data, options));
+      }
+      return _possibleConstructorReturn(_this);
+    }
+    return CODE128AUTO2;
+  })(_CODE3.default);
+  CODE128_AUTO.default = CODE128AUTO;
+  return CODE128_AUTO;
 }
-var ie = {}, Ye;
-function cr() {
-  if (Ye) return ie;
-  Ye = 1, Object.defineProperty(ie, "__esModule", {
-    value: !0
+var CODE128A = {};
+var hasRequiredCODE128A;
+function requireCODE128A() {
+  if (hasRequiredCODE128A) return CODE128A;
+  hasRequiredCODE128A = 1;
+  Object.defineProperty(CODE128A, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function e(t, n) {
-      for (var r = 0; r < n.length; r++) {
-        var i = n[r];
-        i.enumerable = i.enumerable || !1, i.configurable = !0, "value" in i && (i.writable = !0), Object.defineProperty(t, i.key, i);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(t, n, r) {
-      return n && e(t.prototype, n), r && e(t, r), t;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = Be(), v = h(f), l = V();
-  function h(e) {
-    return e && e.__esModule ? e : { default: e };
+  })();
+  var _CODE2 = requireCODE128$1();
+  var _CODE3 = _interopRequireDefault(_CODE2);
+  var _constants = requireConstants$3();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function s(e, t) {
-    if (!(e instanceof t))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function d(e, t) {
-    if (!e)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return t && (typeof t == "object" || typeof t == "function") ? t : e;
-  }
-  function c(e, t) {
-    if (typeof t != "function" && t !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof t);
-    e.prototype = Object.create(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : e.__proto__ = t);
-  }
-  var a = (function(e) {
-    c(t, e);
-    function t(n, r) {
-      return s(this, t), d(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, l.A_START_CHAR + n, r));
     }
-    return _(t, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var CODE128A$1 = (function(_CODE) {
+    _inherits(CODE128A2, _CODE);
+    function CODE128A2(string, options) {
+      _classCallCheck(this, CODE128A2);
+      return _possibleConstructorReturn(this, (CODE128A2.__proto__ || Object.getPrototypeOf(CODE128A2)).call(this, _constants.A_START_CHAR + string, options));
+    }
+    _createClass(CODE128A2, [{
       key: "valid",
-      value: function() {
-        return new RegExp("^" + l.A_CHARS + "+$").test(this.data);
+      value: function valid() {
+        return new RegExp("^" + _constants.A_CHARS + "+$").test(this.data);
       }
-    }]), t;
-  })(v.default);
-  return ie.default = a, ie;
+    }]);
+    return CODE128A2;
+  })(_CODE3.default);
+  CODE128A.default = CODE128A$1;
+  return CODE128A;
 }
-var ae = {}, Qe;
-function lr() {
-  if (Qe) return ae;
-  Qe = 1, Object.defineProperty(ae, "__esModule", {
-    value: !0
+var CODE128B = {};
+var hasRequiredCODE128B;
+function requireCODE128B() {
+  if (hasRequiredCODE128B) return CODE128B;
+  hasRequiredCODE128B = 1;
+  Object.defineProperty(CODE128B, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function e(t, n) {
-      for (var r = 0; r < n.length; r++) {
-        var i = n[r];
-        i.enumerable = i.enumerable || !1, i.configurable = !0, "value" in i && (i.writable = !0), Object.defineProperty(t, i.key, i);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(t, n, r) {
-      return n && e(t.prototype, n), r && e(t, r), t;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = Be(), v = h(f), l = V();
-  function h(e) {
-    return e && e.__esModule ? e : { default: e };
+  })();
+  var _CODE2 = requireCODE128$1();
+  var _CODE3 = _interopRequireDefault(_CODE2);
+  var _constants = requireConstants$3();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function s(e, t) {
-    if (!(e instanceof t))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function d(e, t) {
-    if (!e)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return t && (typeof t == "object" || typeof t == "function") ? t : e;
-  }
-  function c(e, t) {
-    if (typeof t != "function" && t !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof t);
-    e.prototype = Object.create(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : e.__proto__ = t);
-  }
-  var a = (function(e) {
-    c(t, e);
-    function t(n, r) {
-      return s(this, t), d(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, l.B_START_CHAR + n, r));
     }
-    return _(t, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var CODE128B$1 = (function(_CODE) {
+    _inherits(CODE128B2, _CODE);
+    function CODE128B2(string, options) {
+      _classCallCheck(this, CODE128B2);
+      return _possibleConstructorReturn(this, (CODE128B2.__proto__ || Object.getPrototypeOf(CODE128B2)).call(this, _constants.B_START_CHAR + string, options));
+    }
+    _createClass(CODE128B2, [{
       key: "valid",
-      value: function() {
-        return new RegExp("^" + l.B_CHARS + "+$").test(this.data);
+      value: function valid() {
+        return new RegExp("^" + _constants.B_CHARS + "+$").test(this.data);
       }
-    }]), t;
-  })(v.default);
-  return ae.default = a, ae;
+    }]);
+    return CODE128B2;
+  })(_CODE3.default);
+  CODE128B.default = CODE128B$1;
+  return CODE128B;
 }
-var oe = {}, We;
-function dr() {
-  if (We) return oe;
-  We = 1, Object.defineProperty(oe, "__esModule", {
-    value: !0
+var CODE128C = {};
+var hasRequiredCODE128C;
+function requireCODE128C() {
+  if (hasRequiredCODE128C) return CODE128C;
+  hasRequiredCODE128C = 1;
+  Object.defineProperty(CODE128C, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function e(t, n) {
-      for (var r = 0; r < n.length; r++) {
-        var i = n[r];
-        i.enumerable = i.enumerable || !1, i.configurable = !0, "value" in i && (i.writable = !0), Object.defineProperty(t, i.key, i);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(t, n, r) {
-      return n && e(t.prototype, n), r && e(t, r), t;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = Be(), v = h(f), l = V();
-  function h(e) {
-    return e && e.__esModule ? e : { default: e };
+  })();
+  var _CODE2 = requireCODE128$1();
+  var _CODE3 = _interopRequireDefault(_CODE2);
+  var _constants = requireConstants$3();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function s(e, t) {
-    if (!(e instanceof t))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function d(e, t) {
-    if (!e)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return t && (typeof t == "object" || typeof t == "function") ? t : e;
-  }
-  function c(e, t) {
-    if (typeof t != "function" && t !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof t);
-    e.prototype = Object.create(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : e.__proto__ = t);
-  }
-  var a = (function(e) {
-    c(t, e);
-    function t(n, r) {
-      return s(this, t), d(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, l.C_START_CHAR + n, r));
     }
-    return _(t, [{
-      key: "valid",
-      value: function() {
-        return new RegExp("^" + l.C_CHARS + "+$").test(this.data);
-      }
-    }]), t;
-  })(v.default);
-  return oe.default = a, oe;
-}
-var Ke;
-function hr() {
-  if (Ke) return I;
-  Ke = 1, Object.defineProperty(I, "__esModule", {
-    value: !0
-  }), I.CODE128C = I.CODE128B = I.CODE128A = I.CODE128 = void 0;
-  var _ = fr(), f = a(_), v = cr(), l = a(v), h = lr(), s = a(h), d = dr(), c = a(d);
-  function a(e) {
-    return e && e.__esModule ? e : { default: e };
   }
-  return I.CODE128 = f.default, I.CODE128A = l.default, I.CODE128B = s.default, I.CODE128C = c.default, I;
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var CODE128C$1 = (function(_CODE) {
+    _inherits(CODE128C2, _CODE);
+    function CODE128C2(string, options) {
+      _classCallCheck(this, CODE128C2);
+      return _possibleConstructorReturn(this, (CODE128C2.__proto__ || Object.getPrototypeOf(CODE128C2)).call(this, _constants.C_START_CHAR + string, options));
+    }
+    _createClass(CODE128C2, [{
+      key: "valid",
+      value: function valid() {
+        return new RegExp("^" + _constants.C_CHARS + "+$").test(this.data);
+      }
+    }]);
+    return CODE128C2;
+  })(_CODE3.default);
+  CODE128C.default = CODE128C$1;
+  return CODE128C;
 }
-var R = {}, ue = {}, k = {}, et;
-function X() {
-  return et || (et = 1, Object.defineProperty(k, "__esModule", {
-    value: !0
-  }), k.SIDE_BIN = "101", k.MIDDLE_BIN = "01010", k.BINARIES = {
-    L: [
+var hasRequiredCODE128;
+function requireCODE128() {
+  if (hasRequiredCODE128) return CODE128$1;
+  hasRequiredCODE128 = 1;
+  Object.defineProperty(CODE128$1, "__esModule", {
+    value: true
+  });
+  CODE128$1.CODE128C = CODE128$1.CODE128B = CODE128$1.CODE128A = CODE128$1.CODE128 = void 0;
+  var _CODE128_AUTO = requireCODE128_AUTO();
+  var _CODE128_AUTO2 = _interopRequireDefault(_CODE128_AUTO);
+  var _CODE128A = requireCODE128A();
+  var _CODE128A2 = _interopRequireDefault(_CODE128A);
+  var _CODE128B = requireCODE128B();
+  var _CODE128B2 = _interopRequireDefault(_CODE128B);
+  var _CODE128C = requireCODE128C();
+  var _CODE128C2 = _interopRequireDefault(_CODE128C);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  CODE128$1.CODE128 = _CODE128_AUTO2.default;
+  CODE128$1.CODE128A = _CODE128A2.default;
+  CODE128$1.CODE128B = _CODE128B2.default;
+  CODE128$1.CODE128C = _CODE128C2.default;
+  return CODE128$1;
+}
+var EAN_UPC = {};
+var EAN13 = {};
+var constants$2 = {};
+var hasRequiredConstants$2;
+function requireConstants$2() {
+  if (hasRequiredConstants$2) return constants$2;
+  hasRequiredConstants$2 = 1;
+  Object.defineProperty(constants$2, "__esModule", {
+    value: true
+  });
+  constants$2.SIDE_BIN = "101";
+  constants$2.MIDDLE_BIN = "01010";
+  constants$2.BINARIES = {
+    "L": [
       // The L (left) type of encoding
       "0001101",
       "0011001",
@@ -479,7 +678,7 @@ function X() {
       "0110111",
       "0001011"
     ],
-    G: [
+    "G": [
       // The G type of encoding
       "0100111",
       "0110011",
@@ -492,7 +691,7 @@ function X() {
       "0001001",
       "0010111"
     ],
-    R: [
+    "R": [
       // The R (right) type of encoding
       "1110010",
       "1100110",
@@ -505,7 +704,7 @@ function X() {
       "1001000",
       "1110100"
     ],
-    O: [
+    "O": [
       // The O (odd) encoding for UPC-E
       "0001101",
       "0011001",
@@ -518,7 +717,7 @@ function X() {
       "0110111",
       "0001011"
     ],
-    E: [
+    "E": [
       // The E (even) encoding for UPC-E
       "0100111",
       "0110011",
@@ -531,1186 +730,1653 @@ function X() {
       "0001001",
       "0010111"
     ]
-  }, k.EAN2_STRUCTURE = ["LL", "LG", "GL", "GG"], k.EAN5_STRUCTURE = ["GGLLL", "GLGLL", "GLLGL", "GLLLG", "LGGLL", "LLGGL", "LLLGG", "LGLGL", "LGLLG", "LLGLG"], k.EAN13_STRUCTURE = ["LLLLLL", "LLGLGG", "LLGGLG", "LLGGGL", "LGLLGG", "LGGLLG", "LGGGLL", "LGLGLG", "LGLGGL", "LGGLGL"]), k;
+  };
+  constants$2.EAN2_STRUCTURE = ["LL", "LG", "GL", "GG"];
+  constants$2.EAN5_STRUCTURE = ["GGLLL", "GLGLL", "GLLGL", "GLLLG", "LGGLL", "LLGGL", "LLLGG", "LGLGL", "LGLLG", "LLGLG"];
+  constants$2.EAN13_STRUCTURE = ["LLLLLL", "LLGLGG", "LLGGLG", "LLGGGL", "LGLLGG", "LGGLLG", "LGGGLL", "LGLGLG", "LGLGGL", "LGGLGL"];
+  return constants$2;
 }
-var fe = {}, ce = {}, tt;
-function z() {
-  if (tt) return ce;
-  tt = 1, Object.defineProperty(ce, "__esModule", {
-    value: !0
+var EAN = {};
+var encoder = {};
+var hasRequiredEncoder;
+function requireEncoder() {
+  if (hasRequiredEncoder) return encoder;
+  hasRequiredEncoder = 1;
+  Object.defineProperty(encoder, "__esModule", {
+    value: true
   });
-  var _ = X(), f = function(l, h, s) {
-    var d = l.split("").map(function(a, e) {
-      return _.BINARIES[h[e]];
-    }).map(function(a, e) {
-      return a ? a[l[e]] : "";
+  var _constants = requireConstants$2();
+  var encode = function encode2(data, structure, separator) {
+    var encoded = data.split("").map(function(val, idx) {
+      return _constants.BINARIES[structure[idx]];
+    }).map(function(val, idx) {
+      return val ? val[data[idx]] : "";
     });
-    if (s) {
-      var c = l.length - 1;
-      d = d.map(function(a, e) {
-        return e < c ? a + s : a;
+    if (separator) {
+      var last = data.length - 1;
+      encoded = encoded.map(function(val, idx) {
+        return idx < last ? val + separator : val;
       });
     }
-    return d.join("");
+    return encoded.join("");
   };
-  return ce.default = f, ce;
+  encoder.default = encode;
+  return encoder;
 }
-var rt;
-function Vt() {
-  if (rt) return fe;
-  rt = 1, Object.defineProperty(fe, "__esModule", {
-    value: !0
+var hasRequiredEAN;
+function requireEAN() {
+  if (hasRequiredEAN) return EAN;
+  hasRequiredEAN = 1;
+  Object.defineProperty(EAN, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function n(r, i) {
-      for (var o = 0; o < i.length; o++) {
-        var u = i[o];
-        u.enumerable = u.enumerable || !1, u.configurable = !0, "value" in u && (u.writable = !0), Object.defineProperty(r, u.key, u);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(r, i, o) {
-      return i && n(r.prototype, i), o && n(r, o), r;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = X(), v = z(), l = d(v), h = T(), s = d(h);
-  function d(n) {
-    return n && n.__esModule ? n : { default: n };
+  })();
+  var _constants = requireConstants$2();
+  var _encoder = requireEncoder();
+  var _encoder2 = _interopRequireDefault(_encoder);
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function c(n, r) {
-    if (!(n instanceof r))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function a(n, r) {
-    if (!n)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return r && (typeof r == "object" || typeof r == "function") ? r : n;
-  }
-  function e(n, r) {
-    if (typeof r != "function" && r !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof r);
-    n.prototype = Object.create(r && r.prototype, { constructor: { value: n, enumerable: !1, writable: !0, configurable: !0 } }), r && (Object.setPrototypeOf ? Object.setPrototypeOf(n, r) : n.__proto__ = r);
-  }
-  var t = (function(n) {
-    e(r, n);
-    function r(i, o) {
-      c(this, r);
-      var u = a(this, (r.__proto__ || Object.getPrototypeOf(r)).call(this, i, o));
-      return u.fontSize = !o.flat && o.fontSize > o.width * 10 ? o.width * 10 : o.fontSize, u.guardHeight = o.height + u.fontSize / 2 + o.textMargin, u;
     }
-    return _(r, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var EAN$1 = (function(_Barcode) {
+    _inherits(EAN3, _Barcode);
+    function EAN3(data, options) {
+      _classCallCheck(this, EAN3);
+      var _this = _possibleConstructorReturn(this, (EAN3.__proto__ || Object.getPrototypeOf(EAN3)).call(this, data, options));
+      _this.fontSize = !options.flat && options.fontSize > options.width * 10 ? options.width * 10 : options.fontSize;
+      _this.guardHeight = options.height + _this.fontSize / 2 + options.textMargin;
+      return _this;
+    }
+    _createClass(EAN3, [{
       key: "encode",
-      value: function() {
+      value: function encode() {
         return this.options.flat ? this.encodeFlat() : this.encodeGuarded();
       }
     }, {
       key: "leftText",
-      value: function(o, u) {
-        return this.text.substr(o, u);
+      value: function leftText(from, to) {
+        return this.text.substr(from, to);
       }
     }, {
       key: "leftEncode",
-      value: function(o, u) {
-        return (0, l.default)(o, u);
+      value: function leftEncode(data, structure) {
+        return (0, _encoder2.default)(data, structure);
       }
     }, {
       key: "rightText",
-      value: function(o, u) {
-        return this.text.substr(o, u);
+      value: function rightText(from, to) {
+        return this.text.substr(from, to);
       }
     }, {
       key: "rightEncode",
-      value: function(o, u) {
-        return (0, l.default)(o, u);
+      value: function rightEncode(data, structure) {
+        return (0, _encoder2.default)(data, structure);
       }
     }, {
       key: "encodeGuarded",
-      value: function() {
-        var o = { fontSize: this.fontSize }, u = { height: this.guardHeight };
-        return [{ data: f.SIDE_BIN, options: u }, { data: this.leftEncode(), text: this.leftText(), options: o }, { data: f.MIDDLE_BIN, options: u }, { data: this.rightEncode(), text: this.rightText(), options: o }, { data: f.SIDE_BIN, options: u }];
+      value: function encodeGuarded() {
+        var textOptions = { fontSize: this.fontSize };
+        var guardOptions = { height: this.guardHeight };
+        return [{ data: _constants.SIDE_BIN, options: guardOptions }, { data: this.leftEncode(), text: this.leftText(), options: textOptions }, { data: _constants.MIDDLE_BIN, options: guardOptions }, { data: this.rightEncode(), text: this.rightText(), options: textOptions }, { data: _constants.SIDE_BIN, options: guardOptions }];
       }
     }, {
       key: "encodeFlat",
-      value: function() {
-        var o = [f.SIDE_BIN, this.leftEncode(), f.MIDDLE_BIN, this.rightEncode(), f.SIDE_BIN];
+      value: function encodeFlat() {
+        var data = [_constants.SIDE_BIN, this.leftEncode(), _constants.MIDDLE_BIN, this.rightEncode(), _constants.SIDE_BIN];
         return {
-          data: o.join(""),
+          data: data.join(""),
           text: this.text
         };
       }
-    }]), r;
-  })(s.default);
-  return fe.default = t, fe;
+    }]);
+    return EAN3;
+  })(_Barcode3.default);
+  EAN.default = EAN$1;
+  return EAN;
 }
-var nt;
-function vr() {
-  if (nt) return ue;
-  nt = 1, Object.defineProperty(ue, "__esModule", {
-    value: !0
+var hasRequiredEAN13;
+function requireEAN13() {
+  if (hasRequiredEAN13) return EAN13;
+  hasRequiredEAN13 = 1;
+  Object.defineProperty(EAN13, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function n(r, i) {
-      for (var o = 0; o < i.length; o++) {
-        var u = i[o];
-        u.enumerable = u.enumerable || !1, u.configurable = !0, "value" in u && (u.writable = !0), Object.defineProperty(r, u.key, u);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(r, i, o) {
-      return i && n(r.prototype, i), o && n(r, o), r;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = function n(r, i, o) {
-    r === null && (r = Function.prototype);
-    var u = Object.getOwnPropertyDescriptor(r, i);
-    if (u === void 0) {
-      var y = Object.getPrototypeOf(r);
-      return y === null ? void 0 : n(y, i, o);
+  })();
+  var _get = function get(object2, property, receiver) {
+    if (object2 === null) object2 = Function.prototype;
+    var desc = Object.getOwnPropertyDescriptor(object2, property);
+    if (desc === void 0) {
+      var parent = Object.getPrototypeOf(object2);
+      if (parent === null) {
+        return void 0;
+      } else {
+        return get(parent, property, receiver);
+      }
+    } else if ("value" in desc) {
+      return desc.value;
     } else {
-      if ("value" in u)
-        return u.value;
-      var p = u.get;
-      return p === void 0 ? void 0 : p.call(o);
+      var getter = desc.get;
+      if (getter === void 0) {
+        return void 0;
+      }
+      return getter.call(receiver);
     }
-  }, v = X(), l = Vt(), h = s(l);
-  function s(n) {
-    return n && n.__esModule ? n : { default: n };
+  };
+  var _constants = requireConstants$2();
+  var _EAN2 = requireEAN();
+  var _EAN3 = _interopRequireDefault(_EAN2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function d(n, r) {
-    if (!(n instanceof r))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function c(n, r) {
-    if (!n)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return r && (typeof r == "object" || typeof r == "function") ? r : n;
-  }
-  function a(n, r) {
-    if (typeof r != "function" && r !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof r);
-    n.prototype = Object.create(r && r.prototype, { constructor: { value: n, enumerable: !1, writable: !0, configurable: !0 } }), r && (Object.setPrototypeOf ? Object.setPrototypeOf(n, r) : n.__proto__ = r);
-  }
-  var e = function(r) {
-    var i = r.substr(0, 12).split("").map(function(o) {
-      return +o;
-    }).reduce(function(o, u, y) {
-      return y % 2 ? o + u * 3 : o + u;
-    }, 0);
-    return (10 - i % 10) % 10;
-  }, t = (function(n) {
-    a(r, n);
-    function r(i, o) {
-      d(this, r), i.search(/^[0-9]{12}$/) !== -1 && (i += e(i));
-      var u = c(this, (r.__proto__ || Object.getPrototypeOf(r)).call(this, i, o));
-      return u.lastChar = o.lastChar, u;
     }
-    return _(r, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var checksum = function checksum2(number) {
+    var res = number.substr(0, 12).split("").map(function(n) {
+      return +n;
+    }).reduce(function(sum, a, idx) {
+      return idx % 2 ? sum + a * 3 : sum + a;
+    }, 0);
+    return (10 - res % 10) % 10;
+  };
+  var EAN13$1 = (function(_EAN) {
+    _inherits(EAN132, _EAN);
+    function EAN132(data, options) {
+      _classCallCheck(this, EAN132);
+      if (data.search(/^[0-9]{12}$/) !== -1) {
+        data += checksum(data);
+      }
+      var _this = _possibleConstructorReturn(this, (EAN132.__proto__ || Object.getPrototypeOf(EAN132)).call(this, data, options));
+      _this.lastChar = options.lastChar;
+      return _this;
+    }
+    _createClass(EAN132, [{
       key: "valid",
-      value: function() {
-        return this.data.search(/^[0-9]{13}$/) !== -1 && +this.data[12] === e(this.data);
+      value: function valid() {
+        return this.data.search(/^[0-9]{13}$/) !== -1 && +this.data[12] === checksum(this.data);
       }
     }, {
       key: "leftText",
-      value: function() {
-        return f(r.prototype.__proto__ || Object.getPrototypeOf(r.prototype), "leftText", this).call(this, 1, 6);
+      value: function leftText() {
+        return _get(EAN132.prototype.__proto__ || Object.getPrototypeOf(EAN132.prototype), "leftText", this).call(this, 1, 6);
       }
     }, {
       key: "leftEncode",
-      value: function() {
-        var o = this.data.substr(1, 6), u = v.EAN13_STRUCTURE[this.data[0]];
-        return f(r.prototype.__proto__ || Object.getPrototypeOf(r.prototype), "leftEncode", this).call(this, o, u);
+      value: function leftEncode() {
+        var data = this.data.substr(1, 6);
+        var structure = _constants.EAN13_STRUCTURE[this.data[0]];
+        return _get(EAN132.prototype.__proto__ || Object.getPrototypeOf(EAN132.prototype), "leftEncode", this).call(this, data, structure);
       }
     }, {
       key: "rightText",
-      value: function() {
-        return f(r.prototype.__proto__ || Object.getPrototypeOf(r.prototype), "rightText", this).call(this, 7, 6);
+      value: function rightText() {
+        return _get(EAN132.prototype.__proto__ || Object.getPrototypeOf(EAN132.prototype), "rightText", this).call(this, 7, 6);
       }
     }, {
       key: "rightEncode",
-      value: function() {
-        var o = this.data.substr(7, 6);
-        return f(r.prototype.__proto__ || Object.getPrototypeOf(r.prototype), "rightEncode", this).call(this, o, "RRRRRR");
+      value: function rightEncode() {
+        var data = this.data.substr(7, 6);
+        return _get(EAN132.prototype.__proto__ || Object.getPrototypeOf(EAN132.prototype), "rightEncode", this).call(this, data, "RRRRRR");
       }
       // The "standard" way of printing EAN13 barcodes with guard bars
     }, {
       key: "encodeGuarded",
-      value: function() {
-        var o = f(r.prototype.__proto__ || Object.getPrototypeOf(r.prototype), "encodeGuarded", this).call(this);
-        return this.options.displayValue && (o.unshift({
-          data: "000000000000",
-          text: this.text.substr(0, 1),
-          options: { textAlign: "left", fontSize: this.fontSize }
-        }), this.options.lastChar && (o.push({
-          data: "00"
-        }), o.push({
-          data: "00000",
-          text: this.options.lastChar,
-          options: { fontSize: this.fontSize }
-        }))), o;
+      value: function encodeGuarded() {
+        var data = _get(EAN132.prototype.__proto__ || Object.getPrototypeOf(EAN132.prototype), "encodeGuarded", this).call(this);
+        if (this.options.displayValue) {
+          data.unshift({
+            data: "000000000000",
+            text: this.text.substr(0, 1),
+            options: { textAlign: "left", fontSize: this.fontSize }
+          });
+          if (this.options.lastChar) {
+            data.push({
+              data: "00"
+            });
+            data.push({
+              data: "00000",
+              text: this.options.lastChar,
+              options: { fontSize: this.fontSize }
+            });
+          }
+        }
+        return data;
       }
-    }]), r;
-  })(h.default);
-  return ue.default = t, ue;
+    }]);
+    return EAN132;
+  })(_EAN3.default);
+  EAN13.default = EAN13$1;
+  return EAN13;
 }
-var le = {}, it;
-function _r() {
-  if (it) return le;
-  it = 1, Object.defineProperty(le, "__esModule", {
-    value: !0
+var EAN8 = {};
+var hasRequiredEAN8;
+function requireEAN8() {
+  if (hasRequiredEAN8) return EAN8;
+  hasRequiredEAN8 = 1;
+  Object.defineProperty(EAN8, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function t(n, r) {
-      for (var i = 0; i < r.length; i++) {
-        var o = r[i];
-        o.enumerable = o.enumerable || !1, o.configurable = !0, "value" in o && (o.writable = !0), Object.defineProperty(n, o.key, o);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(n, r, i) {
-      return r && t(n.prototype, r), i && t(n, i), n;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = function t(n, r, i) {
-    n === null && (n = Function.prototype);
-    var o = Object.getOwnPropertyDescriptor(n, r);
-    if (o === void 0) {
-      var u = Object.getPrototypeOf(n);
-      return u === null ? void 0 : t(u, r, i);
+  })();
+  var _get = function get(object2, property, receiver) {
+    if (object2 === null) object2 = Function.prototype;
+    var desc = Object.getOwnPropertyDescriptor(object2, property);
+    if (desc === void 0) {
+      var parent = Object.getPrototypeOf(object2);
+      if (parent === null) {
+        return void 0;
+      } else {
+        return get(parent, property, receiver);
+      }
+    } else if ("value" in desc) {
+      return desc.value;
     } else {
-      if ("value" in o)
-        return o.value;
-      var y = o.get;
-      return y === void 0 ? void 0 : y.call(i);
+      var getter = desc.get;
+      if (getter === void 0) {
+        return void 0;
+      }
+      return getter.call(receiver);
     }
-  }, v = Vt(), l = h(v);
-  function h(t) {
-    return t && t.__esModule ? t : { default: t };
+  };
+  var _EAN2 = requireEAN();
+  var _EAN3 = _interopRequireDefault(_EAN2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function s(t, n) {
-    if (!(t instanceof n))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function d(t, n) {
-    if (!t)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return n && (typeof n == "object" || typeof n == "function") ? n : t;
-  }
-  function c(t, n) {
-    if (typeof n != "function" && n !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof n);
-    t.prototype = Object.create(n && n.prototype, { constructor: { value: t, enumerable: !1, writable: !0, configurable: !0 } }), n && (Object.setPrototypeOf ? Object.setPrototypeOf(t, n) : t.__proto__ = n);
-  }
-  var a = function(n) {
-    var r = n.substr(0, 7).split("").map(function(i) {
-      return +i;
-    }).reduce(function(i, o, u) {
-      return u % 2 ? i + o : i + o * 3;
-    }, 0);
-    return (10 - r % 10) % 10;
-  }, e = (function(t) {
-    c(n, t);
-    function n(r, i) {
-      return s(this, n), r.search(/^[0-9]{7}$/) !== -1 && (r += a(r)), d(this, (n.__proto__ || Object.getPrototypeOf(n)).call(this, r, i));
     }
-    return _(n, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var checksum = function checksum2(number) {
+    var res = number.substr(0, 7).split("").map(function(n) {
+      return +n;
+    }).reduce(function(sum, a, idx) {
+      return idx % 2 ? sum + a : sum + a * 3;
+    }, 0);
+    return (10 - res % 10) % 10;
+  };
+  var EAN8$1 = (function(_EAN) {
+    _inherits(EAN82, _EAN);
+    function EAN82(data, options) {
+      _classCallCheck(this, EAN82);
+      if (data.search(/^[0-9]{7}$/) !== -1) {
+        data += checksum(data);
+      }
+      return _possibleConstructorReturn(this, (EAN82.__proto__ || Object.getPrototypeOf(EAN82)).call(this, data, options));
+    }
+    _createClass(EAN82, [{
       key: "valid",
-      value: function() {
-        return this.data.search(/^[0-9]{8}$/) !== -1 && +this.data[7] === a(this.data);
+      value: function valid() {
+        return this.data.search(/^[0-9]{8}$/) !== -1 && +this.data[7] === checksum(this.data);
       }
     }, {
       key: "leftText",
-      value: function() {
-        return f(n.prototype.__proto__ || Object.getPrototypeOf(n.prototype), "leftText", this).call(this, 0, 4);
+      value: function leftText() {
+        return _get(EAN82.prototype.__proto__ || Object.getPrototypeOf(EAN82.prototype), "leftText", this).call(this, 0, 4);
       }
     }, {
       key: "leftEncode",
-      value: function() {
-        var i = this.data.substr(0, 4);
-        return f(n.prototype.__proto__ || Object.getPrototypeOf(n.prototype), "leftEncode", this).call(this, i, "LLLL");
+      value: function leftEncode() {
+        var data = this.data.substr(0, 4);
+        return _get(EAN82.prototype.__proto__ || Object.getPrototypeOf(EAN82.prototype), "leftEncode", this).call(this, data, "LLLL");
       }
     }, {
       key: "rightText",
-      value: function() {
-        return f(n.prototype.__proto__ || Object.getPrototypeOf(n.prototype), "rightText", this).call(this, 4, 4);
+      value: function rightText() {
+        return _get(EAN82.prototype.__proto__ || Object.getPrototypeOf(EAN82.prototype), "rightText", this).call(this, 4, 4);
       }
     }, {
       key: "rightEncode",
-      value: function() {
-        var i = this.data.substr(4, 4);
-        return f(n.prototype.__proto__ || Object.getPrototypeOf(n.prototype), "rightEncode", this).call(this, i, "RRRR");
+      value: function rightEncode() {
+        var data = this.data.substr(4, 4);
+        return _get(EAN82.prototype.__proto__ || Object.getPrototypeOf(EAN82.prototype), "rightEncode", this).call(this, data, "RRRR");
       }
-    }]), n;
-  })(l.default);
-  return le.default = e, le;
+    }]);
+    return EAN82;
+  })(_EAN3.default);
+  EAN8.default = EAN8$1;
+  return EAN8;
 }
-var de = {}, at;
-function sr() {
-  if (at) return de;
-  at = 1, Object.defineProperty(de, "__esModule", {
-    value: !0
+var EAN5 = {};
+var hasRequiredEAN5;
+function requireEAN5() {
+  if (hasRequiredEAN5) return EAN5;
+  hasRequiredEAN5 = 1;
+  Object.defineProperty(EAN5, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function r(i, o) {
-      for (var u = 0; u < o.length; u++) {
-        var y = o[u];
-        y.enumerable = y.enumerable || !1, y.configurable = !0, "value" in y && (y.writable = !0), Object.defineProperty(i, y.key, y);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(i, o, u) {
-      return o && r(i.prototype, o), u && r(i, u), i;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = X(), v = z(), l = d(v), h = T(), s = d(h);
-  function d(r) {
-    return r && r.__esModule ? r : { default: r };
+  })();
+  var _constants = requireConstants$2();
+  var _encoder = requireEncoder();
+  var _encoder2 = _interopRequireDefault(_encoder);
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function c(r, i) {
-    if (!(r instanceof i))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function a(r, i) {
-    if (!r)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return i && (typeof i == "object" || typeof i == "function") ? i : r;
-  }
-  function e(r, i) {
-    if (typeof i != "function" && i !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof i);
-    r.prototype = Object.create(i && i.prototype, { constructor: { value: r, enumerable: !1, writable: !0, configurable: !0 } }), i && (Object.setPrototypeOf ? Object.setPrototypeOf(r, i) : r.__proto__ = i);
-  }
-  var t = function(i) {
-    var o = i.split("").map(function(u) {
-      return +u;
-    }).reduce(function(u, y, p) {
-      return p % 2 ? u + y * 9 : u + y * 3;
-    }, 0);
-    return o % 10;
-  }, n = (function(r) {
-    e(i, r);
-    function i(o, u) {
-      return c(this, i), a(this, (i.__proto__ || Object.getPrototypeOf(i)).call(this, o, u));
     }
-    return _(i, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var checksum = function checksum2(data) {
+    var result = data.split("").map(function(n) {
+      return +n;
+    }).reduce(function(sum, a, idx) {
+      return idx % 2 ? sum + a * 9 : sum + a * 3;
+    }, 0);
+    return result % 10;
+  };
+  var EAN5$1 = (function(_Barcode) {
+    _inherits(EAN52, _Barcode);
+    function EAN52(data, options) {
+      _classCallCheck(this, EAN52);
+      return _possibleConstructorReturn(this, (EAN52.__proto__ || Object.getPrototypeOf(EAN52)).call(this, data, options));
+    }
+    _createClass(EAN52, [{
       key: "valid",
-      value: function() {
+      value: function valid() {
         return this.data.search(/^[0-9]{5}$/) !== -1;
       }
     }, {
       key: "encode",
-      value: function() {
-        var u = f.EAN5_STRUCTURE[t(this.data)];
+      value: function encode() {
+        var structure = _constants.EAN5_STRUCTURE[checksum(this.data)];
         return {
-          data: "1011" + (0, l.default)(this.data, u, "01"),
+          data: "1011" + (0, _encoder2.default)(this.data, structure, "01"),
           text: this.text
         };
       }
-    }]), i;
-  })(s.default);
-  return de.default = n, de;
+    }]);
+    return EAN52;
+  })(_Barcode3.default);
+  EAN5.default = EAN5$1;
+  return EAN5;
 }
-var he = {}, ot;
-function yr() {
-  if (ot) return he;
-  ot = 1, Object.defineProperty(he, "__esModule", {
-    value: !0
+var EAN2 = {};
+var hasRequiredEAN2;
+function requireEAN2() {
+  if (hasRequiredEAN2) return EAN2;
+  hasRequiredEAN2 = 1;
+  Object.defineProperty(EAN2, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function n(r, i) {
-      for (var o = 0; o < i.length; o++) {
-        var u = i[o];
-        u.enumerable = u.enumerable || !1, u.configurable = !0, "value" in u && (u.writable = !0), Object.defineProperty(r, u.key, u);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(r, i, o) {
-      return i && n(r.prototype, i), o && n(r, o), r;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = X(), v = z(), l = d(v), h = T(), s = d(h);
-  function d(n) {
-    return n && n.__esModule ? n : { default: n };
+  })();
+  var _constants = requireConstants$2();
+  var _encoder = requireEncoder();
+  var _encoder2 = _interopRequireDefault(_encoder);
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function c(n, r) {
-    if (!(n instanceof r))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function a(n, r) {
-    if (!n)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return r && (typeof r == "object" || typeof r == "function") ? r : n;
-  }
-  function e(n, r) {
-    if (typeof r != "function" && r !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof r);
-    n.prototype = Object.create(r && r.prototype, { constructor: { value: n, enumerable: !1, writable: !0, configurable: !0 } }), r && (Object.setPrototypeOf ? Object.setPrototypeOf(n, r) : n.__proto__ = r);
-  }
-  var t = (function(n) {
-    e(r, n);
-    function r(i, o) {
-      return c(this, r), a(this, (r.__proto__ || Object.getPrototypeOf(r)).call(this, i, o));
     }
-    return _(r, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var EAN2$1 = (function(_Barcode) {
+    _inherits(EAN22, _Barcode);
+    function EAN22(data, options) {
+      _classCallCheck(this, EAN22);
+      return _possibleConstructorReturn(this, (EAN22.__proto__ || Object.getPrototypeOf(EAN22)).call(this, data, options));
+    }
+    _createClass(EAN22, [{
       key: "valid",
-      value: function() {
+      value: function valid() {
         return this.data.search(/^[0-9]{2}$/) !== -1;
       }
     }, {
       key: "encode",
-      value: function() {
-        var o = f.EAN2_STRUCTURE[parseInt(this.data) % 4];
+      value: function encode() {
+        var structure = _constants.EAN2_STRUCTURE[parseInt(this.data) % 4];
         return {
           // Start bits + Encode the two digits with 01 in between
-          data: "1011" + (0, l.default)(this.data, o, "01"),
+          data: "1011" + (0, _encoder2.default)(this.data, structure, "01"),
           text: this.text
         };
       }
-    }]), r;
-  })(s.default);
-  return he.default = t, he;
+    }]);
+    return EAN22;
+  })(_Barcode3.default);
+  EAN2.default = EAN2$1;
+  return EAN2;
 }
-var N = {}, ut;
-function Xt() {
-  if (ut) return N;
-  ut = 1, Object.defineProperty(N, "__esModule", {
-    value: !0
+var UPC = {};
+var hasRequiredUPC;
+function requireUPC() {
+  if (hasRequiredUPC) return UPC;
+  hasRequiredUPC = 1;
+  Object.defineProperty(UPC, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function n(r, i) {
-      for (var o = 0; o < i.length; o++) {
-        var u = i[o];
-        u.enumerable = u.enumerable || !1, u.configurable = !0, "value" in u && (u.writable = !0), Object.defineProperty(r, u.key, u);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(r, i, o) {
-      return i && n(r.prototype, i), o && n(r, o), r;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
   })();
-  N.checksum = t;
-  var f = z(), v = s(f), l = T(), h = s(l);
-  function s(n) {
-    return n && n.__esModule ? n : { default: n };
+  UPC.checksum = checksum;
+  var _encoder = requireEncoder();
+  var _encoder2 = _interopRequireDefault(_encoder);
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function d(n, r) {
-    if (!(n instanceof r))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function c(n, r) {
-    if (!n)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return r && (typeof r == "object" || typeof r == "function") ? r : n;
-  }
-  function a(n, r) {
-    if (typeof r != "function" && r !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof r);
-    n.prototype = Object.create(r && r.prototype, { constructor: { value: n, enumerable: !1, writable: !0, configurable: !0 } }), r && (Object.setPrototypeOf ? Object.setPrototypeOf(n, r) : n.__proto__ = r);
-  }
-  var e = (function(n) {
-    a(r, n);
-    function r(i, o) {
-      d(this, r), i.search(/^[0-9]{11}$/) !== -1 && (i += t(i));
-      var u = c(this, (r.__proto__ || Object.getPrototypeOf(r)).call(this, i, o));
-      return u.displayValue = o.displayValue, o.fontSize > o.width * 10 ? u.fontSize = o.width * 10 : u.fontSize = o.fontSize, u.guardHeight = o.height + u.fontSize / 2 + o.textMargin, u;
     }
-    return _(r, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var UPC$1 = (function(_Barcode) {
+    _inherits(UPC2, _Barcode);
+    function UPC2(data, options) {
+      _classCallCheck(this, UPC2);
+      if (data.search(/^[0-9]{11}$/) !== -1) {
+        data += checksum(data);
+      }
+      var _this = _possibleConstructorReturn(this, (UPC2.__proto__ || Object.getPrototypeOf(UPC2)).call(this, data, options));
+      _this.displayValue = options.displayValue;
+      if (options.fontSize > options.width * 10) {
+        _this.fontSize = options.width * 10;
+      } else {
+        _this.fontSize = options.fontSize;
+      }
+      _this.guardHeight = options.height + _this.fontSize / 2 + options.textMargin;
+      return _this;
+    }
+    _createClass(UPC2, [{
       key: "valid",
-      value: function() {
-        return this.data.search(/^[0-9]{12}$/) !== -1 && this.data[11] == t(this.data);
+      value: function valid() {
+        return this.data.search(/^[0-9]{12}$/) !== -1 && this.data[11] == checksum(this.data);
       }
     }, {
       key: "encode",
-      value: function() {
-        return this.options.flat ? this.flatEncoding() : this.guardedEncoding();
+      value: function encode() {
+        if (this.options.flat) {
+          return this.flatEncoding();
+        } else {
+          return this.guardedEncoding();
+        }
       }
     }, {
       key: "flatEncoding",
-      value: function() {
-        var o = "";
-        return o += "101", o += (0, v.default)(this.data.substr(0, 6), "LLLLLL"), o += "01010", o += (0, v.default)(this.data.substr(6, 6), "RRRRRR"), o += "101", {
-          data: o,
+      value: function flatEncoding() {
+        var result = "";
+        result += "101";
+        result += (0, _encoder2.default)(this.data.substr(0, 6), "LLLLLL");
+        result += "01010";
+        result += (0, _encoder2.default)(this.data.substr(6, 6), "RRRRRR");
+        result += "101";
+        return {
+          data: result,
           text: this.text
         };
       }
     }, {
       key: "guardedEncoding",
-      value: function() {
-        var o = [];
-        return this.displayValue && o.push({
-          data: "00000000",
-          text: this.text.substr(0, 1),
-          options: { textAlign: "left", fontSize: this.fontSize }
-        }), o.push({
-          data: "101" + (0, v.default)(this.data[0], "L"),
+      value: function guardedEncoding() {
+        var result = [];
+        if (this.displayValue) {
+          result.push({
+            data: "00000000",
+            text: this.text.substr(0, 1),
+            options: { textAlign: "left", fontSize: this.fontSize }
+          });
+        }
+        result.push({
+          data: "101" + (0, _encoder2.default)(this.data[0], "L"),
           options: { height: this.guardHeight }
-        }), o.push({
-          data: (0, v.default)(this.data.substr(1, 5), "LLLLL"),
+        });
+        result.push({
+          data: (0, _encoder2.default)(this.data.substr(1, 5), "LLLLL"),
           text: this.text.substr(1, 5),
           options: { fontSize: this.fontSize }
-        }), o.push({
+        });
+        result.push({
           data: "01010",
           options: { height: this.guardHeight }
-        }), o.push({
-          data: (0, v.default)(this.data.substr(6, 5), "RRRRR"),
+        });
+        result.push({
+          data: (0, _encoder2.default)(this.data.substr(6, 5), "RRRRR"),
           text: this.text.substr(6, 5),
           options: { fontSize: this.fontSize }
-        }), o.push({
-          data: (0, v.default)(this.data[11], "R") + "101",
+        });
+        result.push({
+          data: (0, _encoder2.default)(this.data[11], "R") + "101",
           options: { height: this.guardHeight }
-        }), this.displayValue && o.push({
-          data: "00000000",
-          text: this.text.substr(11, 1),
-          options: { textAlign: "right", fontSize: this.fontSize }
-        }), o;
+        });
+        if (this.displayValue) {
+          result.push({
+            data: "00000000",
+            text: this.text.substr(11, 1),
+            options: { textAlign: "right", fontSize: this.fontSize }
+          });
+        }
+        return result;
       }
-    }]), r;
-  })(h.default);
-  function t(n) {
-    var r = 0, i;
-    for (i = 1; i < 11; i += 2)
-      r += parseInt(n[i]);
-    for (i = 0; i < 11; i += 2)
-      r += parseInt(n[i]) * 3;
-    return (10 - r % 10) % 10;
+    }]);
+    return UPC2;
+  })(_Barcode3.default);
+  function checksum(number) {
+    var result = 0;
+    var i;
+    for (i = 1; i < 11; i += 2) {
+      result += parseInt(number[i]);
+    }
+    for (i = 0; i < 11; i += 2) {
+      result += parseInt(number[i]) * 3;
+    }
+    return (10 - result % 10) % 10;
   }
-  return N.default = e, N;
+  UPC.default = UPC$1;
+  return UPC;
 }
-var ve = {}, ft;
-function pr() {
-  if (ft) return ve;
-  ft = 1, Object.defineProperty(ve, "__esModule", {
-    value: !0
+var UPCE = {};
+var hasRequiredUPCE;
+function requireUPCE() {
+  if (hasRequiredUPCE) return UPCE;
+  hasRequiredUPCE = 1;
+  Object.defineProperty(UPCE, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function o(u, y) {
-      for (var p = 0; p < y.length; p++) {
-        var g = y[p];
-        g.enumerable = g.enumerable || !1, g.configurable = !0, "value" in g && (g.writable = !0), Object.defineProperty(u, g.key, g);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(u, y, p) {
-      return y && o(u.prototype, y), p && o(u, p), u;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = z(), v = d(f), l = T(), h = d(l), s = Xt();
-  function d(o) {
-    return o && o.__esModule ? o : { default: o };
+  })();
+  var _encoder = requireEncoder();
+  var _encoder2 = _interopRequireDefault(_encoder);
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  var _UPC = requireUPC();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function c(o, u) {
-    if (!(o instanceof u))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function a(o, u) {
-    if (!o)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return u && (typeof u == "object" || typeof u == "function") ? u : o;
-  }
-  function e(o, u) {
-    if (typeof u != "function" && u !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof u);
-    o.prototype = Object.create(u && u.prototype, { constructor: { value: o, enumerable: !1, writable: !0, configurable: !0 } }), u && (Object.setPrototypeOf ? Object.setPrototypeOf(o, u) : o.__proto__ = u);
-  }
-  var t = ["XX00000XXX", "XX10000XXX", "XX20000XXX", "XXX00000XX", "XXXX00000X", "XXXXX00005", "XXXXX00006", "XXXXX00007", "XXXXX00008", "XXXXX00009"], n = [["EEEOOO", "OOOEEE"], ["EEOEOO", "OOEOEE"], ["EEOOEO", "OOEEOE"], ["EEOOOE", "OOEEEO"], ["EOEEOO", "OEOOEE"], ["EOOEEO", "OEEOOE"], ["EOOOEE", "OEEEOO"], ["EOEOEO", "OEOEOE"], ["EOEOOE", "OEOEEO"], ["EOOEOE", "OEEOEO"]], r = (function(o) {
-    e(u, o);
-    function u(y, p) {
-      c(this, u);
-      var g = a(this, (u.__proto__ || Object.getPrototypeOf(u)).call(this, y, p));
-      if (g.isValid = !1, y.search(/^[0-9]{6}$/) !== -1)
-        g.middleDigits = y, g.upcA = i(y, "0"), g.text = p.text || "" + g.upcA[0] + y + g.upcA[g.upcA.length - 1], g.isValid = !0;
-      else if (y.search(/^[01][0-9]{7}$/) !== -1)
-        if (g.middleDigits = y.substring(1, y.length - 1), g.upcA = i(g.middleDigits, y[0]), g.upcA[g.upcA.length - 1] === y[y.length - 1])
-          g.isValid = !0;
-        else
-          return a(g);
-      else
-        return a(g);
-      return g.displayValue = p.displayValue, p.fontSize > p.width * 10 ? g.fontSize = p.width * 10 : g.fontSize = p.fontSize, g.guardHeight = p.height + g.fontSize / 2 + p.textMargin, g;
     }
-    return _(u, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var EXPANSIONS = ["XX00000XXX", "XX10000XXX", "XX20000XXX", "XXX00000XX", "XXXX00000X", "XXXXX00005", "XXXXX00006", "XXXXX00007", "XXXXX00008", "XXXXX00009"];
+  var PARITIES = [["EEEOOO", "OOOEEE"], ["EEOEOO", "OOEOEE"], ["EEOOEO", "OOEEOE"], ["EEOOOE", "OOEEEO"], ["EOEEOO", "OEOOEE"], ["EOOEEO", "OEEOOE"], ["EOOOEE", "OEEEOO"], ["EOEOEO", "OEOEOE"], ["EOEOOE", "OEOEEO"], ["EOOEOE", "OEEOEO"]];
+  var UPCE$1 = (function(_Barcode) {
+    _inherits(UPCE2, _Barcode);
+    function UPCE2(data, options) {
+      _classCallCheck(this, UPCE2);
+      var _this = _possibleConstructorReturn(this, (UPCE2.__proto__ || Object.getPrototypeOf(UPCE2)).call(this, data, options));
+      _this.isValid = false;
+      if (data.search(/^[0-9]{6}$/) !== -1) {
+        _this.middleDigits = data;
+        _this.upcA = expandToUPCA(data, "0");
+        _this.text = options.text || "" + _this.upcA[0] + data + _this.upcA[_this.upcA.length - 1];
+        _this.isValid = true;
+      } else if (data.search(/^[01][0-9]{7}$/) !== -1) {
+        _this.middleDigits = data.substring(1, data.length - 1);
+        _this.upcA = expandToUPCA(_this.middleDigits, data[0]);
+        if (_this.upcA[_this.upcA.length - 1] === data[data.length - 1]) {
+          _this.isValid = true;
+        } else {
+          return _possibleConstructorReturn(_this);
+        }
+      } else {
+        return _possibleConstructorReturn(_this);
+      }
+      _this.displayValue = options.displayValue;
+      if (options.fontSize > options.width * 10) {
+        _this.fontSize = options.width * 10;
+      } else {
+        _this.fontSize = options.fontSize;
+      }
+      _this.guardHeight = options.height + _this.fontSize / 2 + options.textMargin;
+      return _this;
+    }
+    _createClass(UPCE2, [{
       key: "valid",
-      value: function() {
+      value: function valid() {
         return this.isValid;
       }
     }, {
       key: "encode",
-      value: function() {
-        return this.options.flat ? this.flatEncoding() : this.guardedEncoding();
+      value: function encode() {
+        if (this.options.flat) {
+          return this.flatEncoding();
+        } else {
+          return this.guardedEncoding();
+        }
       }
     }, {
       key: "flatEncoding",
-      value: function() {
-        var p = "";
-        return p += "101", p += this.encodeMiddleDigits(), p += "010101", {
-          data: p,
+      value: function flatEncoding() {
+        var result = "";
+        result += "101";
+        result += this.encodeMiddleDigits();
+        result += "010101";
+        return {
+          data: result,
           text: this.text
         };
       }
     }, {
       key: "guardedEncoding",
-      value: function() {
-        var p = [];
-        return this.displayValue && p.push({
-          data: "00000000",
-          text: this.text[0],
-          options: { textAlign: "left", fontSize: this.fontSize }
-        }), p.push({
+      value: function guardedEncoding() {
+        var result = [];
+        if (this.displayValue) {
+          result.push({
+            data: "00000000",
+            text: this.text[0],
+            options: { textAlign: "left", fontSize: this.fontSize }
+          });
+        }
+        result.push({
           data: "101",
           options: { height: this.guardHeight }
-        }), p.push({
+        });
+        result.push({
           data: this.encodeMiddleDigits(),
           text: this.text.substring(1, 7),
           options: { fontSize: this.fontSize }
-        }), p.push({
+        });
+        result.push({
           data: "010101",
           options: { height: this.guardHeight }
-        }), this.displayValue && p.push({
-          data: "00000000",
-          text: this.text[7],
-          options: { textAlign: "right", fontSize: this.fontSize }
-        }), p;
+        });
+        if (this.displayValue) {
+          result.push({
+            data: "00000000",
+            text: this.text[7],
+            options: { textAlign: "right", fontSize: this.fontSize }
+          });
+        }
+        return result;
       }
     }, {
       key: "encodeMiddleDigits",
-      value: function() {
-        var p = this.upcA[0], g = this.upcA[this.upcA.length - 1], w = n[parseInt(g)][parseInt(p)];
-        return (0, v.default)(this.middleDigits, w);
+      value: function encodeMiddleDigits() {
+        var numberSystem = this.upcA[0];
+        var checkDigit = this.upcA[this.upcA.length - 1];
+        var parity = PARITIES[parseInt(checkDigit)][parseInt(numberSystem)];
+        return (0, _encoder2.default)(this.middleDigits, parity);
       }
-    }]), u;
-  })(h.default);
-  function i(o, u) {
-    for (var y = parseInt(o[o.length - 1]), p = t[y], g = "", w = 0, B = 0; B < p.length; B++) {
-      var Z = p[B];
-      Z === "X" ? g += o[w++] : g += Z;
+    }]);
+    return UPCE2;
+  })(_Barcode3.default);
+  function expandToUPCA(middleDigits, numberSystem) {
+    var lastUpcE = parseInt(middleDigits[middleDigits.length - 1]);
+    var expansion = EXPANSIONS[lastUpcE];
+    var result = "";
+    var digitIndex = 0;
+    for (var i = 0; i < expansion.length; i++) {
+      var c = expansion[i];
+      if (c === "X") {
+        result += middleDigits[digitIndex++];
+      } else {
+        result += c;
+      }
     }
-    return g = "" + u + g, "" + g + (0, s.checksum)(g);
+    result = "" + numberSystem + result;
+    return "" + result + (0, _UPC.checksum)(result);
   }
-  return ve.default = r, ve;
+  UPCE.default = UPCE$1;
+  return UPCE;
 }
-var ct;
-function gr() {
-  if (ct) return R;
-  ct = 1, Object.defineProperty(R, "__esModule", {
-    value: !0
-  }), R.UPCE = R.UPC = R.EAN2 = R.EAN5 = R.EAN8 = R.EAN13 = void 0;
-  var _ = vr(), f = r(_), v = _r(), l = r(v), h = sr(), s = r(h), d = yr(), c = r(d), a = Xt(), e = r(a), t = pr(), n = r(t);
-  function r(i) {
-    return i && i.__esModule ? i : { default: i };
-  }
-  return R.EAN13 = f.default, R.EAN8 = l.default, R.EAN5 = s.default, R.EAN2 = c.default, R.UPC = e.default, R.UPCE = n.default, R;
-}
-var D = {}, _e = {}, q = {}, lt;
-function Er() {
-  return lt || (lt = 1, Object.defineProperty(q, "__esModule", {
-    value: !0
-  }), q.START_BIN = "1010", q.END_BIN = "11101", q.BINARIES = ["00110", "10001", "01001", "11000", "00101", "10100", "01100", "00011", "10010", "01010"]), q;
-}
-var dt;
-function zt() {
-  if (dt) return _e;
-  dt = 1, Object.defineProperty(_e, "__esModule", {
-    value: !0
+var hasRequiredEAN_UPC;
+function requireEAN_UPC() {
+  if (hasRequiredEAN_UPC) return EAN_UPC;
+  hasRequiredEAN_UPC = 1;
+  Object.defineProperty(EAN_UPC, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function e(t, n) {
-      for (var r = 0; r < n.length; r++) {
-        var i = n[r];
-        i.enumerable = i.enumerable || !1, i.configurable = !0, "value" in i && (i.writable = !0), Object.defineProperty(t, i.key, i);
+  EAN_UPC.UPCE = EAN_UPC.UPC = EAN_UPC.EAN2 = EAN_UPC.EAN5 = EAN_UPC.EAN8 = EAN_UPC.EAN13 = void 0;
+  var _EAN = requireEAN13();
+  var _EAN2 = _interopRequireDefault(_EAN);
+  var _EAN3 = requireEAN8();
+  var _EAN4 = _interopRequireDefault(_EAN3);
+  var _EAN5 = requireEAN5();
+  var _EAN6 = _interopRequireDefault(_EAN5);
+  var _EAN7 = requireEAN2();
+  var _EAN8 = _interopRequireDefault(_EAN7);
+  var _UPC = requireUPC();
+  var _UPC2 = _interopRequireDefault(_UPC);
+  var _UPCE = requireUPCE();
+  var _UPCE2 = _interopRequireDefault(_UPCE);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  EAN_UPC.EAN13 = _EAN2.default;
+  EAN_UPC.EAN8 = _EAN4.default;
+  EAN_UPC.EAN5 = _EAN6.default;
+  EAN_UPC.EAN2 = _EAN8.default;
+  EAN_UPC.UPC = _UPC2.default;
+  EAN_UPC.UPCE = _UPCE2.default;
+  return EAN_UPC;
+}
+var ITF$1 = {};
+var ITF = {};
+var constants$1 = {};
+var hasRequiredConstants$1;
+function requireConstants$1() {
+  if (hasRequiredConstants$1) return constants$1;
+  hasRequiredConstants$1 = 1;
+  Object.defineProperty(constants$1, "__esModule", {
+    value: true
+  });
+  constants$1.START_BIN = "1010";
+  constants$1.END_BIN = "11101";
+  constants$1.BINARIES = ["00110", "10001", "01001", "11000", "00101", "10100", "01100", "00011", "10010", "01010"];
+  return constants$1;
+}
+var hasRequiredITF$1;
+function requireITF$1() {
+  if (hasRequiredITF$1) return ITF;
+  hasRequiredITF$1 = 1;
+  Object.defineProperty(ITF, "__esModule", {
+    value: true
+  });
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(t, n, r) {
-      return n && e(t.prototype, n), r && e(t, r), t;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = Er(), v = T(), l = h(v);
-  function h(e) {
-    return e && e.__esModule ? e : { default: e };
+  })();
+  var _constants = requireConstants$1();
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function s(e, t) {
-    if (!(e instanceof t))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function d(e, t) {
-    if (!e)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return t && (typeof t == "object" || typeof t == "function") ? t : e;
-  }
-  function c(e, t) {
-    if (typeof t != "function" && t !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof t);
-    e.prototype = Object.create(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : e.__proto__ = t);
-  }
-  var a = (function(e) {
-    c(t, e);
-    function t() {
-      return s(this, t), d(this, (t.__proto__ || Object.getPrototypeOf(t)).apply(this, arguments));
     }
-    return _(t, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var ITF$12 = (function(_Barcode) {
+    _inherits(ITF2, _Barcode);
+    function ITF2() {
+      _classCallCheck(this, ITF2);
+      return _possibleConstructorReturn(this, (ITF2.__proto__ || Object.getPrototypeOf(ITF2)).apply(this, arguments));
+    }
+    _createClass(ITF2, [{
       key: "valid",
-      value: function() {
+      value: function valid() {
         return this.data.search(/^([0-9]{2})+$/) !== -1;
       }
     }, {
       key: "encode",
-      value: function() {
-        var r = this, i = this.data.match(/.{2}/g).map(function(o) {
-          return r.encodePair(o);
+      value: function encode() {
+        var _this2 = this;
+        var encoded = this.data.match(/.{2}/g).map(function(pair) {
+          return _this2.encodePair(pair);
         }).join("");
         return {
-          data: f.START_BIN + i + f.END_BIN,
+          data: _constants.START_BIN + encoded + _constants.END_BIN,
           text: this.text
         };
       }
       // Calculate the data of a number pair
     }, {
       key: "encodePair",
-      value: function(r) {
-        var i = f.BINARIES[r[1]];
-        return f.BINARIES[r[0]].split("").map(function(o, u) {
-          return (o === "1" ? "111" : "1") + (i[u] === "1" ? "000" : "0");
+      value: function encodePair(pair) {
+        var second = _constants.BINARIES[pair[1]];
+        return _constants.BINARIES[pair[0]].split("").map(function(first, idx) {
+          return (first === "1" ? "111" : "1") + (second[idx] === "1" ? "000" : "0");
         }).join("");
       }
-    }]), t;
-  })(l.default);
-  return _e.default = a, _e;
+    }]);
+    return ITF2;
+  })(_Barcode3.default);
+  ITF.default = ITF$12;
+  return ITF;
 }
-var se = {}, ht;
-function Or() {
-  if (ht) return se;
-  ht = 1, Object.defineProperty(se, "__esModule", {
-    value: !0
+var ITF14 = {};
+var hasRequiredITF14;
+function requireITF14() {
+  if (hasRequiredITF14) return ITF14;
+  hasRequiredITF14 = 1;
+  Object.defineProperty(ITF14, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function e(t, n) {
-      for (var r = 0; r < n.length; r++) {
-        var i = n[r];
-        i.enumerable = i.enumerable || !1, i.configurable = !0, "value" in i && (i.writable = !0), Object.defineProperty(t, i.key, i);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(t, n, r) {
-      return n && e(t.prototype, n), r && e(t, r), t;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = zt(), v = l(f);
-  function l(e) {
-    return e && e.__esModule ? e : { default: e };
+  })();
+  var _ITF2 = requireITF$1();
+  var _ITF3 = _interopRequireDefault(_ITF2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function h(e, t) {
-    if (!(e instanceof t))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
+    }
   }
-  function s(e, t) {
-    if (!e)
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
       throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return t && (typeof t == "object" || typeof t == "function") ? t : e;
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
   }
-  function d(e, t) {
-    if (typeof t != "function" && t !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof t);
-    e.prototype = Object.create(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : e.__proto__ = t);
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
   }
-  var c = function(t) {
-    var n = t.substr(0, 13).split("").map(function(r) {
-      return parseInt(r, 10);
-    }).reduce(function(r, i, o) {
-      return r + i * (3 - o % 2 * 2);
+  var checksum = function checksum2(data) {
+    var res = data.substr(0, 13).split("").map(function(num) {
+      return parseInt(num, 10);
+    }).reduce(function(sum, n, idx) {
+      return sum + n * (3 - idx % 2 * 2);
     }, 0);
-    return Math.ceil(n / 10) * 10 - n;
-  }, a = (function(e) {
-    d(t, e);
-    function t(n, r) {
-      return h(this, t), n.search(/^[0-9]{13}$/) !== -1 && (n += c(n)), s(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, n, r));
+    return Math.ceil(res / 10) * 10 - res;
+  };
+  var ITF14$1 = (function(_ITF) {
+    _inherits(ITF142, _ITF);
+    function ITF142(data, options) {
+      _classCallCheck(this, ITF142);
+      if (data.search(/^[0-9]{13}$/) !== -1) {
+        data += checksum(data);
+      }
+      return _possibleConstructorReturn(this, (ITF142.__proto__ || Object.getPrototypeOf(ITF142)).call(this, data, options));
     }
-    return _(t, [{
+    _createClass(ITF142, [{
       key: "valid",
-      value: function() {
-        return this.data.search(/^[0-9]{14}$/) !== -1 && +this.data[13] === c(this.data);
+      value: function valid() {
+        return this.data.search(/^[0-9]{14}$/) !== -1 && +this.data[13] === checksum(this.data);
       }
-    }]), t;
-  })(v.default);
-  return se.default = a, se;
+    }]);
+    return ITF142;
+  })(_ITF3.default);
+  ITF14.default = ITF14$1;
+  return ITF14;
 }
-var vt;
-function br() {
-  if (vt) return D;
-  vt = 1, Object.defineProperty(D, "__esModule", {
-    value: !0
-  }), D.ITF14 = D.ITF = void 0;
-  var _ = zt(), f = h(_), v = Or(), l = h(v);
-  function h(s) {
-    return s && s.__esModule ? s : { default: s };
-  }
-  return D.ITF = f.default, D.ITF14 = l.default, D;
-}
-var A = {}, ye = {}, _t;
-function J() {
-  if (_t) return ye;
-  _t = 1, Object.defineProperty(ye, "__esModule", {
-    value: !0
+var hasRequiredITF;
+function requireITF() {
+  if (hasRequiredITF) return ITF$1;
+  hasRequiredITF = 1;
+  Object.defineProperty(ITF$1, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function e(t, n) {
-      for (var r = 0; r < n.length; r++) {
-        var i = n[r];
-        i.enumerable = i.enumerable || !1, i.configurable = !0, "value" in i && (i.writable = !0), Object.defineProperty(t, i.key, i);
+  ITF$1.ITF14 = ITF$1.ITF = void 0;
+  var _ITF = requireITF$1();
+  var _ITF2 = _interopRequireDefault(_ITF);
+  var _ITF3 = requireITF14();
+  var _ITF4 = _interopRequireDefault(_ITF3);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  ITF$1.ITF = _ITF2.default;
+  ITF$1.ITF14 = _ITF4.default;
+  return ITF$1;
+}
+var MSI$1 = {};
+var MSI = {};
+var hasRequiredMSI$1;
+function requireMSI$1() {
+  if (hasRequiredMSI$1) return MSI;
+  hasRequiredMSI$1 = 1;
+  Object.defineProperty(MSI, "__esModule", {
+    value: true
+  });
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(t, n, r) {
-      return n && e(t.prototype, n), r && e(t, r), t;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = T(), v = l(f);
-  function l(e) {
-    return e && e.__esModule ? e : { default: e };
+  })();
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function h(e, t) {
-    if (!(e instanceof t))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function s(e, t) {
-    if (!e)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return t && (typeof t == "object" || typeof t == "function") ? t : e;
-  }
-  function d(e, t) {
-    if (typeof t != "function" && t !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof t);
-    e.prototype = Object.create(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : e.__proto__ = t);
-  }
-  var c = (function(e) {
-    d(t, e);
-    function t(n, r) {
-      return h(this, t), s(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, n, r));
     }
-    return _(t, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var MSI$12 = (function(_Barcode) {
+    _inherits(MSI2, _Barcode);
+    function MSI2(data, options) {
+      _classCallCheck(this, MSI2);
+      return _possibleConstructorReturn(this, (MSI2.__proto__ || Object.getPrototypeOf(MSI2)).call(this, data, options));
+    }
+    _createClass(MSI2, [{
       key: "encode",
-      value: function() {
-        for (var r = "110", i = 0; i < this.data.length; i++) {
-          var o = parseInt(this.data[i]), u = o.toString(2);
-          u = a(u, 4 - u.length);
-          for (var y = 0; y < u.length; y++)
-            r += u[y] == "0" ? "100" : "110";
+      value: function encode() {
+        var ret = "110";
+        for (var i = 0; i < this.data.length; i++) {
+          var digit = parseInt(this.data[i]);
+          var bin = digit.toString(2);
+          bin = addZeroes(bin, 4 - bin.length);
+          for (var b = 0; b < bin.length; b++) {
+            ret += bin[b] == "0" ? "100" : "110";
+          }
         }
-        return r += "1001", {
-          data: r,
+        ret += "1001";
+        return {
+          data: ret,
           text: this.text
         };
       }
     }, {
       key: "valid",
-      value: function() {
+      value: function valid() {
         return this.data.search(/^[0-9]+$/) !== -1;
       }
-    }]), t;
-  })(v.default);
-  function a(e, t) {
-    for (var n = 0; n < t; n++)
-      e = "0" + e;
-    return e;
-  }
-  return ye.default = c, ye;
-}
-var pe = {}, G = {}, st;
-function qe() {
-  if (st) return G;
-  st = 1, Object.defineProperty(G, "__esModule", {
-    value: !0
-  }), G.mod10 = _, G.mod11 = f;
-  function _(v) {
-    for (var l = 0, h = 0; h < v.length; h++) {
-      var s = parseInt(v[h]);
-      (h + v.length) % 2 === 0 ? l += s : l += s * 2 % 10 + Math.floor(s * 2 / 10);
+    }]);
+    return MSI2;
+  })(_Barcode3.default);
+  function addZeroes(number, n) {
+    for (var i = 0; i < n; i++) {
+      number = "0" + number;
     }
-    return (10 - l % 10) % 10;
+    return number;
   }
-  function f(v) {
-    for (var l = 0, h = [2, 3, 4, 5, 6, 7], s = 0; s < v.length; s++) {
-      var d = parseInt(v[v.length - 1 - s]);
-      l += h[s % h.length] * d;
-    }
-    return (11 - l % 11) % 11;
-  }
-  return G;
+  MSI.default = MSI$12;
+  return MSI;
 }
-var yt;
-function mr() {
-  if (yt) return pe;
-  yt = 1, Object.defineProperty(pe, "__esModule", {
-    value: !0
+var MSI10 = {};
+var checksums = {};
+var hasRequiredChecksums;
+function requireChecksums() {
+  if (hasRequiredChecksums) return checksums;
+  hasRequiredChecksums = 1;
+  Object.defineProperty(checksums, "__esModule", {
+    value: true
   });
-  var _ = J(), f = l(_), v = qe();
-  function l(a) {
-    return a && a.__esModule ? a : { default: a };
-  }
-  function h(a, e) {
-    if (!(a instanceof e))
-      throw new TypeError("Cannot call a class as a function");
-  }
-  function s(a, e) {
-    if (!a)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return e && (typeof e == "object" || typeof e == "function") ? e : a;
-  }
-  function d(a, e) {
-    if (typeof e != "function" && e !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof e);
-    a.prototype = Object.create(e && e.prototype, { constructor: { value: a, enumerable: !1, writable: !0, configurable: !0 } }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(a, e) : a.__proto__ = e);
-  }
-  var c = (function(a) {
-    d(e, a);
-    function e(t, n) {
-      return h(this, e), s(this, (e.__proto__ || Object.getPrototypeOf(e)).call(this, t + (0, v.mod10)(t), n));
-    }
-    return e;
-  })(f.default);
-  return pe.default = c, pe;
-}
-var ge = {}, pt;
-function wr() {
-  if (pt) return ge;
-  pt = 1, Object.defineProperty(ge, "__esModule", {
-    value: !0
-  });
-  var _ = J(), f = l(_), v = qe();
-  function l(a) {
-    return a && a.__esModule ? a : { default: a };
-  }
-  function h(a, e) {
-    if (!(a instanceof e))
-      throw new TypeError("Cannot call a class as a function");
-  }
-  function s(a, e) {
-    if (!a)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return e && (typeof e == "object" || typeof e == "function") ? e : a;
-  }
-  function d(a, e) {
-    if (typeof e != "function" && e !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof e);
-    a.prototype = Object.create(e && e.prototype, { constructor: { value: a, enumerable: !1, writable: !0, configurable: !0 } }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(a, e) : a.__proto__ = e);
-  }
-  var c = (function(a) {
-    d(e, a);
-    function e(t, n) {
-      return h(this, e), s(this, (e.__proto__ || Object.getPrototypeOf(e)).call(this, t + (0, v.mod11)(t), n));
-    }
-    return e;
-  })(f.default);
-  return ge.default = c, ge;
-}
-var Ee = {}, gt;
-function xr() {
-  if (gt) return Ee;
-  gt = 1, Object.defineProperty(Ee, "__esModule", {
-    value: !0
-  });
-  var _ = J(), f = l(_), v = qe();
-  function l(a) {
-    return a && a.__esModule ? a : { default: a };
-  }
-  function h(a, e) {
-    if (!(a instanceof e))
-      throw new TypeError("Cannot call a class as a function");
-  }
-  function s(a, e) {
-    if (!a)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return e && (typeof e == "object" || typeof e == "function") ? e : a;
-  }
-  function d(a, e) {
-    if (typeof e != "function" && e !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof e);
-    a.prototype = Object.create(e && e.prototype, { constructor: { value: a, enumerable: !1, writable: !0, configurable: !0 } }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(a, e) : a.__proto__ = e);
-  }
-  var c = (function(a) {
-    d(e, a);
-    function e(t, n) {
-      return h(this, e), t += (0, v.mod10)(t), t += (0, v.mod10)(t), s(this, (e.__proto__ || Object.getPrototypeOf(e)).call(this, t, n));
-    }
-    return e;
-  })(f.default);
-  return Ee.default = c, Ee;
-}
-var Oe = {}, Et;
-function Sr() {
-  if (Et) return Oe;
-  Et = 1, Object.defineProperty(Oe, "__esModule", {
-    value: !0
-  });
-  var _ = J(), f = l(_), v = qe();
-  function l(a) {
-    return a && a.__esModule ? a : { default: a };
-  }
-  function h(a, e) {
-    if (!(a instanceof e))
-      throw new TypeError("Cannot call a class as a function");
-  }
-  function s(a, e) {
-    if (!a)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return e && (typeof e == "object" || typeof e == "function") ? e : a;
-  }
-  function d(a, e) {
-    if (typeof e != "function" && e !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof e);
-    a.prototype = Object.create(e && e.prototype, { constructor: { value: a, enumerable: !1, writable: !0, configurable: !0 } }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(a, e) : a.__proto__ = e);
-  }
-  var c = (function(a) {
-    d(e, a);
-    function e(t, n) {
-      return h(this, e), t += (0, v.mod11)(t), t += (0, v.mod10)(t), s(this, (e.__proto__ || Object.getPrototypeOf(e)).call(this, t, n));
-    }
-    return e;
-  })(f.default);
-  return Oe.default = c, Oe;
-}
-var Ot;
-function Rr() {
-  if (Ot) return A;
-  Ot = 1, Object.defineProperty(A, "__esModule", {
-    value: !0
-  }), A.MSI1110 = A.MSI1010 = A.MSI11 = A.MSI10 = A.MSI = void 0;
-  var _ = J(), f = t(_), v = mr(), l = t(v), h = wr(), s = t(h), d = xr(), c = t(d), a = Sr(), e = t(a);
-  function t(n) {
-    return n && n.__esModule ? n : { default: n };
-  }
-  return A.MSI = f.default, A.MSI10 = l.default, A.MSI11 = s.default, A.MSI1010 = c.default, A.MSI1110 = e.default, A;
-}
-var F = {}, bt;
-function Ar() {
-  if (bt) return F;
-  bt = 1, Object.defineProperty(F, "__esModule", {
-    value: !0
-  }), F.pharmacode = void 0;
-  var _ = /* @__PURE__ */ (function() {
-    function a(e, t) {
-      for (var n = 0; n < t.length; n++) {
-        var r = t[n];
-        r.enumerable = r.enumerable || !1, r.configurable = !0, "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+  checksums.mod10 = mod10;
+  checksums.mod11 = mod11;
+  function mod10(number) {
+    var sum = 0;
+    for (var i = 0; i < number.length; i++) {
+      var n = parseInt(number[i]);
+      if ((i + number.length) % 2 === 0) {
+        sum += n;
+      } else {
+        sum += n * 2 % 10 + Math.floor(n * 2 / 10);
       }
     }
-    return function(e, t, n) {
-      return t && a(e.prototype, t), n && a(e, n), e;
-    };
-  })(), f = T(), v = l(f);
-  function l(a) {
-    return a && a.__esModule ? a : { default: a };
+    return (10 - sum % 10) % 10;
   }
-  function h(a, e) {
-    if (!(a instanceof e))
-      throw new TypeError("Cannot call a class as a function");
-  }
-  function s(a, e) {
-    if (!a)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return e && (typeof e == "object" || typeof e == "function") ? e : a;
-  }
-  function d(a, e) {
-    if (typeof e != "function" && e !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof e);
-    a.prototype = Object.create(e && e.prototype, { constructor: { value: a, enumerable: !1, writable: !0, configurable: !0 } }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(a, e) : a.__proto__ = e);
-  }
-  var c = (function(a) {
-    d(e, a);
-    function e(t, n) {
-      h(this, e);
-      var r = s(this, (e.__proto__ || Object.getPrototypeOf(e)).call(this, t, n));
-      return r.number = parseInt(t, 10), r;
+  function mod11(number) {
+    var sum = 0;
+    var weights = [2, 3, 4, 5, 6, 7];
+    for (var i = 0; i < number.length; i++) {
+      var n = parseInt(number[number.length - 1 - i]);
+      sum += weights[i % weights.length] * n;
     }
-    return _(e, [{
+    return (11 - sum % 11) % 11;
+  }
+  return checksums;
+}
+var hasRequiredMSI10;
+function requireMSI10() {
+  if (hasRequiredMSI10) return MSI10;
+  hasRequiredMSI10 = 1;
+  Object.defineProperty(MSI10, "__esModule", {
+    value: true
+  });
+  var _MSI2 = requireMSI$1();
+  var _MSI3 = _interopRequireDefault(_MSI2);
+  var _checksums = requireChecksums();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var MSI10$1 = (function(_MSI) {
+    _inherits(MSI102, _MSI);
+    function MSI102(data, options) {
+      _classCallCheck(this, MSI102);
+      return _possibleConstructorReturn(this, (MSI102.__proto__ || Object.getPrototypeOf(MSI102)).call(this, data + (0, _checksums.mod10)(data), options));
+    }
+    return MSI102;
+  })(_MSI3.default);
+  MSI10.default = MSI10$1;
+  return MSI10;
+}
+var MSI11 = {};
+var hasRequiredMSI11;
+function requireMSI11() {
+  if (hasRequiredMSI11) return MSI11;
+  hasRequiredMSI11 = 1;
+  Object.defineProperty(MSI11, "__esModule", {
+    value: true
+  });
+  var _MSI2 = requireMSI$1();
+  var _MSI3 = _interopRequireDefault(_MSI2);
+  var _checksums = requireChecksums();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var MSI11$1 = (function(_MSI) {
+    _inherits(MSI112, _MSI);
+    function MSI112(data, options) {
+      _classCallCheck(this, MSI112);
+      return _possibleConstructorReturn(this, (MSI112.__proto__ || Object.getPrototypeOf(MSI112)).call(this, data + (0, _checksums.mod11)(data), options));
+    }
+    return MSI112;
+  })(_MSI3.default);
+  MSI11.default = MSI11$1;
+  return MSI11;
+}
+var MSI1010 = {};
+var hasRequiredMSI1010;
+function requireMSI1010() {
+  if (hasRequiredMSI1010) return MSI1010;
+  hasRequiredMSI1010 = 1;
+  Object.defineProperty(MSI1010, "__esModule", {
+    value: true
+  });
+  var _MSI2 = requireMSI$1();
+  var _MSI3 = _interopRequireDefault(_MSI2);
+  var _checksums = requireChecksums();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var MSI1010$1 = (function(_MSI) {
+    _inherits(MSI10102, _MSI);
+    function MSI10102(data, options) {
+      _classCallCheck(this, MSI10102);
+      data += (0, _checksums.mod10)(data);
+      data += (0, _checksums.mod10)(data);
+      return _possibleConstructorReturn(this, (MSI10102.__proto__ || Object.getPrototypeOf(MSI10102)).call(this, data, options));
+    }
+    return MSI10102;
+  })(_MSI3.default);
+  MSI1010.default = MSI1010$1;
+  return MSI1010;
+}
+var MSI1110 = {};
+var hasRequiredMSI1110;
+function requireMSI1110() {
+  if (hasRequiredMSI1110) return MSI1110;
+  hasRequiredMSI1110 = 1;
+  Object.defineProperty(MSI1110, "__esModule", {
+    value: true
+  });
+  var _MSI2 = requireMSI$1();
+  var _MSI3 = _interopRequireDefault(_MSI2);
+  var _checksums = requireChecksums();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var MSI1110$1 = (function(_MSI) {
+    _inherits(MSI11102, _MSI);
+    function MSI11102(data, options) {
+      _classCallCheck(this, MSI11102);
+      data += (0, _checksums.mod11)(data);
+      data += (0, _checksums.mod10)(data);
+      return _possibleConstructorReturn(this, (MSI11102.__proto__ || Object.getPrototypeOf(MSI11102)).call(this, data, options));
+    }
+    return MSI11102;
+  })(_MSI3.default);
+  MSI1110.default = MSI1110$1;
+  return MSI1110;
+}
+var hasRequiredMSI;
+function requireMSI() {
+  if (hasRequiredMSI) return MSI$1;
+  hasRequiredMSI = 1;
+  Object.defineProperty(MSI$1, "__esModule", {
+    value: true
+  });
+  MSI$1.MSI1110 = MSI$1.MSI1010 = MSI$1.MSI11 = MSI$1.MSI10 = MSI$1.MSI = void 0;
+  var _MSI = requireMSI$1();
+  var _MSI2 = _interopRequireDefault(_MSI);
+  var _MSI3 = requireMSI10();
+  var _MSI4 = _interopRequireDefault(_MSI3);
+  var _MSI5 = requireMSI11();
+  var _MSI6 = _interopRequireDefault(_MSI5);
+  var _MSI7 = requireMSI1010();
+  var _MSI8 = _interopRequireDefault(_MSI7);
+  var _MSI9 = requireMSI1110();
+  var _MSI10 = _interopRequireDefault(_MSI9);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  MSI$1.MSI = _MSI2.default;
+  MSI$1.MSI10 = _MSI4.default;
+  MSI$1.MSI11 = _MSI6.default;
+  MSI$1.MSI1010 = _MSI8.default;
+  MSI$1.MSI1110 = _MSI10.default;
+  return MSI$1;
+}
+var pharmacode = {};
+var hasRequiredPharmacode;
+function requirePharmacode() {
+  if (hasRequiredPharmacode) return pharmacode;
+  hasRequiredPharmacode = 1;
+  Object.defineProperty(pharmacode, "__esModule", {
+    value: true
+  });
+  pharmacode.pharmacode = void 0;
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  })();
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var pharmacode$1 = (function(_Barcode) {
+    _inherits(pharmacode2, _Barcode);
+    function pharmacode2(data, options) {
+      _classCallCheck(this, pharmacode2);
+      var _this = _possibleConstructorReturn(this, (pharmacode2.__proto__ || Object.getPrototypeOf(pharmacode2)).call(this, data, options));
+      _this.number = parseInt(data, 10);
+      return _this;
+    }
+    _createClass(pharmacode2, [{
       key: "encode",
-      value: function() {
-        for (var n = this.number, r = ""; !isNaN(n) && n != 0; )
-          n % 2 === 0 ? (r = "11100" + r, n = (n - 2) / 2) : (r = "100" + r, n = (n - 1) / 2);
-        return r = r.slice(0, -2), {
-          data: r,
+      value: function encode() {
+        var z = this.number;
+        var result = "";
+        while (!isNaN(z) && z != 0) {
+          if (z % 2 === 0) {
+            result = "11100" + result;
+            z = (z - 2) / 2;
+          } else {
+            result = "100" + result;
+            z = (z - 1) / 2;
+          }
+        }
+        result = result.slice(0, -2);
+        return {
+          data: result,
           text: this.text
         };
       }
     }, {
       key: "valid",
-      value: function() {
+      value: function valid() {
         return this.number >= 3 && this.number <= 131070;
       }
-    }]), e;
-  })(v.default);
-  return F.pharmacode = c, F;
+    }]);
+    return pharmacode2;
+  })(_Barcode3.default);
+  pharmacode.pharmacode = pharmacode$1;
+  return pharmacode;
 }
-var H = {}, mt;
-function Pr() {
-  if (mt) return H;
-  mt = 1, Object.defineProperty(H, "__esModule", {
-    value: !0
-  }), H.codabar = void 0;
-  var _ = /* @__PURE__ */ (function() {
-    function a(e, t) {
-      for (var n = 0; n < t.length; n++) {
-        var r = t[n];
-        r.enumerable = r.enumerable || !1, r.configurable = !0, "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+var codabar = {};
+var hasRequiredCodabar;
+function requireCodabar() {
+  if (hasRequiredCodabar) return codabar;
+  hasRequiredCodabar = 1;
+  Object.defineProperty(codabar, "__esModule", {
+    value: true
+  });
+  codabar.codabar = void 0;
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(e, t, n) {
-      return t && a(e.prototype, t), n && a(e, n), e;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = T(), v = l(f);
-  function l(a) {
-    return a && a.__esModule ? a : { default: a };
+  })();
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function h(a, e) {
-    if (!(a instanceof e))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function s(a, e) {
-    if (!a)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return e && (typeof e == "object" || typeof e == "function") ? e : a;
-  }
-  function d(a, e) {
-    if (typeof e != "function" && e !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof e);
-    a.prototype = Object.create(e && e.prototype, { constructor: { value: a, enumerable: !1, writable: !0, configurable: !0 } }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(a, e) : a.__proto__ = e);
-  }
-  var c = (function(a) {
-    d(e, a);
-    function e(t, n) {
-      h(this, e), t.search(/^[0-9\-\$\:\.\+\/]+$/) === 0 && (t = "A" + t + "A");
-      var r = s(this, (e.__proto__ || Object.getPrototypeOf(e)).call(this, t.toUpperCase(), n));
-      return r.text = r.options.text || r.text.replace(/[A-D]/g, ""), r;
     }
-    return _(e, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var codabar$1 = (function(_Barcode) {
+    _inherits(codabar2, _Barcode);
+    function codabar2(data, options) {
+      _classCallCheck(this, codabar2);
+      if (data.search(/^[0-9\-\$\:\.\+\/]+$/) === 0) {
+        data = "A" + data + "A";
+      }
+      var _this = _possibleConstructorReturn(this, (codabar2.__proto__ || Object.getPrototypeOf(codabar2)).call(this, data.toUpperCase(), options));
+      _this.text = _this.options.text || _this.text.replace(/[A-D]/g, "");
+      return _this;
+    }
+    _createClass(codabar2, [{
       key: "valid",
-      value: function() {
+      value: function valid() {
         return this.data.search(/^[A-D][0-9\-\$\:\.\+\/]+[A-D]$/) !== -1;
       }
     }, {
       key: "encode",
-      value: function() {
-        for (var n = [], r = this.getEncodings(), i = 0; i < this.data.length; i++)
-          n.push(r[this.data.charAt(i)]), i !== this.data.length - 1 && n.push("0");
+      value: function encode() {
+        var result = [];
+        var encodings = this.getEncodings();
+        for (var i = 0; i < this.data.length; i++) {
+          result.push(encodings[this.data.charAt(i)]);
+          if (i !== this.data.length - 1) {
+            result.push("0");
+          }
+        }
         return {
           text: this.text,
-          data: n.join("")
+          data: result.join("")
         };
       }
     }, {
       key: "getEncodings",
-      value: function() {
+      value: function getEncodings() {
         return {
-          0: "101010011",
-          1: "101011001",
-          2: "101001011",
-          3: "110010101",
-          4: "101101001",
-          5: "110101001",
-          6: "100101011",
-          7: "100101101",
-          8: "100110101",
-          9: "110100101",
+          "0": "101010011",
+          "1": "101011001",
+          "2": "101001011",
+          "3": "110010101",
+          "4": "101101001",
+          "5": "110101001",
+          "6": "100101011",
+          "7": "100101101",
+          "8": "100110101",
+          "9": "110100101",
           "-": "101001101",
-          $: "101100101",
+          "$": "101100101",
           ":": "1101011011",
           "/": "1101101011",
           ".": "1101101101",
           "+": "1011011011",
-          A: "1011001001",
-          B: "1001001011",
-          C: "1010010011",
-          D: "1010011001"
+          "A": "1011001001",
+          "B": "1001001011",
+          "C": "1010010011",
+          "D": "1010011001"
         };
       }
-    }]), e;
-  })(v.default);
-  return H.codabar = c, H;
+    }]);
+    return codabar2;
+  })(_Barcode3.default);
+  codabar.codabar = codabar$1;
+  return codabar;
 }
-var C = {}, be = {}, $ = {}, wt;
-function Tr() {
-  return wt || (wt = 1, Object.defineProperty($, "__esModule", {
-    value: !0
-  }), $.SYMBOLS = [
+var CODE93$1 = {};
+var CODE93 = {};
+var constants = {};
+var hasRequiredConstants;
+function requireConstants() {
+  if (hasRequiredConstants) return constants;
+  hasRequiredConstants = 1;
+  Object.defineProperty(constants, "__esModule", {
+    value: true
+  });
+  constants.SYMBOLS = [
     "0",
     "1",
     "2",
@@ -1761,7 +2427,9 @@ function Tr() {
     "(+)",
     // Start/Stop
     "ÿ"
-  ], $.BINARIES = ["100010100", "101001000", "101000100", "101000010", "100101000", "100100100", "100100010", "101010000", "100010010", "100001010", "110101000", "110100100", "110100010", "110010100", "110010010", "110001010", "101101000", "101100100", "101100010", "100110100", "100011010", "101011000", "101001100", "101000110", "100101100", "100010110", "110110100", "110110010", "110101100", "110100110", "110010110", "110011010", "101101100", "101100110", "100110110", "100111010", "100101110", "111010100", "111010010", "111001010", "101101110", "101110110", "110101110", "100100110", "111011010", "111010110", "100110010", "101011110"], $.MULTI_SYMBOLS = {
+  ];
+  constants.BINARIES = ["100010100", "101001000", "101000100", "101000010", "100101000", "100100100", "100100010", "101010000", "100010010", "100001010", "110101000", "110100100", "110100010", "110010100", "110010010", "110001010", "101101000", "101100100", "101100010", "100110100", "100011010", "101011000", "101001100", "101000110", "100101100", "100010110", "110110100", "110110010", "110101100", "110100110", "110010110", "110011010", "101101100", "101100110", "100110110", "100111010", "100101110", "111010100", "111010010", "111001010", "101101110", "101110110", "110101110", "100100110", "111011010", "111010110", "100110010", "101011110"];
+  constants.MULTI_SYMBOLS = {
     "\0": ["(%)", "U"],
     "": ["($)", "A"],
     "": ["($)", "B"],
@@ -1814,101 +2482,119 @@ function Tr() {
     "\\": ["(%)", "L"],
     "]": ["(%)", "M"],
     "^": ["(%)", "N"],
-    _: ["(%)", "O"],
+    "_": ["(%)", "O"],
     "`": ["(%)", "W"],
-    a: ["(+)", "A"],
-    b: ["(+)", "B"],
-    c: ["(+)", "C"],
-    d: ["(+)", "D"],
-    e: ["(+)", "E"],
-    f: ["(+)", "F"],
-    g: ["(+)", "G"],
-    h: ["(+)", "H"],
-    i: ["(+)", "I"],
-    j: ["(+)", "J"],
-    k: ["(+)", "K"],
-    l: ["(+)", "L"],
-    m: ["(+)", "M"],
-    n: ["(+)", "N"],
-    o: ["(+)", "O"],
-    p: ["(+)", "P"],
-    q: ["(+)", "Q"],
-    r: ["(+)", "R"],
-    s: ["(+)", "S"],
-    t: ["(+)", "T"],
-    u: ["(+)", "U"],
-    v: ["(+)", "V"],
-    w: ["(+)", "W"],
-    x: ["(+)", "X"],
-    y: ["(+)", "Y"],
-    z: ["(+)", "Z"],
+    "a": ["(+)", "A"],
+    "b": ["(+)", "B"],
+    "c": ["(+)", "C"],
+    "d": ["(+)", "D"],
+    "e": ["(+)", "E"],
+    "f": ["(+)", "F"],
+    "g": ["(+)", "G"],
+    "h": ["(+)", "H"],
+    "i": ["(+)", "I"],
+    "j": ["(+)", "J"],
+    "k": ["(+)", "K"],
+    "l": ["(+)", "L"],
+    "m": ["(+)", "M"],
+    "n": ["(+)", "N"],
+    "o": ["(+)", "O"],
+    "p": ["(+)", "P"],
+    "q": ["(+)", "Q"],
+    "r": ["(+)", "R"],
+    "s": ["(+)", "S"],
+    "t": ["(+)", "T"],
+    "u": ["(+)", "U"],
+    "v": ["(+)", "V"],
+    "w": ["(+)", "W"],
+    "x": ["(+)", "X"],
+    "y": ["(+)", "Y"],
+    "z": ["(+)", "Z"],
     "{": ["(%)", "P"],
     "|": ["(%)", "Q"],
     "}": ["(%)", "R"],
     "~": ["(%)", "S"],
     "": ["(%)", "T"]
-  }), $;
+  };
+  return constants;
 }
-var xt;
-function Jt() {
-  if (xt) return be;
-  xt = 1, Object.defineProperty(be, "__esModule", {
-    value: !0
+var hasRequiredCODE93$1;
+function requireCODE93$1() {
+  if (hasRequiredCODE93$1) return CODE93;
+  hasRequiredCODE93$1 = 1;
+  Object.defineProperty(CODE93, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function e(t, n) {
-      for (var r = 0; r < n.length; r++) {
-        var i = n[r];
-        i.enumerable = i.enumerable || !1, i.configurable = !0, "value" in i && (i.writable = !0), Object.defineProperty(t, i.key, i);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(t, n, r) {
-      return n && e(t.prototype, n), r && e(t, r), t;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = Tr(), v = T(), l = h(v);
-  function h(e) {
-    return e && e.__esModule ? e : { default: e };
+  })();
+  var _constants = requireConstants();
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function s(e, t) {
-    if (!(e instanceof t))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function d(e, t) {
-    if (!e)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return t && (typeof t == "object" || typeof t == "function") ? t : e;
-  }
-  function c(e, t) {
-    if (typeof t != "function" && t !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof t);
-    e.prototype = Object.create(t && t.prototype, { constructor: { value: e, enumerable: !1, writable: !0, configurable: !0 } }), t && (Object.setPrototypeOf ? Object.setPrototypeOf(e, t) : e.__proto__ = t);
-  }
-  var a = (function(e) {
-    c(t, e);
-    function t(n, r) {
-      return s(this, t), d(this, (t.__proto__ || Object.getPrototypeOf(t)).call(this, n, r));
     }
-    return _(t, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var CODE93$12 = (function(_Barcode) {
+    _inherits(CODE932, _Barcode);
+    function CODE932(data, options) {
+      _classCallCheck(this, CODE932);
+      return _possibleConstructorReturn(this, (CODE932.__proto__ || Object.getPrototypeOf(CODE932)).call(this, data, options));
+    }
+    _createClass(CODE932, [{
       key: "valid",
-      value: function() {
+      value: function valid() {
         return /^[0-9A-Z\-. $/+%]+$/.test(this.data);
       }
     }, {
       key: "encode",
-      value: function() {
-        var r = this.data.split("").flatMap(function(y) {
-          return f.MULTI_SYMBOLS[y] || y;
-        }), i = r.map(function(y) {
-          return t.getEncoding(y);
-        }).join(""), o = t.checksum(r, 20), u = t.checksum(r.concat(o), 15);
+      value: function encode() {
+        var symbols = this.data.split("").flatMap(function(c) {
+          return _constants.MULTI_SYMBOLS[c] || c;
+        });
+        var encoded = symbols.map(function(s) {
+          return CODE932.getEncoding(s);
+        }).join("");
+        var csumC = CODE932.checksum(symbols, 20);
+        var csumK = CODE932.checksum(symbols.concat(csumC), 15);
         return {
           text: this.text,
           data: (
             // Add the start bits
-            t.getEncoding("ÿ") + // Add the encoded bits
-            i + // Add the checksum
-            t.getEncoding(o) + t.getEncoding(u) + // Add the stop bits
-            t.getEncoding("ÿ") + // Add the termination bit
+            CODE932.getEncoding("ÿ") + // Add the encoded bits
+            encoded + // Add the checksum
+            CODE932.getEncoding(csumC) + CODE932.getEncoding(csumK) + // Add the stop bits
+            CODE932.getEncoding("ÿ") + // Add the termination bit
             "1"
           )
         };
@@ -1916,137 +2602,177 @@ function Jt() {
       // Get the binary encoding of a symbol
     }], [{
       key: "getEncoding",
-      value: function(r) {
-        return f.BINARIES[t.symbolValue(r)];
+      value: function getEncoding(symbol) {
+        return _constants.BINARIES[CODE932.symbolValue(symbol)];
       }
       // Get the symbol for a symbol value
     }, {
       key: "getSymbol",
-      value: function(r) {
-        return f.SYMBOLS[r];
+      value: function getSymbol(symbolValue) {
+        return _constants.SYMBOLS[symbolValue];
       }
       // Get the symbol value of a symbol
     }, {
       key: "symbolValue",
-      value: function(r) {
-        return f.SYMBOLS.indexOf(r);
+      value: function symbolValue(symbol) {
+        return _constants.SYMBOLS.indexOf(symbol);
       }
       // Calculate a checksum symbol
     }, {
       key: "checksum",
-      value: function(r, i) {
-        var o = r.slice().reverse().reduce(function(u, y, p) {
-          var g = p % i + 1;
-          return u + t.symbolValue(y) * g;
+      value: function checksum(symbols, maxWeight) {
+        var csum = symbols.slice().reverse().reduce(function(sum, symbol, idx) {
+          var weight = idx % maxWeight + 1;
+          return sum + CODE932.symbolValue(symbol) * weight;
         }, 0);
-        return t.getSymbol(o % 47);
+        return CODE932.getSymbol(csum % 47);
       }
-    }]), t;
-  })(l.default);
-  return be.default = a, be;
+    }]);
+    return CODE932;
+  })(_Barcode3.default);
+  CODE93.default = CODE93$12;
+  return CODE93;
 }
-var me = {}, St;
-function Mr() {
-  if (St) return me;
-  St = 1, Object.defineProperty(me, "__esModule", {
-    value: !0
+var CODE93FullASCII = {};
+var hasRequiredCODE93FullASCII;
+function requireCODE93FullASCII() {
+  if (hasRequiredCODE93FullASCII) return CODE93FullASCII;
+  hasRequiredCODE93FullASCII = 1;
+  Object.defineProperty(CODE93FullASCII, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function a(e, t) {
-      for (var n = 0; n < t.length; n++) {
-        var r = t[n];
-        r.enumerable = r.enumerable || !1, r.configurable = !0, "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(e, t, n) {
-      return t && a(e.prototype, t), n && a(e, n), e;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = Jt(), v = l(f);
-  function l(a) {
-    return a && a.__esModule ? a : { default: a };
+  })();
+  var _CODE2 = requireCODE93$1();
+  var _CODE3 = _interopRequireDefault(_CODE2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function h(a, e) {
-    if (!(a instanceof e))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function s(a, e) {
-    if (!a)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return e && (typeof e == "object" || typeof e == "function") ? e : a;
-  }
-  function d(a, e) {
-    if (typeof e != "function" && e !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof e);
-    a.prototype = Object.create(e && e.prototype, { constructor: { value: a, enumerable: !1, writable: !0, configurable: !0 } }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(a, e) : a.__proto__ = e);
-  }
-  var c = (function(a) {
-    d(e, a);
-    function e(t, n) {
-      return h(this, e), s(this, (e.__proto__ || Object.getPrototypeOf(e)).call(this, t, n));
     }
-    return _(e, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var CODE93FullASCII$1 = (function(_CODE) {
+    _inherits(CODE93FullASCII2, _CODE);
+    function CODE93FullASCII2(data, options) {
+      _classCallCheck(this, CODE93FullASCII2);
+      return _possibleConstructorReturn(this, (CODE93FullASCII2.__proto__ || Object.getPrototypeOf(CODE93FullASCII2)).call(this, data, options));
+    }
+    _createClass(CODE93FullASCII2, [{
       key: "valid",
-      value: function() {
+      value: function valid() {
         return /^[\x00-\x7f]+$/.test(this.data);
       }
-    }]), e;
-  })(v.default);
-  return me.default = c, me;
+    }]);
+    return CODE93FullASCII2;
+  })(_CODE3.default);
+  CODE93FullASCII.default = CODE93FullASCII$1;
+  return CODE93FullASCII;
 }
-var Rt;
-function Ir() {
-  if (Rt) return C;
-  Rt = 1, Object.defineProperty(C, "__esModule", {
-    value: !0
-  }), C.CODE93FullASCII = C.CODE93 = void 0;
-  var _ = Jt(), f = h(_), v = Mr(), l = h(v);
-  function h(s) {
-    return s && s.__esModule ? s : { default: s };
+var hasRequiredCODE93;
+function requireCODE93() {
+  if (hasRequiredCODE93) return CODE93$1;
+  hasRequiredCODE93 = 1;
+  Object.defineProperty(CODE93$1, "__esModule", {
+    value: true
+  });
+  CODE93$1.CODE93FullASCII = CODE93$1.CODE93 = void 0;
+  var _CODE = requireCODE93$1();
+  var _CODE2 = _interopRequireDefault(_CODE);
+  var _CODE93FullASCII = requireCODE93FullASCII();
+  var _CODE93FullASCII2 = _interopRequireDefault(_CODE93FullASCII);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  return C.CODE93 = f.default, C.CODE93FullASCII = l.default, C;
+  CODE93$1.CODE93 = _CODE2.default;
+  CODE93$1.CODE93FullASCII = _CODE93FullASCII2.default;
+  return CODE93$1;
 }
-var U = {}, At;
-function kr() {
-  if (At) return U;
-  At = 1, Object.defineProperty(U, "__esModule", {
-    value: !0
-  }), U.GenericBarcode = void 0;
-  var _ = /* @__PURE__ */ (function() {
-    function a(e, t) {
-      for (var n = 0; n < t.length; n++) {
-        var r = t[n];
-        r.enumerable = r.enumerable || !1, r.configurable = !0, "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+var GenericBarcode = {};
+var hasRequiredGenericBarcode;
+function requireGenericBarcode() {
+  if (hasRequiredGenericBarcode) return GenericBarcode;
+  hasRequiredGenericBarcode = 1;
+  Object.defineProperty(GenericBarcode, "__esModule", {
+    value: true
+  });
+  GenericBarcode.GenericBarcode = void 0;
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(e, t, n) {
-      return t && a(e.prototype, t), n && a(e, n), e;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = T(), v = l(f);
-  function l(a) {
-    return a && a.__esModule ? a : { default: a };
+  })();
+  var _Barcode2 = requireBarcode();
+  var _Barcode3 = _interopRequireDefault(_Barcode2);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function h(a, e) {
-    if (!(a instanceof e))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  function s(a, e) {
-    if (!a)
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return e && (typeof e == "object" || typeof e == "function") ? e : a;
-  }
-  function d(a, e) {
-    if (typeof e != "function" && e !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof e);
-    a.prototype = Object.create(e && e.prototype, { constructor: { value: a, enumerable: !1, writable: !0, configurable: !0 } }), e && (Object.setPrototypeOf ? Object.setPrototypeOf(a, e) : a.__proto__ = e);
-  }
-  var c = (function(a) {
-    d(e, a);
-    function e(t, n) {
-      return h(this, e), s(this, (e.__proto__ || Object.getPrototypeOf(e)).call(this, t, n));
     }
-    return _(e, [{
+  }
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+  var GenericBarcode$1 = (function(_Barcode) {
+    _inherits(GenericBarcode2, _Barcode);
+    function GenericBarcode2(data, options) {
+      _classCallCheck(this, GenericBarcode2);
+      return _possibleConstructorReturn(this, (GenericBarcode2.__proto__ || Object.getPrototypeOf(GenericBarcode2)).call(this, data, options));
+    }
+    _createClass(GenericBarcode2, [{
       key: "encode",
-      value: function() {
+      value: function encode() {
         return {
           data: "10101010101010101010101010101010101010101",
           text: this.text
@@ -2055,119 +2781,168 @@ function kr() {
       // Resturn true/false if the string provided is valid for this encoder
     }, {
       key: "valid",
-      value: function() {
-        return !0;
+      value: function valid() {
+        return true;
       }
-    }]), e;
-  })(v.default);
-  return U.GenericBarcode = c, U;
+    }]);
+    return GenericBarcode2;
+  })(_Barcode3.default);
+  GenericBarcode.GenericBarcode = GenericBarcode$1;
+  return GenericBarcode;
 }
-var Pt;
-function Dr() {
-  if (Pt) return K;
-  Pt = 1, Object.defineProperty(K, "__esModule", {
-    value: !0
+var hasRequiredBarcodes;
+function requireBarcodes() {
+  if (hasRequiredBarcodes) return barcodes;
+  hasRequiredBarcodes = 1;
+  Object.defineProperty(barcodes, "__esModule", {
+    value: true
   });
-  var _ = or(), f = hr(), v = gr(), l = br(), h = Rr(), s = Ar(), d = Pr(), c = Ir(), a = kr();
-  return K.default = {
-    CODE39: _.CODE39,
-    CODE128: f.CODE128,
-    CODE128A: f.CODE128A,
-    CODE128B: f.CODE128B,
-    CODE128C: f.CODE128C,
-    EAN13: v.EAN13,
-    EAN8: v.EAN8,
-    EAN5: v.EAN5,
-    EAN2: v.EAN2,
-    UPC: v.UPC,
-    UPCE: v.UPCE,
-    ITF14: l.ITF14,
-    ITF: l.ITF,
-    MSI: h.MSI,
-    MSI10: h.MSI10,
-    MSI11: h.MSI11,
-    MSI1010: h.MSI1010,
-    MSI1110: h.MSI1110,
-    pharmacode: s.pharmacode,
-    codabar: d.codabar,
-    CODE93: c.CODE93,
-    CODE93FullASCII: c.CODE93FullASCII,
-    GenericBarcode: a.GenericBarcode
-  }, K;
-}
-var we = {}, Tt;
-function $e() {
-  if (Tt) return we;
-  Tt = 1, Object.defineProperty(we, "__esModule", {
-    value: !0
-  });
-  var _ = Object.assign || function(f) {
-    for (var v = 1; v < arguments.length; v++) {
-      var l = arguments[v];
-      for (var h in l)
-        Object.prototype.hasOwnProperty.call(l, h) && (f[h] = l[h]);
-    }
-    return f;
+  var _CODE = requireCODE39();
+  var _CODE2 = requireCODE128();
+  var _EAN_UPC = requireEAN_UPC();
+  var _ITF = requireITF();
+  var _MSI = requireMSI();
+  var _pharmacode = requirePharmacode();
+  var _codabar = requireCodabar();
+  var _CODE3 = requireCODE93();
+  var _GenericBarcode = requireGenericBarcode();
+  barcodes.default = {
+    CODE39: _CODE.CODE39,
+    CODE128: _CODE2.CODE128,
+    CODE128A: _CODE2.CODE128A,
+    CODE128B: _CODE2.CODE128B,
+    CODE128C: _CODE2.CODE128C,
+    EAN13: _EAN_UPC.EAN13,
+    EAN8: _EAN_UPC.EAN8,
+    EAN5: _EAN_UPC.EAN5,
+    EAN2: _EAN_UPC.EAN2,
+    UPC: _EAN_UPC.UPC,
+    UPCE: _EAN_UPC.UPCE,
+    ITF14: _ITF.ITF14,
+    ITF: _ITF.ITF,
+    MSI: _MSI.MSI,
+    MSI10: _MSI.MSI10,
+    MSI11: _MSI.MSI11,
+    MSI1010: _MSI.MSI1010,
+    MSI1110: _MSI.MSI1110,
+    pharmacode: _pharmacode.pharmacode,
+    codabar: _codabar.codabar,
+    CODE93: _CODE3.CODE93,
+    CODE93FullASCII: _CODE3.CODE93FullASCII,
+    GenericBarcode: _GenericBarcode.GenericBarcode
   };
-  return we.default = function(f, v) {
-    return _({}, f, v);
-  }, we;
+  return barcodes;
 }
-var xe = {}, Mt;
-function Cr() {
-  if (Mt) return xe;
-  Mt = 1, Object.defineProperty(xe, "__esModule", {
-    value: !0
-  }), xe.default = _;
-  function _(f) {
-    var v = [];
-    function l(h) {
-      if (Array.isArray(h))
-        for (var s = 0; s < h.length; s++)
-          l(h[s]);
-      else
-        h.text = h.text || "", h.data = h.data || "", v.push(h);
-    }
-    return l(f), v;
-  }
-  return xe;
-}
-var Se = {}, It;
-function Br() {
-  if (It) return Se;
-  It = 1, Object.defineProperty(Se, "__esModule", {
-    value: !0
-  }), Se.default = _;
-  function _(f) {
-    return f.marginTop = f.marginTop || f.margin, f.marginBottom = f.marginBottom || f.margin, f.marginRight = f.marginRight || f.margin, f.marginLeft = f.marginLeft || f.margin, f;
-  }
-  return Se;
-}
-var Re = {}, Ae = {}, Pe = {}, kt;
-function Zt() {
-  if (kt) return Pe;
-  kt = 1, Object.defineProperty(Pe, "__esModule", {
-    value: !0
-  }), Pe.default = _;
-  function _(f) {
-    var v = ["width", "height", "textMargin", "fontSize", "margin", "marginTop", "marginBottom", "marginLeft", "marginRight"];
-    for (var l in v)
-      v.hasOwnProperty(l) && (l = v[l], typeof f[l] == "string" && (f[l] = parseInt(f[l], 10)));
-    return typeof f.displayValue == "string" && (f.displayValue = f.displayValue != "false"), f;
-  }
-  return Pe;
-}
-var Te = {}, Dt;
-function Yt() {
-  if (Dt) return Te;
-  Dt = 1, Object.defineProperty(Te, "__esModule", {
-    value: !0
+var merge = {};
+var hasRequiredMerge;
+function requireMerge() {
+  if (hasRequiredMerge) return merge;
+  hasRequiredMerge = 1;
+  Object.defineProperty(merge, "__esModule", {
+    value: true
   });
-  var _ = {
+  var _extends = Object.assign || function(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+  merge.default = function(old, replaceObj) {
+    return _extends({}, old, replaceObj);
+  };
+  return merge;
+}
+var linearizeEncodings = {};
+var hasRequiredLinearizeEncodings;
+function requireLinearizeEncodings() {
+  if (hasRequiredLinearizeEncodings) return linearizeEncodings;
+  hasRequiredLinearizeEncodings = 1;
+  Object.defineProperty(linearizeEncodings, "__esModule", {
+    value: true
+  });
+  linearizeEncodings.default = linearizeEncodings$1;
+  function linearizeEncodings$1(encodings) {
+    var linearEncodings = [];
+    function nextLevel(encoded) {
+      if (Array.isArray(encoded)) {
+        for (var i = 0; i < encoded.length; i++) {
+          nextLevel(encoded[i]);
+        }
+      } else {
+        encoded.text = encoded.text || "";
+        encoded.data = encoded.data || "";
+        linearEncodings.push(encoded);
+      }
+    }
+    nextLevel(encodings);
+    return linearEncodings;
+  }
+  return linearizeEncodings;
+}
+var fixOptions = {};
+var hasRequiredFixOptions;
+function requireFixOptions() {
+  if (hasRequiredFixOptions) return fixOptions;
+  hasRequiredFixOptions = 1;
+  Object.defineProperty(fixOptions, "__esModule", {
+    value: true
+  });
+  fixOptions.default = fixOptions$1;
+  function fixOptions$1(options) {
+    options.marginTop = options.marginTop || options.margin;
+    options.marginBottom = options.marginBottom || options.margin;
+    options.marginRight = options.marginRight || options.margin;
+    options.marginLeft = options.marginLeft || options.margin;
+    return options;
+  }
+  return fixOptions;
+}
+var getRenderProperties = {};
+var getOptionsFromElement = {};
+var optionsFromStrings = {};
+var hasRequiredOptionsFromStrings;
+function requireOptionsFromStrings() {
+  if (hasRequiredOptionsFromStrings) return optionsFromStrings;
+  hasRequiredOptionsFromStrings = 1;
+  Object.defineProperty(optionsFromStrings, "__esModule", {
+    value: true
+  });
+  optionsFromStrings.default = optionsFromStrings$1;
+  function optionsFromStrings$1(options) {
+    var intOptions = ["width", "height", "textMargin", "fontSize", "margin", "marginTop", "marginBottom", "marginLeft", "marginRight"];
+    for (var intOption in intOptions) {
+      if (intOptions.hasOwnProperty(intOption)) {
+        intOption = intOptions[intOption];
+        if (typeof options[intOption] === "string") {
+          options[intOption] = parseInt(options[intOption], 10);
+        }
+      }
+    }
+    if (typeof options["displayValue"] === "string") {
+      options["displayValue"] = options["displayValue"] != "false";
+    }
+    return options;
+  }
+  return optionsFromStrings;
+}
+var defaults = {};
+var hasRequiredDefaults;
+function requireDefaults() {
+  if (hasRequiredDefaults) return defaults;
+  hasRequiredDefaults = 1;
+  Object.defineProperty(defaults, "__esModule", {
+    value: true
+  });
+  var defaults$1 = {
     width: 2,
     height: 100,
     format: "auto",
-    displayValue: !0,
+    displayValue: true,
     fontOptions: "",
     font: "monospace",
     text: void 0,
@@ -2182,574 +2957,892 @@ function Yt() {
     marginBottom: void 0,
     marginLeft: void 0,
     marginRight: void 0,
-    valid: function() {
+    valid: function valid() {
     }
   };
-  return Te.default = _, Te;
+  defaults.default = defaults$1;
+  return defaults;
 }
-var Ct;
-function qr() {
-  if (Ct) return Ae;
-  Ct = 1, Object.defineProperty(Ae, "__esModule", {
-    value: !0
+var hasRequiredGetOptionsFromElement;
+function requireGetOptionsFromElement() {
+  if (hasRequiredGetOptionsFromElement) return getOptionsFromElement;
+  hasRequiredGetOptionsFromElement = 1;
+  Object.defineProperty(getOptionsFromElement, "__esModule", {
+    value: true
   });
-  var _ = Zt(), f = h(_), v = Yt(), l = h(v);
-  function h(d) {
-    return d && d.__esModule ? d : { default: d };
+  var _optionsFromStrings = requireOptionsFromStrings();
+  var _optionsFromStrings2 = _interopRequireDefault(_optionsFromStrings);
+  var _defaults = requireDefaults();
+  var _defaults2 = _interopRequireDefault(_defaults);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function s(d) {
-    var c = {};
-    for (var a in l.default)
-      l.default.hasOwnProperty(a) && (d.hasAttribute("jsbarcode-" + a.toLowerCase()) && (c[a] = d.getAttribute("jsbarcode-" + a.toLowerCase())), d.hasAttribute("data-" + a.toLowerCase()) && (c[a] = d.getAttribute("data-" + a.toLowerCase())));
-    return c.value = d.getAttribute("jsbarcode-value") || d.getAttribute("data-value"), c = (0, f.default)(c), c;
+  function getOptionsFromElement$1(element) {
+    var options = {};
+    for (var property in _defaults2.default) {
+      if (_defaults2.default.hasOwnProperty(property)) {
+        if (element.hasAttribute("jsbarcode-" + property.toLowerCase())) {
+          options[property] = element.getAttribute("jsbarcode-" + property.toLowerCase());
+        }
+        if (element.hasAttribute("data-" + property.toLowerCase())) {
+          options[property] = element.getAttribute("data-" + property.toLowerCase());
+        }
+      }
+    }
+    options["value"] = element.getAttribute("jsbarcode-value") || element.getAttribute("data-value");
+    options = (0, _optionsFromStrings2.default)(options);
+    return options;
   }
-  return Ae.default = s, Ae;
+  getOptionsFromElement.default = getOptionsFromElement$1;
+  return getOptionsFromElement;
 }
-var Me = {}, Ie = {}, P = {}, Bt;
-function Qt() {
-  if (Bt) return P;
-  Bt = 1, Object.defineProperty(P, "__esModule", {
-    value: !0
-  }), P.getTotalWidthOfEncodings = P.calculateEncodingAttributes = P.getBarcodePadding = P.getEncodingHeight = P.getMaximumHeightOfEncodings = void 0;
-  var _ = $e(), f = v(_);
-  function v(e) {
-    return e && e.__esModule ? e : { default: e };
+var renderers = {};
+var canvas = {};
+var shared = {};
+var hasRequiredShared;
+function requireShared() {
+  if (hasRequiredShared) return shared;
+  hasRequiredShared = 1;
+  Object.defineProperty(shared, "__esModule", {
+    value: true
+  });
+  shared.getTotalWidthOfEncodings = shared.calculateEncodingAttributes = shared.getBarcodePadding = shared.getEncodingHeight = shared.getMaximumHeightOfEncodings = void 0;
+  var _merge = requireMerge();
+  var _merge2 = _interopRequireDefault(_merge);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function l(e, t) {
-    return t.height + (t.displayValue && e.text.length > 0 ? t.fontSize + t.textMargin : 0) + t.marginTop + t.marginBottom;
+  function getEncodingHeight(encoding, options) {
+    return options.height + (options.displayValue && encoding.text.length > 0 ? options.fontSize + options.textMargin : 0) + options.marginTop + options.marginBottom;
   }
-  function h(e, t, n) {
-    if (n.displayValue && t < e) {
-      if (n.textAlign == "center")
-        return Math.floor((e - t) / 2);
-      if (n.textAlign == "left")
+  function getBarcodePadding(textWidth, barcodeWidth, options) {
+    if (options.displayValue && barcodeWidth < textWidth) {
+      if (options.textAlign == "center") {
+        return Math.floor((textWidth - barcodeWidth) / 2);
+      } else if (options.textAlign == "left") {
         return 0;
-      if (n.textAlign == "right")
-        return Math.floor(e - t);
+      } else if (options.textAlign == "right") {
+        return Math.floor(textWidth - barcodeWidth);
+      }
     }
     return 0;
   }
-  function s(e, t, n) {
-    for (var r = 0; r < e.length; r++) {
-      var i = e[r], o = (0, f.default)(t, i.options), u;
-      o.displayValue ? u = a(i.text, o, n) : u = 0;
-      var y = i.data.length * o.width;
-      i.width = Math.ceil(Math.max(u, y)), i.height = l(i, o), i.barcodePadding = h(u, y, o);
+  function calculateEncodingAttributes(encodings, barcodeOptions, context) {
+    for (var i = 0; i < encodings.length; i++) {
+      var encoding = encodings[i];
+      var options = (0, _merge2.default)(barcodeOptions, encoding.options);
+      var textWidth;
+      if (options.displayValue) {
+        textWidth = messureText(encoding.text, options, context);
+      } else {
+        textWidth = 0;
+      }
+      var barcodeWidth = encoding.data.length * options.width;
+      encoding.width = Math.ceil(Math.max(textWidth, barcodeWidth));
+      encoding.height = getEncodingHeight(encoding, options);
+      encoding.barcodePadding = getBarcodePadding(textWidth, barcodeWidth, options);
     }
   }
-  function d(e) {
-    for (var t = 0, n = 0; n < e.length; n++)
-      t += e[n].width;
-    return t;
+  function getTotalWidthOfEncodings(encodings) {
+    var totalWidth = 0;
+    for (var i = 0; i < encodings.length; i++) {
+      totalWidth += encodings[i].width;
+    }
+    return totalWidth;
   }
-  function c(e) {
-    for (var t = 0, n = 0; n < e.length; n++)
-      e[n].height > t && (t = e[n].height);
-    return t;
-  }
-  function a(e, t, n) {
-    var r;
-    if (n)
-      r = n;
-    else if (typeof document < "u")
-      r = document.createElement("canvas").getContext("2d");
-    else
-      return 0;
-    r.font = t.fontOptions + " " + t.fontSize + "px " + t.font;
-    var i = r.measureText(e);
-    if (!i)
-      return 0;
-    var o = i.width;
-    return o;
-  }
-  return P.getMaximumHeightOfEncodings = c, P.getEncodingHeight = l, P.getBarcodePadding = h, P.calculateEncodingAttributes = s, P.getTotalWidthOfEncodings = d, P;
-}
-var qt;
-function $r() {
-  if (qt) return Ie;
-  qt = 1, Object.defineProperty(Ie, "__esModule", {
-    value: !0
-  });
-  var _ = /* @__PURE__ */ (function() {
-    function c(a, e) {
-      for (var t = 0; t < e.length; t++) {
-        var n = e[t];
-        n.enumerable = n.enumerable || !1, n.configurable = !0, "value" in n && (n.writable = !0), Object.defineProperty(a, n.key, n);
+  function getMaximumHeightOfEncodings(encodings) {
+    var maxHeight = 0;
+    for (var i = 0; i < encodings.length; i++) {
+      if (encodings[i].height > maxHeight) {
+        maxHeight = encodings[i].height;
       }
     }
-    return function(a, e, t) {
-      return e && c(a.prototype, e), t && c(a, t), a;
-    };
-  })(), f = $e(), v = h(f), l = Qt();
-  function h(c) {
-    return c && c.__esModule ? c : { default: c };
+    return maxHeight;
   }
-  function s(c, a) {
-    if (!(c instanceof a))
-      throw new TypeError("Cannot call a class as a function");
-  }
-  var d = (function() {
-    function c(a, e, t) {
-      s(this, c), this.canvas = a, this.encodings = e, this.options = t;
+  function messureText(string, options, context) {
+    var ctx;
+    if (context) {
+      ctx = context;
+    } else if (typeof document !== "undefined") {
+      ctx = document.createElement("canvas").getContext("2d");
+    } else {
+      return 0;
     }
-    return _(c, [{
+    ctx.font = options.fontOptions + " " + options.fontSize + "px " + options.font;
+    var measureTextResult = ctx.measureText(string);
+    if (!measureTextResult) {
+      return 0;
+    }
+    var size = measureTextResult.width;
+    return size;
+  }
+  shared.getMaximumHeightOfEncodings = getMaximumHeightOfEncodings;
+  shared.getEncodingHeight = getEncodingHeight;
+  shared.getBarcodePadding = getBarcodePadding;
+  shared.calculateEncodingAttributes = calculateEncodingAttributes;
+  shared.getTotalWidthOfEncodings = getTotalWidthOfEncodings;
+  return shared;
+}
+var hasRequiredCanvas;
+function requireCanvas() {
+  if (hasRequiredCanvas) return canvas;
+  hasRequiredCanvas = 1;
+  Object.defineProperty(canvas, "__esModule", {
+    value: true
+  });
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
+      }
+    }
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
+    };
+  })();
+  var _merge = requireMerge();
+  var _merge2 = _interopRequireDefault(_merge);
+  var _shared = requireShared();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+  }
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+  var CanvasRenderer = (function() {
+    function CanvasRenderer2(canvas2, encodings, options) {
+      _classCallCheck(this, CanvasRenderer2);
+      this.canvas = canvas2;
+      this.encodings = encodings;
+      this.options = options;
+    }
+    _createClass(CanvasRenderer2, [{
       key: "render",
-      value: function() {
-        if (!this.canvas.getContext)
+      value: function render() {
+        if (!this.canvas.getContext) {
           throw new Error("The browser does not support canvas.");
+        }
         this.prepareCanvas();
-        for (var e = 0; e < this.encodings.length; e++) {
-          var t = (0, v.default)(this.options, this.encodings[e].options);
-          this.drawCanvasBarcode(t, this.encodings[e]), this.drawCanvasText(t, this.encodings[e]), this.moveCanvasDrawing(this.encodings[e]);
+        for (var i = 0; i < this.encodings.length; i++) {
+          var encodingOptions = (0, _merge2.default)(this.options, this.encodings[i].options);
+          this.drawCanvasBarcode(encodingOptions, this.encodings[i]);
+          this.drawCanvasText(encodingOptions, this.encodings[i]);
+          this.moveCanvasDrawing(this.encodings[i]);
         }
         this.restoreCanvas();
       }
     }, {
       key: "prepareCanvas",
-      value: function() {
-        var e = this.canvas.getContext("2d");
-        e.save(), (0, l.calculateEncodingAttributes)(this.encodings, this.options, e);
-        var t = (0, l.getTotalWidthOfEncodings)(this.encodings), n = (0, l.getMaximumHeightOfEncodings)(this.encodings);
-        this.canvas.width = t + this.options.marginLeft + this.options.marginRight, this.canvas.height = n, e.clearRect(0, 0, this.canvas.width, this.canvas.height), this.options.background && (e.fillStyle = this.options.background, e.fillRect(0, 0, this.canvas.width, this.canvas.height)), e.translate(this.options.marginLeft, 0);
+      value: function prepareCanvas() {
+        var ctx = this.canvas.getContext("2d");
+        ctx.save();
+        (0, _shared.calculateEncodingAttributes)(this.encodings, this.options, ctx);
+        var totalWidth = (0, _shared.getTotalWidthOfEncodings)(this.encodings);
+        var maxHeight = (0, _shared.getMaximumHeightOfEncodings)(this.encodings);
+        this.canvas.width = totalWidth + this.options.marginLeft + this.options.marginRight;
+        this.canvas.height = maxHeight;
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        if (this.options.background) {
+          ctx.fillStyle = this.options.background;
+          ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        }
+        ctx.translate(this.options.marginLeft, 0);
       }
     }, {
       key: "drawCanvasBarcode",
-      value: function(e, t) {
-        var n = this.canvas.getContext("2d"), r = t.data, i;
-        e.textPosition == "top" ? i = e.marginTop + e.fontSize + e.textMargin : i = e.marginTop, n.fillStyle = e.lineColor;
-        for (var o = 0; o < r.length; o++) {
-          var u = o * e.width + t.barcodePadding;
-          r[o] === "1" ? n.fillRect(u, i, e.width, e.height) : r[o] && n.fillRect(u, i, e.width, e.height * r[o]);
+      value: function drawCanvasBarcode(options, encoding) {
+        var ctx = this.canvas.getContext("2d");
+        var binary = encoding.data;
+        var yFrom;
+        if (options.textPosition == "top") {
+          yFrom = options.marginTop + options.fontSize + options.textMargin;
+        } else {
+          yFrom = options.marginTop;
+        }
+        ctx.fillStyle = options.lineColor;
+        for (var b = 0; b < binary.length; b++) {
+          var x = b * options.width + encoding.barcodePadding;
+          if (binary[b] === "1") {
+            ctx.fillRect(x, yFrom, options.width, options.height);
+          } else if (binary[b]) {
+            ctx.fillRect(x, yFrom, options.width, options.height * binary[b]);
+          }
         }
       }
     }, {
       key: "drawCanvasText",
-      value: function(e, t) {
-        var n = this.canvas.getContext("2d"), r = e.fontOptions + " " + e.fontSize + "px " + e.font;
-        if (e.displayValue) {
-          var i, o;
-          e.textPosition == "top" ? o = e.marginTop + e.fontSize - e.textMargin : o = e.height + e.textMargin + e.marginTop + e.fontSize, n.font = r, e.textAlign == "left" || t.barcodePadding > 0 ? (i = 0, n.textAlign = "left") : e.textAlign == "right" ? (i = t.width - 1, n.textAlign = "right") : (i = t.width / 2, n.textAlign = "center"), n.fillText(t.text, i, o);
+      value: function drawCanvasText(options, encoding) {
+        var ctx = this.canvas.getContext("2d");
+        var font = options.fontOptions + " " + options.fontSize + "px " + options.font;
+        if (options.displayValue) {
+          var x, y;
+          if (options.textPosition == "top") {
+            y = options.marginTop + options.fontSize - options.textMargin;
+          } else {
+            y = options.height + options.textMargin + options.marginTop + options.fontSize;
+          }
+          ctx.font = font;
+          if (options.textAlign == "left" || encoding.barcodePadding > 0) {
+            x = 0;
+            ctx.textAlign = "left";
+          } else if (options.textAlign == "right") {
+            x = encoding.width - 1;
+            ctx.textAlign = "right";
+          } else {
+            x = encoding.width / 2;
+            ctx.textAlign = "center";
+          }
+          ctx.fillText(encoding.text, x, y);
         }
       }
     }, {
       key: "moveCanvasDrawing",
-      value: function(e) {
-        var t = this.canvas.getContext("2d");
-        t.translate(e.width, 0);
+      value: function moveCanvasDrawing(encoding) {
+        var ctx = this.canvas.getContext("2d");
+        ctx.translate(encoding.width, 0);
       }
     }, {
       key: "restoreCanvas",
-      value: function() {
-        var e = this.canvas.getContext("2d");
-        e.restore();
+      value: function restoreCanvas() {
+        var ctx = this.canvas.getContext("2d");
+        ctx.restore();
       }
-    }]), c;
+    }]);
+    return CanvasRenderer2;
   })();
-  return Ie.default = d, Ie;
+  canvas.default = CanvasRenderer;
+  return canvas;
 }
-var ke = {}, $t;
-function jr() {
-  if ($t) return ke;
-  $t = 1, Object.defineProperty(ke, "__esModule", {
-    value: !0
+var svg = {};
+var hasRequiredSvg;
+function requireSvg() {
+  if (hasRequiredSvg) return svg;
+  hasRequiredSvg = 1;
+  Object.defineProperty(svg, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function a(e, t) {
-      for (var n = 0; n < t.length; n++) {
-        var r = t[n];
-        r.enumerable = r.enumerable || !1, r.configurable = !0, "value" in r && (r.writable = !0), Object.defineProperty(e, r.key, r);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(e, t, n) {
-      return t && a(e.prototype, t), n && a(e, n), e;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
-  })(), f = $e(), v = h(f), l = Qt();
-  function h(a) {
-    return a && a.__esModule ? a : { default: a };
+  })();
+  var _merge = requireMerge();
+  var _merge2 = _interopRequireDefault(_merge);
+  var _shared = requireShared();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function s(a, e) {
-    if (!(a instanceof e))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  var d = "http://www.w3.org/2000/svg", c = (function() {
-    function a(e, t, n) {
-      s(this, a), this.svg = e, this.encodings = t, this.options = n, this.document = n.xmlDocument || document;
     }
-    return _(a, [{
+  }
+  var svgns = "http://www.w3.org/2000/svg";
+  var SVGRenderer = (function() {
+    function SVGRenderer2(svg2, encodings, options) {
+      _classCallCheck(this, SVGRenderer2);
+      this.svg = svg2;
+      this.encodings = encodings;
+      this.options = options;
+      this.document = options.xmlDocument || document;
+    }
+    _createClass(SVGRenderer2, [{
       key: "render",
-      value: function() {
-        var t = this.options.marginLeft;
+      value: function render() {
+        var currentX = this.options.marginLeft;
         this.prepareSVG();
-        for (var n = 0; n < this.encodings.length; n++) {
-          var r = this.encodings[n], i = (0, v.default)(this.options, r.options), o = this.createGroup(t, i.marginTop, this.svg);
-          this.setGroupOptions(o, i), this.drawSvgBarcode(o, i, r), this.drawSVGText(o, i, r), t += r.width;
+        for (var i = 0; i < this.encodings.length; i++) {
+          var encoding = this.encodings[i];
+          var encodingOptions = (0, _merge2.default)(this.options, encoding.options);
+          var group = this.createGroup(currentX, encodingOptions.marginTop, this.svg);
+          this.setGroupOptions(group, encodingOptions);
+          this.drawSvgBarcode(group, encodingOptions, encoding);
+          this.drawSVGText(group, encodingOptions, encoding);
+          currentX += encoding.width;
         }
       }
     }, {
       key: "prepareSVG",
-      value: function() {
-        for (; this.svg.firstChild; )
+      value: function prepareSVG() {
+        while (this.svg.firstChild) {
           this.svg.removeChild(this.svg.firstChild);
-        (0, l.calculateEncodingAttributes)(this.encodings, this.options);
-        var t = (0, l.getTotalWidthOfEncodings)(this.encodings), n = (0, l.getMaximumHeightOfEncodings)(this.encodings), r = t + this.options.marginLeft + this.options.marginRight;
-        this.setSvgAttributes(r, n), this.options.background && this.drawRect(0, 0, r, n, this.svg).setAttribute("style", "fill:" + this.options.background + ";");
+        }
+        (0, _shared.calculateEncodingAttributes)(this.encodings, this.options);
+        var totalWidth = (0, _shared.getTotalWidthOfEncodings)(this.encodings);
+        var maxHeight = (0, _shared.getMaximumHeightOfEncodings)(this.encodings);
+        var width = totalWidth + this.options.marginLeft + this.options.marginRight;
+        this.setSvgAttributes(width, maxHeight);
+        if (this.options.background) {
+          this.drawRect(0, 0, width, maxHeight, this.svg).setAttribute("style", "fill:" + this.options.background + ";");
+        }
       }
     }, {
       key: "drawSvgBarcode",
-      value: function(t, n, r) {
-        var i = r.data, o;
-        n.textPosition == "top" ? o = n.fontSize + n.textMargin : o = 0;
-        for (var u = 0, y = 0, p = 0; p < i.length; p++)
-          y = p * n.width + r.barcodePadding, i[p] === "1" ? u++ : u > 0 && (this.drawRect(y - n.width * u, o, n.width * u, n.height, t), u = 0);
-        u > 0 && this.drawRect(y - n.width * (u - 1), o, n.width * u, n.height, t);
+      value: function drawSvgBarcode(parent, options, encoding) {
+        var binary = encoding.data;
+        var yFrom;
+        if (options.textPosition == "top") {
+          yFrom = options.fontSize + options.textMargin;
+        } else {
+          yFrom = 0;
+        }
+        var barWidth = 0;
+        var x = 0;
+        for (var b = 0; b < binary.length; b++) {
+          x = b * options.width + encoding.barcodePadding;
+          if (binary[b] === "1") {
+            barWidth++;
+          } else if (barWidth > 0) {
+            this.drawRect(x - options.width * barWidth, yFrom, options.width * barWidth, options.height, parent);
+            barWidth = 0;
+          }
+        }
+        if (barWidth > 0) {
+          this.drawRect(x - options.width * (barWidth - 1), yFrom, options.width * barWidth, options.height, parent);
+        }
       }
     }, {
       key: "drawSVGText",
-      value: function(t, n, r) {
-        var i = this.document.createElementNS(d, "text");
-        if (n.displayValue) {
-          var o, u;
-          i.setAttribute("style", "font:" + n.fontOptions + " " + n.fontSize + "px " + n.font), n.textPosition == "top" ? u = n.fontSize - n.textMargin : u = n.height + n.textMargin + n.fontSize, n.textAlign == "left" || r.barcodePadding > 0 ? (o = 0, i.setAttribute("text-anchor", "start")) : n.textAlign == "right" ? (o = r.width - 1, i.setAttribute("text-anchor", "end")) : (o = r.width / 2, i.setAttribute("text-anchor", "middle")), i.setAttribute("x", o), i.setAttribute("y", u), i.appendChild(this.document.createTextNode(r.text)), t.appendChild(i);
+      value: function drawSVGText(parent, options, encoding) {
+        var textElem = this.document.createElementNS(svgns, "text");
+        if (options.displayValue) {
+          var x, y;
+          textElem.setAttribute("style", "font:" + options.fontOptions + " " + options.fontSize + "px " + options.font);
+          if (options.textPosition == "top") {
+            y = options.fontSize - options.textMargin;
+          } else {
+            y = options.height + options.textMargin + options.fontSize;
+          }
+          if (options.textAlign == "left" || encoding.barcodePadding > 0) {
+            x = 0;
+            textElem.setAttribute("text-anchor", "start");
+          } else if (options.textAlign == "right") {
+            x = encoding.width - 1;
+            textElem.setAttribute("text-anchor", "end");
+          } else {
+            x = encoding.width / 2;
+            textElem.setAttribute("text-anchor", "middle");
+          }
+          textElem.setAttribute("x", x);
+          textElem.setAttribute("y", y);
+          textElem.appendChild(this.document.createTextNode(encoding.text));
+          parent.appendChild(textElem);
         }
       }
     }, {
       key: "setSvgAttributes",
-      value: function(t, n) {
-        var r = this.svg;
-        r.setAttribute("width", t + "px"), r.setAttribute("height", n + "px"), r.setAttribute("x", "0px"), r.setAttribute("y", "0px"), r.setAttribute("viewBox", "0 0 " + t + " " + n), r.setAttribute("xmlns", d), r.setAttribute("version", "1.1"), r.setAttribute("style", "transform: translate(0,0)");
+      value: function setSvgAttributes(width, height) {
+        var svg2 = this.svg;
+        svg2.setAttribute("width", width + "px");
+        svg2.setAttribute("height", height + "px");
+        svg2.setAttribute("x", "0px");
+        svg2.setAttribute("y", "0px");
+        svg2.setAttribute("viewBox", "0 0 " + width + " " + height);
+        svg2.setAttribute("xmlns", svgns);
+        svg2.setAttribute("version", "1.1");
+        svg2.setAttribute("style", "transform: translate(0,0)");
       }
     }, {
       key: "createGroup",
-      value: function(t, n, r) {
-        var i = this.document.createElementNS(d, "g");
-        return i.setAttribute("transform", "translate(" + t + ", " + n + ")"), r.appendChild(i), i;
+      value: function createGroup(x, y, parent) {
+        var group = this.document.createElementNS(svgns, "g");
+        group.setAttribute("transform", "translate(" + x + ", " + y + ")");
+        parent.appendChild(group);
+        return group;
       }
     }, {
       key: "setGroupOptions",
-      value: function(t, n) {
-        t.setAttribute("style", "fill:" + n.lineColor + ";");
+      value: function setGroupOptions(group, options) {
+        group.setAttribute("style", "fill:" + options.lineColor + ";");
       }
     }, {
       key: "drawRect",
-      value: function(t, n, r, i, o) {
-        var u = this.document.createElementNS(d, "rect");
-        return u.setAttribute("x", t), u.setAttribute("y", n), u.setAttribute("width", r), u.setAttribute("height", i), o.appendChild(u), u;
+      value: function drawRect(x, y, width, height, parent) {
+        var rect = this.document.createElementNS(svgns, "rect");
+        rect.setAttribute("x", x);
+        rect.setAttribute("y", y);
+        rect.setAttribute("width", width);
+        rect.setAttribute("height", height);
+        parent.appendChild(rect);
+        return rect;
       }
-    }]), a;
+    }]);
+    return SVGRenderer2;
   })();
-  return ke.default = c, ke;
+  svg.default = SVGRenderer;
+  return svg;
 }
-var De = {}, jt;
-function Lr() {
-  if (jt) return De;
-  jt = 1, Object.defineProperty(De, "__esModule", {
-    value: !0
+var object = {};
+var hasRequiredObject;
+function requireObject() {
+  if (hasRequiredObject) return object;
+  hasRequiredObject = 1;
+  Object.defineProperty(object, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function l(h, s) {
-      for (var d = 0; d < s.length; d++) {
-        var c = s[d];
-        c.enumerable = c.enumerable || !1, c.configurable = !0, "value" in c && (c.writable = !0), Object.defineProperty(h, c.key, c);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(h, s, d) {
-      return s && l(h.prototype, s), d && l(h, d), h;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
   })();
-  function f(l, h) {
-    if (!(l instanceof h))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  var v = (function() {
-    function l(h, s, d) {
-      f(this, l), this.object = h, this.encodings = s, this.options = d;
     }
-    return _(l, [{
+  }
+  var ObjectRenderer = (function() {
+    function ObjectRenderer2(object2, encodings, options) {
+      _classCallCheck(this, ObjectRenderer2);
+      this.object = object2;
+      this.encodings = encodings;
+      this.options = options;
+    }
+    _createClass(ObjectRenderer2, [{
       key: "render",
-      value: function() {
+      value: function render() {
         this.object.encodings = this.encodings;
       }
-    }]), l;
+    }]);
+    return ObjectRenderer2;
   })();
-  return De.default = v, De;
+  object.default = ObjectRenderer;
+  return object;
 }
-var Lt;
-function Nr() {
-  if (Lt) return Me;
-  Lt = 1, Object.defineProperty(Me, "__esModule", {
-    value: !0
+var hasRequiredRenderers;
+function requireRenderers() {
+  if (hasRequiredRenderers) return renderers;
+  hasRequiredRenderers = 1;
+  Object.defineProperty(renderers, "__esModule", {
+    value: true
   });
-  var _ = $r(), f = d(_), v = jr(), l = d(v), h = Lr(), s = d(h);
-  function d(c) {
-    return c && c.__esModule ? c : { default: c };
+  var _canvas = requireCanvas();
+  var _canvas2 = _interopRequireDefault(_canvas);
+  var _svg = requireSvg();
+  var _svg2 = _interopRequireDefault(_svg);
+  var _object = requireObject();
+  var _object2 = _interopRequireDefault(_object);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  return Me.default = { CanvasRenderer: f.default, SVGRenderer: l.default, ObjectRenderer: s.default }, Me;
+  renderers.default = { CanvasRenderer: _canvas2.default, SVGRenderer: _svg2.default, ObjectRenderer: _object2.default };
+  return renderers;
 }
-var j = {}, Nt;
-function Wt() {
-  if (Nt) return j;
-  Nt = 1, Object.defineProperty(j, "__esModule", {
-    value: !0
+var exceptions = {};
+var hasRequiredExceptions;
+function requireExceptions() {
+  if (hasRequiredExceptions) return exceptions;
+  hasRequiredExceptions = 1;
+  Object.defineProperty(exceptions, "__esModule", {
+    value: true
   });
-  function _(d, c) {
-    if (!(d instanceof c))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
+    }
   }
-  function f(d, c) {
-    if (!d)
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
       throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    return c && (typeof c == "object" || typeof c == "function") ? c : d;
+    }
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
   }
-  function v(d, c) {
-    if (typeof c != "function" && c !== null)
-      throw new TypeError("Super expression must either be null or a function, not " + typeof c);
-    d.prototype = Object.create(c && c.prototype, { constructor: { value: d, enumerable: !1, writable: !0, configurable: !0 } }), c && (Object.setPrototypeOf ? Object.setPrototypeOf(d, c) : d.__proto__ = c);
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+    subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
   }
-  var l = (function(d) {
-    v(c, d);
-    function c(a, e) {
-      _(this, c);
-      var t = f(this, (c.__proto__ || Object.getPrototypeOf(c)).call(this));
-      return t.name = "InvalidInputException", t.symbology = a, t.input = e, t.message = '"' + t.input + '" is not a valid input for ' + t.symbology, t;
+  var InvalidInputException = (function(_Error) {
+    _inherits(InvalidInputException2, _Error);
+    function InvalidInputException2(symbology, input) {
+      _classCallCheck(this, InvalidInputException2);
+      var _this = _possibleConstructorReturn(this, (InvalidInputException2.__proto__ || Object.getPrototypeOf(InvalidInputException2)).call(this));
+      _this.name = "InvalidInputException";
+      _this.symbology = symbology;
+      _this.input = input;
+      _this.message = '"' + _this.input + '" is not a valid input for ' + _this.symbology;
+      return _this;
     }
-    return c;
-  })(Error), h = (function(d) {
-    v(c, d);
-    function c() {
-      _(this, c);
-      var a = f(this, (c.__proto__ || Object.getPrototypeOf(c)).call(this));
-      return a.name = "InvalidElementException", a.message = "Not supported type to render on", a;
-    }
-    return c;
-  })(Error), s = (function(d) {
-    v(c, d);
-    function c() {
-      _(this, c);
-      var a = f(this, (c.__proto__ || Object.getPrototypeOf(c)).call(this));
-      return a.name = "NoElementException", a.message = "No element to render on.", a;
-    }
-    return c;
+    return InvalidInputException2;
   })(Error);
-  return j.InvalidInputException = l, j.InvalidElementException = h, j.NoElementException = s, j;
+  var InvalidElementException = (function(_Error2) {
+    _inherits(InvalidElementException2, _Error2);
+    function InvalidElementException2() {
+      _classCallCheck(this, InvalidElementException2);
+      var _this2 = _possibleConstructorReturn(this, (InvalidElementException2.__proto__ || Object.getPrototypeOf(InvalidElementException2)).call(this));
+      _this2.name = "InvalidElementException";
+      _this2.message = "Not supported type to render on";
+      return _this2;
+    }
+    return InvalidElementException2;
+  })(Error);
+  var NoElementException = (function(_Error3) {
+    _inherits(NoElementException2, _Error3);
+    function NoElementException2() {
+      _classCallCheck(this, NoElementException2);
+      var _this3 = _possibleConstructorReturn(this, (NoElementException2.__proto__ || Object.getPrototypeOf(NoElementException2)).call(this));
+      _this3.name = "NoElementException";
+      _this3.message = "No element to render on.";
+      return _this3;
+    }
+    return NoElementException2;
+  })(Error);
+  exceptions.InvalidInputException = InvalidInputException;
+  exceptions.InvalidElementException = InvalidElementException;
+  exceptions.NoElementException = NoElementException;
+  return exceptions;
 }
-var Gt;
-function Gr() {
-  if (Gt) return Re;
-  Gt = 1, Object.defineProperty(Re, "__esModule", {
-    value: !0
+var hasRequiredGetRenderProperties;
+function requireGetRenderProperties() {
+  if (hasRequiredGetRenderProperties) return getRenderProperties;
+  hasRequiredGetRenderProperties = 1;
+  Object.defineProperty(getRenderProperties, "__esModule", {
+    value: true
   });
-  var _ = typeof Symbol == "function" && typeof Symbol.iterator == "symbol" ? function(t) {
-    return typeof t;
-  } : function(t) {
-    return t && typeof Symbol == "function" && t.constructor === Symbol && t !== Symbol.prototype ? "symbol" : typeof t;
-  }, f = qr(), v = d(f), l = Nr(), h = d(l), s = Wt();
-  function d(t) {
-    return t && t.__esModule ? t : { default: t };
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function(obj) {
+    return typeof obj;
+  } : function(obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  };
+  var _getOptionsFromElement = requireGetOptionsFromElement();
+  var _getOptionsFromElement2 = _interopRequireDefault(_getOptionsFromElement);
+  var _renderers = requireRenderers();
+  var _renderers2 = _interopRequireDefault(_renderers);
+  var _exceptions = requireExceptions();
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  function c(t) {
-    if (typeof t == "string")
-      return a(t);
-    if (Array.isArray(t)) {
-      for (var n = [], r = 0; r < t.length; r++)
-        n.push(c(t[r]));
-      return n;
+  function getRenderProperties$1(element) {
+    if (typeof element === "string") {
+      return querySelectedRenderProperties(element);
+    } else if (Array.isArray(element)) {
+      var returnArray = [];
+      for (var i = 0; i < element.length; i++) {
+        returnArray.push(getRenderProperties$1(element[i]));
+      }
+      return returnArray;
+    } else if (typeof HTMLCanvasElement !== "undefined" && element instanceof HTMLImageElement) {
+      return newCanvasRenderProperties(element);
+    } else if (element && element.nodeName && element.nodeName.toLowerCase() === "svg" || typeof SVGElement !== "undefined" && element instanceof SVGElement) {
+      return {
+        element,
+        options: (0, _getOptionsFromElement2.default)(element),
+        renderer: _renderers2.default.SVGRenderer
+      };
+    } else if (typeof HTMLCanvasElement !== "undefined" && element instanceof HTMLCanvasElement) {
+      return {
+        element,
+        options: (0, _getOptionsFromElement2.default)(element),
+        renderer: _renderers2.default.CanvasRenderer
+      };
+    } else if (element && element.getContext) {
+      return {
+        element,
+        renderer: _renderers2.default.CanvasRenderer
+      };
+    } else if (element && (typeof element === "undefined" ? "undefined" : _typeof(element)) === "object" && !element.nodeName) {
+      return {
+        element,
+        renderer: _renderers2.default.ObjectRenderer
+      };
     } else {
-      if (typeof HTMLCanvasElement < "u" && t instanceof HTMLImageElement)
-        return e(t);
-      if (t && t.nodeName && t.nodeName.toLowerCase() === "svg" || typeof SVGElement < "u" && t instanceof SVGElement)
-        return {
-          element: t,
-          options: (0, v.default)(t),
-          renderer: h.default.SVGRenderer
-        };
-      if (typeof HTMLCanvasElement < "u" && t instanceof HTMLCanvasElement)
-        return {
-          element: t,
-          options: (0, v.default)(t),
-          renderer: h.default.CanvasRenderer
-        };
-      if (t && t.getContext)
-        return {
-          element: t,
-          renderer: h.default.CanvasRenderer
-        };
-      if (t && (typeof t > "u" ? "undefined" : _(t)) === "object" && !t.nodeName)
-        return {
-          element: t,
-          renderer: h.default.ObjectRenderer
-        };
-      throw new s.InvalidElementException();
+      throw new _exceptions.InvalidElementException();
     }
   }
-  function a(t) {
-    var n = document.querySelectorAll(t);
-    if (n.length !== 0) {
-      for (var r = [], i = 0; i < n.length; i++)
-        r.push(c(n[i]));
-      return r;
+  function querySelectedRenderProperties(string) {
+    var selector = document.querySelectorAll(string);
+    if (selector.length === 0) {
+      return void 0;
+    } else {
+      var returnArray = [];
+      for (var i = 0; i < selector.length; i++) {
+        returnArray.push(getRenderProperties$1(selector[i]));
+      }
+      return returnArray;
     }
   }
-  function e(t) {
-    var n = document.createElement("canvas");
+  function newCanvasRenderProperties(imgElement) {
+    var canvas2 = document.createElement("canvas");
     return {
-      element: n,
-      options: (0, v.default)(t),
-      renderer: h.default.CanvasRenderer,
-      afterRender: function() {
-        t.setAttribute("src", n.toDataURL());
+      element: canvas2,
+      options: (0, _getOptionsFromElement2.default)(imgElement),
+      renderer: _renderers2.default.CanvasRenderer,
+      afterRender: function afterRender() {
+        imgElement.setAttribute("src", canvas2.toDataURL());
       }
     };
   }
-  return Re.default = c, Re;
+  getRenderProperties.default = getRenderProperties$1;
+  return getRenderProperties;
 }
-var Ce = {}, Ft;
-function Fr() {
-  if (Ft) return Ce;
-  Ft = 1, Object.defineProperty(Ce, "__esModule", {
-    value: !0
+var ErrorHandler = {};
+var hasRequiredErrorHandler;
+function requireErrorHandler() {
+  if (hasRequiredErrorHandler) return ErrorHandler;
+  hasRequiredErrorHandler = 1;
+  Object.defineProperty(ErrorHandler, "__esModule", {
+    value: true
   });
-  var _ = /* @__PURE__ */ (function() {
-    function l(h, s) {
-      for (var d = 0; d < s.length; d++) {
-        var c = s[d];
-        c.enumerable = c.enumerable || !1, c.configurable = !0, "value" in c && (c.writable = !0), Object.defineProperty(h, c.key, c);
+  var _createClass = /* @__PURE__ */ (function() {
+    function defineProperties(target, props) {
+      for (var i = 0; i < props.length; i++) {
+        var descriptor = props[i];
+        descriptor.enumerable = descriptor.enumerable || false;
+        descriptor.configurable = true;
+        if ("value" in descriptor) descriptor.writable = true;
+        Object.defineProperty(target, descriptor.key, descriptor);
       }
     }
-    return function(h, s, d) {
-      return s && l(h.prototype, s), d && l(h, d), h;
+    return function(Constructor, protoProps, staticProps) {
+      if (protoProps) defineProperties(Constructor.prototype, protoProps);
+      if (staticProps) defineProperties(Constructor, staticProps);
+      return Constructor;
     };
   })();
-  function f(l, h) {
-    if (!(l instanceof h))
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
-  }
-  var v = (function() {
-    function l(h) {
-      f(this, l), this.api = h;
     }
-    return _(l, [{
+  }
+  var ErrorHandler$1 = (function() {
+    function ErrorHandler2(api) {
+      _classCallCheck(this, ErrorHandler2);
+      this.api = api;
+    }
+    _createClass(ErrorHandler2, [{
       key: "handleCatch",
-      value: function(s) {
-        if (s.name === "InvalidInputException")
-          if (this.api._options.valid !== this.api._defaults.valid)
-            this.api._options.valid(!1);
-          else
-            throw s.message;
-        else
-          throw s;
+      value: function handleCatch(e) {
+        if (e.name === "InvalidInputException") {
+          if (this.api._options.valid !== this.api._defaults.valid) {
+            this.api._options.valid(false);
+          } else {
+            throw e.message;
+          }
+        } else {
+          throw e;
+        }
         this.api.render = function() {
         };
       }
     }, {
       key: "wrapBarcodeCall",
-      value: function(s) {
+      value: function wrapBarcodeCall(func) {
         try {
-          var d = s.apply(void 0, arguments);
-          return this.api._options.valid(!0), d;
-        } catch (c) {
-          return this.handleCatch(c), this.api;
+          var result = func.apply(void 0, arguments);
+          this.api._options.valid(true);
+          return result;
+        } catch (e) {
+          this.handleCatch(e);
+          return this.api;
         }
       }
-    }]), l;
+    }]);
+    return ErrorHandler2;
   })();
-  return Ce.default = v, Ce;
+  ErrorHandler.default = ErrorHandler$1;
+  return ErrorHandler;
 }
-var Ge, Ht;
-function Hr() {
-  if (Ht) return Ge;
-  Ht = 1;
-  var _ = Dr(), f = p(_), v = $e(), l = p(v), h = Cr(), s = p(h), d = Br(), c = p(d), a = Gr(), e = p(a), t = Zt(), n = p(t), r = Fr(), i = p(r), o = Wt(), u = Yt(), y = p(u);
-  function p(E) {
-    return E && E.__esModule ? E : { default: E };
+var JsBarcode_1;
+var hasRequiredJsBarcode;
+function requireJsBarcode() {
+  if (hasRequiredJsBarcode) return JsBarcode_1;
+  hasRequiredJsBarcode = 1;
+  var _barcodes = requireBarcodes();
+  var _barcodes2 = _interopRequireDefault(_barcodes);
+  var _merge = requireMerge();
+  var _merge2 = _interopRequireDefault(_merge);
+  var _linearizeEncodings = requireLinearizeEncodings();
+  var _linearizeEncodings2 = _interopRequireDefault(_linearizeEncodings);
+  var _fixOptions = requireFixOptions();
+  var _fixOptions2 = _interopRequireDefault(_fixOptions);
+  var _getRenderProperties = requireGetRenderProperties();
+  var _getRenderProperties2 = _interopRequireDefault(_getRenderProperties);
+  var _optionsFromStrings = requireOptionsFromStrings();
+  var _optionsFromStrings2 = _interopRequireDefault(_optionsFromStrings);
+  var _ErrorHandler = requireErrorHandler();
+  var _ErrorHandler2 = _interopRequireDefault(_ErrorHandler);
+  var _exceptions = requireExceptions();
+  var _defaults = requireDefaults();
+  var _defaults2 = _interopRequireDefault(_defaults);
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
   }
-  var g = function() {
-  }, w = function(b, S, O) {
-    var m = new g();
-    if (typeof b > "u")
+  var API = function API2() {
+  };
+  var JsBarcode2 = function JsBarcode3(element, text, options) {
+    var api = new API();
+    if (typeof element === "undefined") {
       throw Error("No element to render on was provided.");
-    return m._renderProperties = (0, e.default)(b), m._encodings = [], m._options = y.default, m._errorHandler = new i.default(m), typeof S < "u" && (O = O || {}, O.format || (O.format = He()), m.options(O)[O.format](S, O).render()), m;
+    }
+    api._renderProperties = (0, _getRenderProperties2.default)(element);
+    api._encodings = [];
+    api._options = _defaults2.default;
+    api._errorHandler = new _ErrorHandler2.default(api);
+    if (typeof text !== "undefined") {
+      options = options || {};
+      if (!options.format) {
+        options.format = autoSelectBarcode();
+      }
+      api.options(options)[options.format](text, options).render();
+    }
+    return api;
   };
-  w.getModule = function(E) {
-    return f.default[E];
+  JsBarcode2.getModule = function(name2) {
+    return _barcodes2.default[name2];
   };
-  for (var B in f.default)
-    f.default.hasOwnProperty(B) && Z(f.default, B);
-  function Z(E, b) {
-    g.prototype[b] = g.prototype[b.toUpperCase()] = g.prototype[b.toLowerCase()] = function(S, O) {
-      var m = this;
-      return m._errorHandler.wrapBarcodeCall(function() {
-        O.text = typeof O.text > "u" ? void 0 : "" + O.text;
-        var M = (0, l.default)(m._options, O);
-        M = (0, n.default)(M);
-        var Kt = E[b], er = Fe(S, Kt, M);
-        return m._encodings.push(er), m;
+  for (var name in _barcodes2.default) {
+    if (_barcodes2.default.hasOwnProperty(name)) {
+      registerBarcode(_barcodes2.default, name);
+    }
+  }
+  function registerBarcode(barcodes2, name2) {
+    API.prototype[name2] = API.prototype[name2.toUpperCase()] = API.prototype[name2.toLowerCase()] = function(text, options) {
+      var api = this;
+      return api._errorHandler.wrapBarcodeCall(function() {
+        options.text = typeof options.text === "undefined" ? void 0 : "" + options.text;
+        var newOptions = (0, _merge2.default)(api._options, options);
+        newOptions = (0, _optionsFromStrings2.default)(newOptions);
+        var Encoder = barcodes2[name2];
+        var encoded = encode(text, Encoder, newOptions);
+        api._encodings.push(encoded);
+        return api;
       });
     };
   }
-  function Fe(E, b, S) {
-    E = "" + E;
-    var O = new b(E, S);
-    if (!O.valid())
-      throw new o.InvalidInputException(O.constructor.name, E);
-    var m = O.encode();
-    m = (0, s.default)(m);
-    for (var M = 0; M < m.length; M++)
-      m[M].options = (0, l.default)(S, m[M].options);
-    return m;
-  }
-  function He() {
-    return f.default.CODE128 ? "CODE128" : Object.keys(f.default)[0];
-  }
-  g.prototype.options = function(E) {
-    return this._options = (0, l.default)(this._options, E), this;
-  }, g.prototype.blank = function(E) {
-    var b = new Array(E + 1).join("0");
-    return this._encodings.push({ data: b }), this;
-  }, g.prototype.init = function() {
-    if (this._renderProperties) {
-      Array.isArray(this._renderProperties) || (this._renderProperties = [this._renderProperties]);
-      var E;
-      for (var b in this._renderProperties) {
-        E = this._renderProperties[b];
-        var S = (0, l.default)(this._options, E.options);
-        S.format == "auto" && (S.format = He()), this._errorHandler.wrapBarcodeCall(function() {
-          var O = S.value, m = f.default[S.format.toUpperCase()], M = Fe(O, m, S);
-          je(E, M, S);
-        });
-      }
+  function encode(text, Encoder, options) {
+    text = "" + text;
+    var encoder2 = new Encoder(text, options);
+    if (!encoder2.valid()) {
+      throw new _exceptions.InvalidInputException(encoder2.constructor.name, text);
     }
-  }, g.prototype.render = function() {
-    if (!this._renderProperties)
-      throw new o.NoElementException();
-    if (Array.isArray(this._renderProperties))
-      for (var E = 0; E < this._renderProperties.length; E++)
-        je(this._renderProperties[E], this._encodings, this._options);
-    else
-      je(this._renderProperties, this._encodings, this._options);
-    return this;
-  }, g.prototype._defaults = y.default;
-  function je(E, b, S) {
-    b = (0, s.default)(b);
-    for (var O = 0; O < b.length; O++)
-      b[O].options = (0, l.default)(S, b[O].options), (0, c.default)(b[O].options);
-    (0, c.default)(S);
-    var m = E.renderer, M = new m(E.element, b, S);
-    M.render(), E.afterRender && E.afterRender();
+    var encoded = encoder2.encode();
+    encoded = (0, _linearizeEncodings2.default)(encoded);
+    for (var i = 0; i < encoded.length; i++) {
+      encoded[i].options = (0, _merge2.default)(options, encoded[i].options);
+    }
+    return encoded;
   }
-  return typeof window < "u" && (window.JsBarcode = w), typeof jQuery < "u" && (jQuery.fn.JsBarcode = function(E, b) {
-    var S = [];
-    return jQuery(this).each(function() {
-      S.push(this);
-    }), w(S, E, b);
-  }), Ge = w, Ge;
+  function autoSelectBarcode() {
+    if (_barcodes2.default["CODE128"]) {
+      return "CODE128";
+    }
+    return Object.keys(_barcodes2.default)[0];
+  }
+  API.prototype.options = function(options) {
+    this._options = (0, _merge2.default)(this._options, options);
+    return this;
+  };
+  API.prototype.blank = function(size) {
+    var zeroes = new Array(size + 1).join("0");
+    this._encodings.push({ data: zeroes });
+    return this;
+  };
+  API.prototype.init = function() {
+    if (!this._renderProperties) {
+      return;
+    }
+    if (!Array.isArray(this._renderProperties)) {
+      this._renderProperties = [this._renderProperties];
+    }
+    var renderProperty;
+    for (var i in this._renderProperties) {
+      renderProperty = this._renderProperties[i];
+      var options = (0, _merge2.default)(this._options, renderProperty.options);
+      if (options.format == "auto") {
+        options.format = autoSelectBarcode();
+      }
+      this._errorHandler.wrapBarcodeCall(function() {
+        var text = options.value;
+        var Encoder = _barcodes2.default[options.format.toUpperCase()];
+        var encoded = encode(text, Encoder, options);
+        render(renderProperty, encoded, options);
+      });
+    }
+  };
+  API.prototype.render = function() {
+    if (!this._renderProperties) {
+      throw new _exceptions.NoElementException();
+    }
+    if (Array.isArray(this._renderProperties)) {
+      for (var i = 0; i < this._renderProperties.length; i++) {
+        render(this._renderProperties[i], this._encodings, this._options);
+      }
+    } else {
+      render(this._renderProperties, this._encodings, this._options);
+    }
+    return this;
+  };
+  API.prototype._defaults = _defaults2.default;
+  function render(renderProperties, encodings, options) {
+    encodings = (0, _linearizeEncodings2.default)(encodings);
+    for (var i = 0; i < encodings.length; i++) {
+      encodings[i].options = (0, _merge2.default)(options, encodings[i].options);
+      (0, _fixOptions2.default)(encodings[i].options);
+    }
+    (0, _fixOptions2.default)(options);
+    var Renderer = renderProperties.renderer;
+    var renderer = new Renderer(renderProperties.element, encodings, options);
+    renderer.render();
+    if (renderProperties.afterRender) {
+      renderProperties.afterRender();
+    }
+  }
+  if (typeof window !== "undefined") {
+    window.JsBarcode = JsBarcode2;
+  }
+  if (typeof jQuery !== "undefined") {
+    jQuery.fn.JsBarcode = function(content, options) {
+      var elementArray = [];
+      jQuery(this).each(function() {
+        elementArray.push(this);
+      });
+      return JsBarcode2(elementArray, content, options);
+    };
+  }
+  JsBarcode_1 = JsBarcode2;
+  return JsBarcode_1;
 }
-var Ur = Hr();
-const Ut = /* @__PURE__ */ ar(Ur), Vr = (_, f) => {
-  const v = _.__vccOpts || _;
-  for (const [l, h] of f)
-    v[l] = h;
-  return v;
-}, Xr = {
+var JsBarcodeExports = requireJsBarcode();
+const JsBarcode = /* @__PURE__ */ getDefaultExportFromCjs(JsBarcodeExports);
+const _export_sfc = (sfc, props) => {
+  const target = sfc.__vccOpts || sfc;
+  for (const [key, val] of props) {
+    target[key] = val;
+  }
+  return target;
+};
+const _sfc_main = {
   extends: "k-field",
   props: {
     value: String,
@@ -2824,14 +3917,14 @@ const Ut = /* @__PURE__ */ ar(Ur), Vr = (_, f) => {
     },
     displayvalue: {
       type: Boolean,
-      default: !0
+      default: true
     },
     flat: {
       type: Boolean,
-      default: !1
+      default: false
     }
   },
-  emits: ["input", "change"],
+  emits: ["update:modelValue", "input", "change"],
   data() {
     return {
       svgEl: null
@@ -2843,7 +3936,8 @@ const Ut = /* @__PURE__ */ ar(Ur), Vr = (_, f) => {
     }
   },
   mounted() {
-    this.svgEl = this.$refs.svgEl, this.renderBarcode();
+    this.svgEl = this.$refs.svgEl;
+    this.renderBarcode();
   },
   watch: {
     value() {
@@ -2851,9 +3945,9 @@ const Ut = /* @__PURE__ */ ar(Ur), Vr = (_, f) => {
     }
   },
   methods: {
-    handleSubmit(_) {
-      const f = _[this.name];
-      if (!this.validateIsbn(f)) {
+    handleSubmit(formData) {
+      const newValue = formData[this.name];
+      if (!this.validateIsbn(newValue)) {
         this.$panel.notification.info({
           message: this.$t("isbn.error.invalid"),
           icon: "alert",
@@ -2863,7 +3957,12 @@ const Ut = /* @__PURE__ */ ar(Ur), Vr = (_, f) => {
         return;
       }
       Promise.resolve().then(() => {
-        this.$emit("input", f), this.$emit("change", f), this.$nextTick(() => this.renderBarcode()), this.closeDrawer(), this.$panel.notification.success({
+        this.$emit("update:modelValue", newValue);
+        this.$emit("input", newValue);
+        this.$emit("change", newValue);
+        this.$nextTick(() => this.renderBarcode());
+        this.closeDrawer();
+        this.$panel.notification.success({
           message: this.$t("isbn.success.saved"),
           icon: "check",
           timeout: 4e3
@@ -2890,8 +3989,8 @@ const Ut = /* @__PURE__ */ ar(Ur), Vr = (_, f) => {
             [this.name]: {
               label: this.$t("isbn.field.label"),
               type: "text",
-              spellcheck: !1,
-              autofocus: !0,
+              spellcheck: false,
+              autofocus: true,
               minlength: 10,
               maxlength: 14,
               placeholder: this.$t("isbn.field.placeholder")
@@ -2912,94 +4011,106 @@ const Ut = /* @__PURE__ */ ar(Ur), Vr = (_, f) => {
     closeDrawer() {
       this.$panel.drawer.close();
     },
-    convertIsbn10to13(_) {
-      const f = _.replace(/-/g, "").toUpperCase();
-      if (!/^\d{9}[\dX]$/.test(f)) return null;
-      const v = "978" + f.slice(0, 9);
-      let l = 0;
-      for (let s = 0; s < 12; s++) {
-        const d = parseInt(v[s], 10);
-        l += d * (s % 2 === 0 ? 1 : 3);
+    convertIsbn10to13(isbn10) {
+      const clean = isbn10.replace(/-/g, "").toUpperCase();
+      if (!/^\d{9}[\dX]$/.test(clean)) return null;
+      const core = "978" + clean.slice(0, 9);
+      let sum = 0;
+      for (let i = 0; i < 12; i++) {
+        const digit = parseInt(core[i], 10);
+        sum += digit * (i % 2 === 0 ? 1 : 3);
       }
-      const h = (10 - l % 10) % 10;
-      return v + h;
+      const checksum = (10 - sum % 10) % 10;
+      return core + checksum;
     },
-    validateIsbn(_) {
-      const f = _.replace(/-/g, "");
-      if (/^\d{9}[\dX]$/.test(f)) {
-        let v = 0;
-        for (let h = 0; h < 9; h++)
-          v += (h + 1) * parseInt(f[h], 10);
-        const l = f[9] === "X" ? 10 : parseInt(f[9], 10);
-        return (v + 10 * l) % 11 === 0;
+    validateIsbn(value) {
+      const clean = value.replace(/-/g, "");
+      if (/^\d{9}[\dX]$/.test(clean)) {
+        let sum = 0;
+        for (let i = 0; i < 9; i++) {
+          sum += (i + 1) * parseInt(clean[i], 10);
+        }
+        const checksum = clean[9] === "X" ? 10 : parseInt(clean[9], 10);
+        return (sum + 10 * checksum) % 11 === 0;
       }
-      if (/^\d{13}$/.test(f)) {
-        let v = 0;
-        for (let h = 0; h < 12; h++)
-          v += parseInt(f[h], 10) * (h % 2 === 0 ? 1 : 3);
-        return (10 - v % 10) % 10 === parseInt(f[12], 10);
+      if (/^\d{13}$/.test(clean)) {
+        let sum = 0;
+        for (let i = 0; i < 12; i++) {
+          sum += parseInt(clean[i], 10) * (i % 2 === 0 ? 1 : 3);
+        }
+        const checksum = (10 - sum % 10) % 10;
+        return checksum === parseInt(clean[12], 10);
       }
-      return !1;
+      return false;
     },
     renderBarcode() {
-      if (!this.hasContent || typeof Ut != "function" || !this.svgEl) return;
-      let _ = this.value.replace(/-/g, "");
-      if (/^\d{9}[\dX]$/.test(_)) {
-        const f = this.convertIsbn10to13(_);
-        if (!f) return;
-        _ = f;
+      if (!this.hasContent) return;
+      if (typeof JsBarcode !== "function") return;
+      if (!this.svgEl) return;
+      let clean = this.value.replace(/-/g, "");
+      if (/^\d{9}[\dX]$/.test(clean)) {
+        const converted = this.convertIsbn10to13(clean);
+        if (!converted) return;
+        clean = converted;
       }
-      if (!(!/^\d{13}$/.test(_) || !this.validateIsbn(_))) {
-        for (; this.svgEl.firstChild; )
-          this.svgEl.removeChild(this.svgEl.firstChild);
-        Ut(this.svgEl, _, {
-          format: this.format,
-          height: this.height,
-          width: this.barwidth,
-          background: this.background,
-          lineColor: this.linecolor,
-          font: this.font,
-          fontSize: this.fontsize,
-          fontOptions: this.fontoptions,
-          textAlign: this.textalign,
-          textPosition: this.textposition,
-          margins: this.margins,
-          marginTop: this.margintop,
-          marginRight: this.marginright,
-          marginBottom: this.marginbottom,
-          marginLeft: this.marginleft,
-          displayValue: this.displayvalue,
-          flat: this.flat,
-          lastChar: ">"
-        });
+      if (!/^\d{13}$/.test(clean) || !this.validateIsbn(clean)) return;
+      while (this.svgEl.firstChild) {
+        this.svgEl.removeChild(this.svgEl.firstChild);
       }
+      JsBarcode(this.svgEl, clean, {
+        format: this.format,
+        height: this.height,
+        width: this.barwidth,
+        background: this.background,
+        lineColor: this.linecolor,
+        font: this.font,
+        fontSize: this.fontsize,
+        fontOptions: this.fontoptions,
+        textAlign: this.textalign,
+        textPosition: this.textposition,
+        margins: this.margins,
+        marginTop: this.margintop,
+        marginRight: this.marginright,
+        marginBottom: this.marginbottom,
+        marginLeft: this.marginleft,
+        displayValue: this.displayvalue,
+        flat: this.flat,
+        lastChar: ">"
+      });
     }
   }
-}, zr = {
+};
+const _hoisted_1 = {
   key: 0,
   class: "k-isbn-empty"
-}, Jr = {
+};
+const _hoisted_2 = {
   key: 1,
   class: "k-isbn-preview"
-}, Zr = { class: "k-isbn-container" }, Yr = {
+};
+const _hoisted_3 = { class: "k-isbn-container" };
+const _hoisted_4 = {
   ref: "svgEl",
   class: "k-isbn-preview-svg"
 };
-function Qr(_, f, v, l, h, s) {
-  const d = Y("k-button"), c = Y("k-empty"), a = Y("k-grid"), e = Y("k-field");
-  return Q(), tr(
-    e,
-    rr({ class: "k-isbn-field" }, _.$props),
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_k_button = resolveComponent("k-button");
+  const _component_k_empty = resolveComponent("k-empty");
+  const _component_k_grid = resolveComponent("k-grid");
+  const _component_k_field = resolveComponent("k-field");
+  return openBlock(), createBlock(
+    _component_k_field,
+    mergeProps({ class: "k-isbn-field" }, _ctx.$props),
     {
-      options: W(() => [
-        Ne(d, {
+      options: withCtx(() => [
+        createVNode(_component_k_button, {
           icon: "edit-line",
           size: "xs",
           variant: "filled",
-          onClick: s.openDrawer
+          onClick: $options.openDrawer
         }, {
-          default: W(() => [...f[0] || (f[0] = [
-            ir(
+          default: withCtx(() => [..._cache[0] || (_cache[0] = [
+            createTextVNode(
               "Edit...",
               -1
               /* CACHED */
@@ -3009,29 +4120,29 @@ function Qr(_, f, v, l, h, s) {
           /* STABLE */
         }, 8, ["onClick"])
       ]),
-      default: W(() => [
-        s.hasContent ? (Q(), Le("div", Jr, [
-          nr("div", Zr, [
-            (Q(), Le(
-              "svg",
-              Yr,
-              null,
-              512
-              /* NEED_PATCH */
-            ))
-          ])
-        ])) : (Q(), Le("div", zr, [
-          Ne(a, { style: { "--columns": "1", gap: "0.5rem" } }, {
-            default: W(() => [
-              Ne(c, {
-                text: v.emptyText,
+      default: withCtx(() => [
+        !$options.hasContent ? (openBlock(), createElementBlock("div", _hoisted_1, [
+          createVNode(_component_k_grid, { style: { "--columns": "1", "gap": "0.5rem" } }, {
+            default: withCtx(() => [
+              createVNode(_component_k_empty, {
+                text: $props.emptyText,
                 icon: "isbn",
-                onClick: s.openDrawer
+                onClick: $options.openDrawer
               }, null, 8, ["text", "onClick"])
             ]),
             _: 1
             /* STABLE */
           })
+        ])) : (openBlock(), createElementBlock("div", _hoisted_2, [
+          createElementVNode("div", _hoisted_3, [
+            (openBlock(), createElementBlock(
+              "svg",
+              _hoisted_4,
+              null,
+              512
+              /* NEED_PATCH */
+            ))
+          ])
         ]))
       ]),
       _: 1
@@ -3041,12 +4152,13 @@ function Qr(_, f, v, l, h, s) {
     /* FULL_PROPS */
   );
 }
-const Wr = /* @__PURE__ */ Vr(Xr, [["render", Qr]]), Kr = {
-  isbn: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M2 4H4V20H2V4ZM6 4H7V20H6V4ZM8 4H10V20H8V4ZM11 4H13V20H11V4ZM14 4H16V20H14V4ZM17 4H18V20H17V4ZM19 4H22V20H19V4Z"></path></svg>'
+const IsbnField = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
+const icons = {
+  "isbn": '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M2 4H4V20H2V4ZM6 4H7V20H6V4ZM8 4H10V20H8V4ZM11 4H13V20H11V4ZM14 4H16V20H14V4ZM17 4H18V20H17V4ZM19 4H22V20H19V4Z"></path></svg>'
 };
 panel.plugin("scottboms/isbn-field", {
-  icons: Kr,
   fields: {
-    isbn: Wr
-  }
+    isbn: IsbnField
+  },
+  icons
 });

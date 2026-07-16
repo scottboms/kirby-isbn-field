@@ -108,7 +108,7 @@ export default {
 		}
 	},
 
-	emits: ['input', 'change'],
+	emits: ['update:modelValue', 'input', 'change'],
 
 	data() {
 		return {
@@ -150,6 +150,7 @@ export default {
 
 			Promise.resolve()
 				.then(() => {
+					this.$emit('update:modelValue', newValue);
 					this.$emit('input', newValue);
 					this.$emit('change', newValue);
 
