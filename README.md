@@ -105,8 +105,7 @@ The field type also includes a new [Validator](https://getkirby.com/docs/referen
 
 ## Compatibility
 
-* Kirby 4.x
-* Kirby 5.x
+* Kirby 6.x (Plugin version 6.x)
 
 ## Disclaimer
 
