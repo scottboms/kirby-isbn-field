@@ -24,27 +24,29 @@ load([
 ]);
 
 use Scottboms\Isbn\Barcode;
-use Kirby\Cms\App;
-use Kirby\Toolkit\V;
+use Kirby\Cms\App as Kirby;
 
-// shamelessly borrowed from distantnative/retour-for-kirby
+require_once __DIR__ . '/fields/IsbnField.php';
+
+$version = Kirby::version() ?? '0.0.0';
 if (
-	version_compare(App::version() ?? '0.0.0', '4.0.1', '<') === true ||
-	version_compare(App::version() ?? '0.0.0', '7.0.0', '>=') === true
+	version_compare($version, '6.0.0-beta.1', '<') ||
+	version_compare($version, '7.0.0', '>=')
 ) {
-	throw new Exception('ISBN Field requires Kirby v6');
+	throw new Exception('ISBN Field requires Kirby 6');
 }
 
-Kirby::plugin(
-	name: 'scottboms/isbn-field',
+Kirby::plugin('scottboms/isbn-field',
 	info: [
 		'homepage' => 'https://github.com/scottboms/kirby-isbn-field',
-		'license'  => 'MIT'
+		'license'  => 'MIT',
+		'version' => '6.0.0',
+		'authors' => [[ 'name' => 'Scott Boms' ]]
 	],
-	version: '6.0.0',
+
 	extends: [
 		'fields' => [
-			'isbn' => require __DIR__ . '/lib/fields.php'
+			'isbn' => \Scottboms\Isbn\IsbnField::class
 		],
 		'fieldMethods' => [
 			'toIsbn' => require __DIR__ . '/lib/fieldmethods.php'
@@ -54,7 +56,8 @@ Kirby::plugin(
 		],
 		'translations' => [
 			'en' => require __DIR__ . '/languages/en.php',
-			'de' => require __DIR__ . '/languages/de.php'
+			'de' => require __DIR__ . '/languages/de.php',
+			'fr' => require __DIR__ . '/languages/fr.php',
 		],
 		'snippets' => [
 			'isbn' => __DIR__ . '/snippets/isbn.php'

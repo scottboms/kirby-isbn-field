@@ -1,31 +1,51 @@
 <template>
-	<k-field class="k-isbn-field" v-bind="$props">
-		<k-button icon="edit-line" size="xs" slot="options" variant="filled" @click="openDrawer">Edit...</k-button>
-		<div v-if="!hasContent" class="k-isbn-empty">
-			<k-grid style="--columns: 1; gap: 0.5rem">
-				<k-empty :text="emptyText" icon="isbn" @click="openDrawer" />
-			</k-grid>
+	<k-field
+		:name="name"
+		:label="label"
+		class="k-isbn-field"
+	>
+		<template #options>
+			<k-button
+				icon="edit-line"
+				size="xs"
+				variant="filled"
+				:disabled="disabled"
+				@click="openDrawer"
+			>Edit…</k-button>
+		</template>
+
+		<k-empty
+			v-if="!hasContent"
+			:text="$t('isbn.field.empty')"
+			icon="isbn"
+			@click="openDrawer"
+		/>
+
+		<div v-else class="k-isbn-preview">
+			<svg
+				ref="barcode"
+				class="k-isbn-preview-svg"
+			/>
 		</div>
-		<div v-html="previewHtml" class="k-isbn-preview" />
 	</k-field>
 </template>
 
 <script>
-import JsBarcode from 'jsbarcode';
+import JsBarcode from "jsbarcode";
 
 export default {
-	extends: "k-field",
+	name: "IsbnField",
+
 	props: {
-		value: String,
-		emptyText: {
+		name: String,
+		label: String,
+		value: {
 			type: String,
-			default() {
-				return this.$t('isbn.field.empty');
-			}
+			default: ""
 		},
 		format: {
 			type: String,
-			default: 'ean13'
+			default: "ean13"
 		},
 		height: {
 			type: Number,
@@ -37,22 +57,23 @@ export default {
 		},
 		background: {
 			type: String,
-			default: '#fff'
+			default: "#fff"
 		},
 		linecolor: {
 			type: String,
-			default: '#000'
+			default: "#000"
 		},
 		font: {
 			type: String,
-			default: 'monospace'
+			default: "monospace"
 		},
 		fontsize: {
 			type: Number,
 			default: 20
 		},
 		fontoptions: {
-			type: String
+			type: String,
+			default: null
 		},
 		textmargin: {
 			type: Number,
@@ -60,11 +81,11 @@ export default {
 		},
 		textalign: {
 			type: String,
-			default: 'center'
+			default: "center"
 		},
 		textposition: {
 			type: String,
-			default: 'bottom'
+			default: "bottom"
 		},
 		margins: {
 			type: Number,
@@ -93,176 +114,23 @@ export default {
 		flat: {
 			type: Boolean,
 			default: false
-		}
+		},
+		disabled: {
+			type: Boolean,
+			default: false
+		},
 	},
-	mounted() {
-		this.renderBarcode();
-	},
+
+	emits: ["input", "change"],
+
 	computed: {
 		hasContent() {
-			return this.value && this.value.trim() !== '';
-		},
-		previewHtml() {
-			if (!this.value) return '';
-			
-			return `<div class='k-isbn-container'><svg class='k-isbn-preview-svg' id='isbn'>${this.value}</svg></div>`;
-		}
-	},
-	watch: {
-		value() {
-			this.$nextTick(() => {
-				this.renderBarcode();
-			});
-		}
-	},
-	methods: {
-		handleSubmit(formData) {
-			const newValue = formData[this.name];
-			
-			if (!this.validateIsbn(newValue)) {
-				this.$panel.notification.info({
-					message: this.$t('isbn.error.invalid'),
-					icon: 'alert',
-					theme: 'negative',
-					timeout: 5000
-				});
-				return; // don't proceed
-			}
-
-			Promise.resolve()
-				.then(() => {
-					this.$emit('input', newValue);
-					this.$emit('change', newValue);
-
-					// refresh barcode preview
-					this.$nextTick(() => {
-						this.renderBarcode();
-					});
-					this.closeDrawer();
-
-					this.$panel.notification.success({
-						message: this.$t('isbn.success.saved'),
-						icon: 'check',
-						timeout: 4000
-					});
-				})
-				.catch(() => {
-					this.$panel.notification.info({
-						message: this.$t('isbn.error.unknown'),
-						icon: 'alert',
-						theme: 'negative',
-						timeout: 4000
-					});
-				});
-		},
-		
-		openDrawer() {
-			this.$panel.drawer.open({
-				component: 'k-form-drawer',
-				props: {
-					icon: 'isbn',
-					title: 'ISBN-10/ISBN-13',
-					value: {
-						[this.name]: this.value
-					},
-					fields: {
-						[this.name]: {
-							label: this.$t('isbn.field.label'),
-							type: 'text',
-							spellcheck: false,
-							autofocus: true,
-							minlength: 10,
-							maxlength: 14,
-							placeholder: this.$t('isbn.field.placeholder')
-						},
-						info: {
-							type: 'info',
-							label: this.$t('isbn.info.label'),
-							text: this.$t('isbn.info.text'),
-							theme: 'info',
-						}
-					}
-				},
-				on: {
-					submit: this.handleSubmit.bind(this)
-				}
-			});
-		},
-		
-		closeDrawer() {
-			this.$panel.drawer.close();
+			return typeof this.value === "string" &&
+				this.value.trim() !== "";
 		},
 
-		convertIsbn10to13(isbn10) {
-			const clean = isbn10.replace(/-/g, '').toUpperCase();
-
-			if (!/^\d{9}[\dX]$/.test(clean)) return null;
-
-			// Step 1: Take first 9 digits, prefix with 978
-			const core = '978' + clean.slice(0, 9);
-
-			// Step 2: Calculate checksum for ISBN-13
-			let sum = 0;
-			for (let i = 0; i < 12; i++) {
-				const digit = parseInt(core[i], 10);
-				sum += digit * (i % 2 === 0 ? 1 : 3);
-			}
-			const checksum = (10 - (sum % 10)) % 10;
-
-			// Step 3: Append checksum
-			return core + checksum;
-		},
-
-		validateIsbn(value) {
-			const clean = value.replace(/-/g, '');
-
-			// ISBN-10
-			if (/^\d{9}[\dX]$/.test(clean)) {
-				let sum = 0;
-				for (let i = 0; i < 9; i++) {
-					sum += (i + 1) * parseInt(clean[i], 10);
-				}
-				const checksum = clean[9] === 'X' ? 10 : parseInt(clean[9], 10);
-				return (sum + 10 * checksum) % 11 === 0;
-			}
-
-			// ISBN 13
-			if (/^\d{13}$/.test(clean)) {
-				let sum = 0;
-				for (let i = 0; i < 12; i++) {
-					sum += parseInt(clean[i], 10) * (i % 2 === 0 ? 1 : 3);
-				}
-				const checksum = (10 - (sum % 10)) % 10;
-				return checksum === parseInt(clean[12], 10);
-			}
-			return false;
-		},
-
-		renderBarcode() {
-			if (!this.value || typeof JsBarcode !== 'function') return;
-
-			let clean = this.value.replace(/-/g, '');
-			const svg = this.$el.querySelector('#isbn');
-			if (!svg) return;
-
-			// convert ISBN-10 to ISBN-13 if necessary
-			if (/^\d{9}[\dX]$/.test(clean)) {
-				const converted = this.convertIsbn10to13(clean);
-				if (converted) {
-					clean = converted;
-				} else {
-					// console.warn('failed to convert ISBN-10 to ISBN-13, cannot render barcode');
-					return;
-				}
-			}
-			
-			// validate ISBN-13
-			if (!/^\d{13}$/.test(clean) || !this.validateIsbn(clean)) {
-				// console.warn('invalid ISBN-13, cannot render barcode');
-				return;
-			}
-
-			JsBarcode(svg, clean, {
+		barcodeOptions() {
+			return {
 				format: this.format,
 				height: this.height,
 				width: this.barwidth,
@@ -271,16 +139,185 @@ export default {
 				font: this.font,
 				fontSize: this.fontsize,
 				fontOptions: this.fontoptions,
+				textMargin: this.textmargin,
 				textAlign: this.textalign,
 				textPosition: this.textposition,
-				margins: this.margins,			
+				margin: this.margins,
 				marginTop: this.margintop,
 				marginRight: this.marginright,
 				marginBottom: this.marginbottom,
 				marginLeft: this.marginleft,
 				displayValue: this.displayvalue,
-				flat: this.flat,
-				lastChar: '>'
+				flat: this.flat
+			};
+		}
+	},
+
+	mounted() {
+		this.renderBarcode();
+	},
+
+	watch: {
+		value() {
+			this.$nextTick(this.renderBarcode);
+		},
+
+		barcodeOptions() {
+			this.$nextTick(this.renderBarcode);
+		}
+	},
+
+	methods: {
+		convertIsbn10to13(isbn10) {
+			const clean = isbn10.replace(/-/g, "").toUpperCase();
+
+			if (!/^\d{9}[\dX]$/.test(clean)) {
+				return null;
+			}
+
+			const core = "978" + clean.slice(0, 9);
+			let sum = 0;
+
+			for (let i = 0; i < 12; i++) {
+				sum += Number(core[i]) * (i % 2 === 0 ? 1 : 3);
+			}
+
+		  const checksum = (10 - (sum % 10)) % 10;
+
+			return core + checksum;
+		},
+
+		renderBarcode() {
+			const svg = this.$refs.barcode;
+
+			if (!svg || !this.hasContent) {
+				return;
+			}
+
+			let isbn = this.value
+				.replace(/[\s-]/g, "")
+				.toUpperCase();
+
+			// Convert ISBN-10 to ISBN-13
+			if (/^\d{9}[\dX]$/.test(isbn)) {
+				isbn = this.convertIsbn10to13(isbn);
+			}
+
+			// Clear the preview if the ISBN is invalid
+			if (!isbn || !/^\d{13}$/.test(isbn) || !this.validateIsbn(isbn)) {
+				svg.replaceChildren();
+				return;
+			}
+
+			try {
+				JsBarcode(svg, isbn, this.barcodeOptions);
+			} catch (error) {
+				console.error("ISBN barcode rendering failed:", error);
+				svg.replaceChildren();
+			}
+		},
+
+		openDrawer() {
+			if (this.disabled) {
+				return;
+			}
+
+			this.$panel.drawer.open({
+				component: "k-form-drawer",
+
+				props: {
+					icon: "isbn",
+					title: "ISBN-10/ISBN-13",
+
+					value: {
+						[this.name]: this.value ?? ""
+					},
+
+					fields: {
+						[this.name]: {
+							label: this.$t("isbn.field.label"),
+							type: "text",
+							spellcheck: false,
+							autofocus: true,
+							minlength: 10,
+							maxlength: 17,
+							placeholder: this.$t("isbn.field.placeholder")
+						},
+
+						info: {
+							type: "info",
+							label: this.$t("isbn.info.label"),
+							text: this.$t("isbn.info.text"),
+							theme: "info"
+						}
+					}
+				},
+
+				on: {
+					submit: (values) => this.handleSubmit(values)
+				}
+			});
+		},
+
+		closeDrawer() {
+			this.$panel.drawer.close();
+		},
+
+		validateIsbn(value) {
+			const clean = String(value ?? "")
+				.replace(/[\s-]/g, "")
+				.toUpperCase();
+
+			// ISBN-10
+			if (/^\d{9}[\dX]$/.test(clean)) {
+				let sum = 0;
+
+				for (let i = 0; i < 9; i++) {
+					sum += (i + 1) * Number(clean[i]);
+				}
+
+				const checksum = clean[9] === "X" ? 10 : Number(clean[9]);
+				return (sum + 10 * checksum) % 11 === 0;
+			}
+
+			// ISBN-13
+			if (/^\d{13}$/.test(clean)) {
+				let sum = 0;
+
+				for (let i = 0; i < 12; i++) {
+					sum += Number(clean[i]) * (i % 2 === 0 ? 1 : 3);
+				}
+
+				const checksum = (10 - (sum % 10)) % 10;
+				return checksum === Number(clean[12]);
+			}
+
+			return false;
+		},
+
+		handleSubmit(formData) {
+			const newValue = String(formData?.[this.name] ?? "").trim();
+
+			if (!this.validateIsbn(newValue)) {
+				this.$panel.notification.info({
+					message: this.$t("isbn.error.invalid"),
+					icon: "alert",
+					theme: "negative",
+					timeout: 5000
+				});
+
+				return;
+			}
+
+			this.$emit("input", newValue);
+			this.$emit("change", newValue);
+
+			this.closeDrawer();
+
+			this.$panel.notification.success({
+				message: this.$t("isbn.success.saved"),
+				icon: "check",
+				timeout: 4000
 			});
 		},
 
@@ -288,12 +325,25 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .k-isbn-preview {
-	background: var(--color-white);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow-x: auto;
+	padding: 1rem;
+	background: #fff;
 	border-radius: var(--input-rounded);
 }
+
 .k-isbn-preview-svg {
-	border-radius: var(--input-rounded);
+	display: block;
+	flex-shrink: 0;
+	max-width: 100%;
+	height: auto;
+}
+
+.k-isbn-empty {
+	width: 100%;
 }
 </style>
