@@ -138,7 +138,7 @@ export default {
 				lineColor: this.linecolor,
 				font: this.font,
 				fontSize: this.fontsize,
-				fontOptions: this.fontoptions,
+				fontOptions: this.fontoptions ?? "",
 				textMargin: this.textmargin,
 				textAlign: this.textalign,
 				textPosition: this.textposition,
